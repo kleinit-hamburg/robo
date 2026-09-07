@@ -1,0 +1,57 @@
+[
+  {
+    "passed": true,
+    "result": {
+      "phase": "done",
+      "result": {
+        "success": true,
+        "reason": "known_target_cycle_completed",
+        "time_s": 24.8
+      }
+    }
+  },
+  {
+    "passed": true,
+    "result": {
+      "phase": "done",
+      "result": {
+        "success": true,
+        "reason": "known_target_cycle_completed",
+        "time_s": 24.72
+      }
+    }
+  },
+  {
+    "passed": true,
+    "result": {
+      "phase": "done",
+      "result": {
+        "success": true,
+        "reason": "known_target_cycle_completed",
+        "time_s": 24.82
+      }
+    }
+  },
+  {
+    "passed": true,
+    "result": {
+      "phase": "done",
+      "result": {
+        "success": true,
+        "reason": "known_target_cycle_completed",
+        "time_s": 24.82
+      }
+    }
+  },
+  {
+    "passed": true,
+    "result": {
+      "phase": "done",
+      "result": {
+        "success": true,
+        "reason": "known_target_cycle_completed",
+        "time_s": 24.779999999999998
+      }
+    }
+  }
+]

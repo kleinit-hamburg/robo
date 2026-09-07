@@ -9,7 +9,7 @@
       "title": "Bewegen",
       "status": "in_progress",
       "per_concept": {
-        "tracked": "partially_implemented",
+        "tracked": "accepted_drive_proxy",
         "quadruped": "planned",
         "humanoid": "planned"
       },
@@ -18,15 +18,15 @@
         "T01"
       ],
       "acceptance_document": "docs/06-umsetzung.md",
-      "evidence_document": "docs/10-m1-abnahme.md",
-      "acceptance_status": "not_accepted_restart_instability"
+      "evidence_document": "docs/13-grundfunktionen.md",
+      "acceptance_status": "drive_proxy_accepted_legged_concepts_open"
     },
     {
       "id": "M2",
       "title": "Gelände bewältigen",
-      "status": "planned",
+      "status": "in_progress",
       "per_concept": {
-        "tracked": "planned",
+        "tracked": "test_fixture_in_development",
         "quadruped": "planned",
         "humanoid": "planned"
       },
@@ -45,9 +45,9 @@
     {
       "id": "M3",
       "title": "Arm bewegen",
-      "status": "planned",
+      "status": "in_progress",
       "per_concept": {
-        "tracked": "planned",
+        "tracked": "test_fixture_in_development",
         "quadruped": "planned",
         "humanoid": "planned"
       },
@@ -62,9 +62,9 @@
     {
       "id": "M4",
       "title": "100/250/500/1000 N Werkzeuglast",
-      "status": "planned",
+      "status": "in_progress",
       "per_concept": {
-        "tracked": "planned",
+        "tracked": "test_fixture_in_development",
         "quadruped": "planned",
         "humanoid": "planned"
       },
@@ -79,9 +79,9 @@
     {
       "id": "M5",
       "title": "Virtuelle Pflanze greifen",
-      "status": "planned",
+      "status": "in_progress",
       "per_concept": {
-        "tracked": "planned",
+        "tracked": "test_fixture_in_development",
         "quadruped": "planned",
         "humanoid": "planned"
       },

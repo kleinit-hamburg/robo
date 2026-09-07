@@ -2,7 +2,7 @@
 
 Drei alternative Plattformen für autonome Unkrautbekämpfung: Kettenfahrzeug mit Arm, Quadruped mit Arm und humanoider Zweibeiner mit zwei Greifhänden. Zielplattform ist **Ubuntu 24.04, ROS 2 Jazzy und Gazebo Harmonic**. Andere Gartenarbeiten werden über wechselbare Werkzeuge und zusätzliche Aufgabenprogramme vorbereitet.
 
-**Status: Architektur und Versuchsplanung; Simulationsstack installiert und grundlegender Physik-/ROS-Test bestanden. Erste manuelle Fahrvorschau des Kettenkonzepts verfügbar; noch keine autonome Gartenarbeit oder Benchmarkfreigabe.** Es gibt grobe SDF-Vorschaumodelle und eine manuelle ROS-Fahranbindung, aber noch keine detaillierte CAD-Ausarbeitung, eigenen ROS-Pakete, trainierte Erkennung oder Benchmark-Messergebnisse. Keine Hardwarebeschaffung und keine Veröffentlichung auf einem Remote-Host. Zahlen sind prüfbare Entwurfsannahmen, keine bestätigten Pflanzenkennwerte oder Leistungsversprechen.
+**Status: virtueller Fahr- und Manipulationsprüfstand.** Am Ketten-Ersatzmodell sind Fahrbefehle, ein beweglicher 6-DOF-Arm, Greifer, Werkzeuglastversuche und ein automatischer Prüfzyklus an einer bekannten virtuellen Pflanze implementiert. Die ebene M1-Fahrserie bestand 10/10 Durchläufe. Geländeprüfung und M3–M6 sind noch nicht vollständig abgenommen; Quadruped und Humanoid bleiben Geometrievorschauen. Keine autonome Pflanzenerkennung, detaillierte CAD-Ausarbeitung oder Hardwarebeschaffung. Zahlen sind prüfbare Entwurfsannahmen, keine bestätigten Pflanzenkennwerte oder Leistungsversprechen. [Aktueller Funktions- und Prüfstand](docs/13-grundfunktionen.md).
 
 ## Lesen
 
@@ -24,7 +24,7 @@ Die maschinenlesbaren [Konzeptparameter](config/concepts.json) und [Versuchspara
 
 **M1:** Bewegen → **M2:** Gelände bewältigen → **M3:** Arm bewegen → **M4:** 100/250/500/1000 N Werkzeuglast → **M5:** virtuelle Pflanze greifen → **M6:** identische Unkraut-Teststrecke für alle drei.
 
-M1 ist beim Ketten-Ersatzmodell teilweise umgesetzt; die Serienabnahme ist wegen unzuverlässiger Simulator-Neustarts noch offen. [Prüfbericht](docs/10-m1-abnahme.md). Gangregler, Gelände-Abnahme, Armbewegung, Werkzeuglasten, Pflanzengriff und Vergleichsstrecke sind offen. Abnahmekriterien und Status je Konzept stehen in [der Meilensteinplanung](docs/06-umsetzung.md) und [milestones.json](config/milestones.json). Die 1000-N-Stufe ist ein Grenzversuch, keine bestätigte Tragfähigkeit.
+M1 ist für das Ketten-Ersatzmodell auf der Ebene nachgewiesen. Die weiteren Funktionen werden in getrennten Gelände-, Arm-, Last- und Pflanzenprofilen geprüft. Insbesondere dürfen abgeschlossene Lastsequenzen nicht als Tragfähigkeitsnachweis gelten. Gangregler, autonome Wahrnehmung/Navigation, Schneiden/Abstechen, Energiemodell und vollständiger Vergleich aller drei Konstruktionen bleiben offen. Status je Konzept: [milestones.json](config/milestones.json).
 
 ## Entwicklungsreihenfolge
 

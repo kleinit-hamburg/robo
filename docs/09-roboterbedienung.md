@@ -23,23 +23,23 @@ Bei mehreren Browserfenstern gilt der zuletzt akzeptierte Fahrbefehl. Heartbeats
 
 | Konzept | Jetzt möglich | Noch offen |
 |---|---|---|
-| Kette mit Manipulator | Physikalisches Fahren, Drehen und Anhalten auf der Ebene; IMU-geführtes Umdrehen | echtes Kettenkontakt-/Antriebsmodell, beweglicher Arm, Greifen, Kraftregelung |
+| Kette mit Manipulator | Fahren/Drehen/Anhalten, 6-DOF-Arm und Greifer in Prüfprofilen, Werkzeuglasten und bekannter Pflanzenzyklus | echtes Kettenmodell, vollständige Gelände-/Manipulationsabnahme und Autonomie |
 | Quadruped mit Manipulator | Einwechseln und Betrachten des groben Modells | Gelenkmodell, Gang-, Stand- und Balanceregler, Armregelung |
 | Humanoid mit zwei Händen | Einwechseln und Betrachten des groben Modells | Gelenkmodell, Gang-/Balanceregelung und Hand-/Armregelung |
 
 Die beiden Beinkonzepte sind ausdrücklich **statische Geometrievorschauen**. Sie sind nicht frei balanciert und ihre Bewegungskommandos werden auch serverseitig abgelehnt. Für sie werden keine versteckten Räder oder über den Boden geschobenen Körper als funktionierendes Gehen ausgegeben. Ihre spätere Implementierung erhält dieselben semantischen Befehle, aber eigene Gangregler.
 
-Das Kettenkonzept ist aktuell ein **Zweirad-Differentialantrieb mit vier passiven Kontaktstützen**, um die gemeinsame Bedienung und Anfahrt zu entwickeln. Sichtbare Kettenbänder und Manipulator sind starre Visuals. Es gibt noch keine physikalische Kette und keine Arm-/Greifergelenke. Die Stützen sind reibungsarme Kugelkontakte, keine detaillierten Lenkrollen. Die Gesamtmasse beträgt 65 kg (60,6 kg Basis, 2 × 2 kg Antriebsräder, 4 × 0,1 kg Stützen). Basis-Trägheit und Schwerpunkt sind grobe Annahmen.
+Das Kettenkonzept ist aktuell ein **Zweirad-Differentialantrieb mit vier passiven Kontaktstützen**, um die gemeinsame Bedienung und Anfahrt zu entwickeln. Sichtbare Kettenbänder sind starre Visuals. In `garden`/Fahrprofilen bleibt auch der Arm eine starre Vorschau. `manipulation` und `plant` ersetzen ihn durch sechs dynamische Armgelenke und zwei Greiferbacken. Die Stützen sind reibungsarme Kugelkontakte, keine detaillierten Lenkrollen. Die Gesamtmasse beträgt 65 kg (60,6 kg Basis, 2 × 2 kg Antriebsräder, 4 × 0,1 kg Stützen). Basis-Trägheit und Schwerpunkt sind grobe Annahmen.
 
 `DiffDrive` regelt Radgeschwindigkeit; eingetragene Gelenk-Effortgrenzen allein machen daraus keinen validierten drehmomentbegrenzten Antrieb. Skid-Steering, Bodenarbeit, Tool-Stabilität und elektrische Energie dürfen daraus noch nicht verglichen werden. Damit bleibt die Freigabesperre aus dem Physikdokument bestehen. Arm-/Handvisuals sind noch keine vollständigen Kollisionsmodelle. Die derzeitige Demo ist keine autonome Hindernis- oder Nutzpflanzenvermeidung.
 
 ## Schnittstellen und Wiederverwendung
 
 - `scripts/motion_core.py`: reine, ROS-/Gazebo-unabhängige Befehlslogik; Eingänge sind Befehl, monotone Zeit und gemessene Orientierung.
-- Browser → HTTP-Auftrag → `garden_browser_teleop` → `/garden/cmd_vel` (`geometry_msgs/Twist`) → ROS-Gazebo-Bridge → Gazebo-Differentialantrieb.
+- Browser → HTTP-Auftrag → `garden_browser_teleop` → `/garden/cmd_vel` (`geometry_msgs/Twist`) → direkter ROS-Adapter im Simulatorprozess → Gazebo-Differentialantrieb.
 - `/garden/imu` (`sensor_msgs/Imu`, 50 Hz): Orientierung für die Drehregelung. Die erste Prüfung verwendet eine ideale simulierte IMU ohne Rauschen; reale Drift und Kalibrierung sind später zu berücksichtigen.
 - Gazebo `/world/garden_preview/clock` → ROS `/clock`: eindeutig zugeordnete Simulationsuhr, auch nach Weltwechsel.
-- `/garden/odom` (`nav_msgs/Odometry`, 30 Hz): Radodometrie als Grundlage für spätere Zustandsschätzung. Reine Radodometrie wich beim Drehversuch deutlich von der tatsächlichen Körperausrichtung ab; deshalb wurde die IMU-Rückführung ergänzt.
+- `/garden/odom` (`nav_msgs/Odometry`, 50 Hz): Radodometrie als Grundlage für spätere Zustandsschätzung. Reine Radodometrie wich beim Drehversuch deutlich von der tatsächlichen Körperausrichtung ab; deshalb wurde die IMU-Rückführung ergänzt.
 - Model-/Linkposen aus `/model/robot/pose` dienen ausschließlich der Ansicht und der unabhängigen Testauswertung. Die Drehregelung liest keine Gazebo-Ground-Truth-Posen.
 - Gemeinsame Fahrbefehle werden mit 20 Hz publiziert. IMU-Zeitstempel werden gegen die Simulationsuhr geprüft; alte, unplausibel zukünftige oder ungültige Orientierungen werden verworfen. Beim Fehlen frischer Orientierung für mehr als 0,5 s wird angehalten. Umdrehen hat zusätzlich 20 s Zeitlimit.
 
@@ -84,3 +84,15 @@ Der aktuelle Backendstand meldet `control_ready` getrennt von `connected` und de
 `/api/state` enthält dazu `readiness_issues`, `clock_age_s`, `imu_age_s`, `joint_age_s` und `process_exit_codes`. Der Browser nennt fehlende oder veraltete Daten ausdrücklich. Die bisher laufende ältere Backendinstanz bleibt bis zum Neustart mit der neuen Webseite kompatibel; dort gelten noch die bisherigen Freigaberegeln. Elf Unit-Tests prüfen jetzt auch unvollständige Bereitschaft, abgelaufene Daten und die Prozess-/Pausensperren. Native Gazebo-Start-/Abbauprobleme bleiben offen.
 
 Ein isolierter Gazebo-Fahrdurchlauf mit diesem Backendstand sowie die korrigierte Sensorfehlerinjektion bestanden am 2026-09-07: [Ergebnis](validation/m1-readiness-summary.json), [Quellmanifest](validation/m1-readiness-manifest.json). Dies ersetzt nicht die weiterhin offene Zehner-Abnahme. Die Browseränderung wurde auf JavaScript-Syntax geprüft; eine erneute vollständige Browserabnahme ist damit nicht behauptet.
+
+## Neue Prüfprofile und Werkzeugbefehle
+
+Im Auswahlfeld **Testumgebung** stehen Ebene, Unebenheiten, Steigung, geringe Reibung, Schwelle, Armprüfstand und Pflanzenprüfstand bereit. Ein Wechsel setzt die Szene zurück.
+
+Für den Pflanzenversuch `Pflanze · Griffprüfstand` auswählen und **Pflanzen-Prüfzyklus starten** drücken. Der bekannte Zielpunkt wird angefahren, beide Fingerkontakte müssen bestätigt werden, danach folgt Ausziehen, Öffnen und die Rückkehr in die Ausgangspose. **Anhalten** bricht Fahrt, Armauftrag, Lastversuch und Automatikauftrag ab.
+
+Manuell sind Ausgangs-, Reich-, Arbeits- und Ausziehpose sowie Öffnen, Schließen und Halten verfügbar. Lasten sind 100/250/500/1000 N in sechs Raumrichtungen. Ein Lastversuch kann wegen Bodenkontakt, Gelenkabweichung, Neigung oder fehlenden Messdaten abbrechen. Ein Abbruch ist kein bestandener Tragfähigkeitsnachweis.
+
+ROS-Schnittstellen: `/garden/arm/trajectory` (`trajectory_msgs/JointTrajectory`, derzeit Positionswegpunkte), `/garden/tool/wrench` und `/garden/tool/applied_wrench` (`geometry_msgs/WrenchStamped`, Weltkoordinaten), `/garden/plant/state` (`std_msgs/String`, JSON für den vereinfachten Prüfstand). Der Kraftbefehl verfällt im Simulator nach 250 ms ohne Aktualisierung.
+
+[Aktuelle Messergebnisse und Einschränkungen](13-grundfunktionen.md) ergänzen die oben erhaltenen früheren Einzelprüfungen.

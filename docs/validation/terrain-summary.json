@@ -1,0 +1,34 @@
+[
+  {
+    "profile": "uneven",
+    "progress_m": 0.20535896728142902,
+    "max_tilt_deg": 0.14665375342648365,
+    "time_s": 15.520000000000001,
+    "safety_abort": false,
+    "passed": false
+  },
+  {
+    "profile": "slope",
+    "progress_m": 4.799810841855012e-06,
+    "max_tilt_deg": 0.0,
+    "time_s": 0.28,
+    "safety_abort": true,
+    "passed": false
+  },
+  {
+    "profile": "slippery",
+    "progress_m": 2.2606492053476015,
+    "max_tilt_deg": 0.0,
+    "time_s": 15.54,
+    "safety_abort": false,
+    "passed": true
+  },
+  {
+    "profile": "obstacle",
+    "progress_m": 0.5330951066284554,
+    "max_tilt_deg": 0.01851149590411764,
+    "time_s": 15.479999999999999,
+    "safety_abort": false,
+    "passed": false
+  }
+]

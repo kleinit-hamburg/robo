@@ -1,0 +1,34 @@
+[
+  {
+    "status": "aborted",
+    "reason": "tool_ground_contact",
+    "requested_N": 100.0,
+    "peak_applied_N": 65.00000000000003,
+    "protocol_verified": true,
+    "load_capacity_verified": false
+  },
+  {
+    "status": "aborted",
+    "reason": "tool_ground_contact",
+    "requested_N": 250.0,
+    "peak_applied_N": 74.99999999999996,
+    "protocol_verified": true,
+    "load_capacity_verified": false
+  },
+  {
+    "status": "aborted",
+    "reason": "tool_ground_contact",
+    "requested_N": 500.0,
+    "peak_applied_N": 84.99999999999997,
+    "protocol_verified": true,
+    "load_capacity_verified": false
+  },
+  {
+    "status": "aborted",
+    "reason": "tool_ground_contact",
+    "requested_N": 1000.0,
+    "peak_applied_N": 110.00000000000031,
+    "protocol_verified": true,
+    "load_capacity_verified": false
+  }
+]

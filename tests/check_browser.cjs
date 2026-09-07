@@ -7,12 +7,15 @@ const base=process.env.VIEWER_URL || 'http://127.0.0.1:8088';
   await page.goto(base);
   await page.waitForFunction(()=>document.querySelector('[data-motion="forward"]')?.disabled===false,null,{timeout:20000});
   const read=async()=>await(await page.request.get(base+'/api/state')).json();
+  const simWait=async(seconds)=>{const t=(await read()).sim_time;const deadline=Date.now()+30000;while((await read()).sim_time-t<seconds){if(Date.now()>deadline)throw Error('Simulation time did not advance');await page.waitForTimeout(100);}};
+  await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/profile')&&r.status()===200),page.locator('#profile').selectOption('flat')]);
+  await page.waitForFunction(()=>!document.querySelector('[data-motion="forward"]').disabled,null,{timeout:25000});
   const s0=await read();
-  const forward=page.locator('[data-motion="forward"]');await forward.hover();await page.mouse.down();await page.waitForTimeout(1800);await page.mouse.up();
+  const forward=page.locator('[data-motion="forward"]');await forward.hover();await page.mouse.down();await simWait(1.8);await page.mouse.up();
   await page.waitForTimeout(600);const s1=await read();
-  if(s1.motion!=='stop'||s1.poses.robot.position[0]-s0.poses.robot.position[0]<.1)throw Error('Pointer hold/release did not move and stop');
+  if(s1.motion!=='stop'||s1.poses.robot.position[0]-s0.poses.robot.position[0]<.1)throw Error('Pointer hold/release did not move and stop '+JSON.stringify({before:s0.poses.robot,after:s1.poses.robot,motion:s1.motion,reason:s1.motion_reason,elapsed:s1.sim_time-s0.sim_time}));
   await page.locator('#canvas').click({position:{x:40,y:80}});
-  await page.keyboard.down('ArrowDown');await page.waitForTimeout(1300);await page.keyboard.up('ArrowDown');await page.waitForTimeout(500);
+  await page.keyboard.down('ArrowDown');await simWait(1.3);await page.keyboard.up('ArrowDown');await page.waitForTimeout(500);
   const s2=await read();if(s2.motion!=='stop'||s2.poses.robot.position[0]>=s1.poses.robot.position[0]-.08)throw Error('Keyboard reverse/release failed');
   await page.screenshot({path:'/tmp/garden-browser-test/robot-tracked.png'});
   for(const id of ['quadruped','humanoid']){

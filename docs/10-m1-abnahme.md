@@ -1,5 +1,7 @@
 # M1-Prüfung: Fahrfunktionen nachgewiesen, Serienabnahme offen
 
+> Historischer Fehlbericht vor dem direkten ROS-Adapter. Eine spätere Serie bestand 10/10 Durchläufe einschließlich Sensorfehlerprüfung: [aktueller Nachweis](13-grundfunktionen.md). Die folgenden Befunde bleiben unverändert erhalten.
+
 Stand: 2026-09-07. **M1 ist noch nicht freigegeben.** Fahrfunktionen des Ketten-Ersatzmodells haben mehrfach die Grenzwerte eingehalten; keine der vier angeforderten Zehnerserien wurde vollständig bestanden. Wiederholte Simulator-/Bridge-Neustarts liefern nicht zuverlässig alle Messdaten. Quadruped/Humanoid haben weiterhin keine Gangregler; M2–M6 sind nicht abgenommen.
 
 ## Durchgeführte Serien

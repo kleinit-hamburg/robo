@@ -1,5 +1,7 @@
 # Repository-Struktur und nächste Schritte
 
+Aktueller Implementierungs- und Prüfstand: [Grundfunktionen](13-grundfunktionen.md). Die untenstehenden Abnahmekriterien gelten weiter; M1 ist inzwischen für das ebene Ketten-Ersatzmodell nachgewiesen.
+
 ## Vorhanden
 
 ```text
@@ -12,6 +14,7 @@ config/
 models/{tracked,quadruped,humanoid}/model.sdf
 worlds/browser-preview.sdf      # sichtbare Demo, noch keine Benchmarkstrecke
 scripts/                       # Installation, Modellgenerator, Browser und Fahrlogik
+simulation/                    # nativer Gazebo-Server, ROS-Adapter, Pflanzenkräfte
 web/                           # lokale 3D-Ansicht und Bedienung
 tests/                         # Fahrlogik- und Live-Funktionsprüfungen
 docs/                          # Konzepte, Architektur, Physik, Versuchsplan, Bedienung

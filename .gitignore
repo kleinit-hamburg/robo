@@ -10,3 +10,5 @@ results/*
 *.mcap
 
 web/node_modules/
+
+/build/

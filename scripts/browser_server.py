@@ -15,6 +15,10 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
+from task_core import WeedCycle
+from plant_model import add_plant
+from terrain_model import terrain, PROFILES
+from arm_model import add_arm, JOINTS, LIMITS, PRESETS, fixture_waypoints
 from motion_core import Motion, COMMANDS, heading_from_sample, readiness_issues
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -29,12 +33,17 @@ def build_world(concept, path, profile="garden"):
     tree=ET.parse(ROOT/'worlds/browser-preview.sdf')
     world=tree.getroot().find('world')
     for model in list(world.findall('model')):
-        if model.get('name') in ('test_cube','test_ball') or (profile=='flat' and model.get('name')!='ground'):world.remove(model)
+        if model.get('name') in ('test_cube','test_ball') or (profile not in ('garden','manipulation') and model.get('name')!='ground'):world.remove(model)
     ground_collision=world.find("model[@name='ground']/link/collision")
     friction=ET.SubElement(ET.SubElement(ET.SubElement(ground_collision,'surface'),'friction'),'ode')
-    ET.SubElement(friction,'mu').text='0.6';ET.SubElement(friction,'mu2').text='0.6'
+    ET.SubElement(friction,'mu').text='0.25' if profile=='slippery' else '0.6';ET.SubElement(friction,'mu2').text='0.25' if profile=='slippery' else '0.6'
+    terrain(world,profile)
+    if profile=='plant':add_plant(world)
+    if profile in ('manipulation','plant'):ET.SubElement(world,'plugin',filename='gz-sim-contact-system',name='gz::sim::systems::Contact')
     ET.SubElement(world,'plugin',filename='gz-sim-imu-system',name='gz::sim::systems::Imu')
     robot=copy.deepcopy(ET.parse(ROOT/'models'/concept/'model.sdf').getroot().find('model'))
+    ET.SubElement(robot,'plugin',filename=str(ROOT/'build/simulation/libgarden-ros-adapter.so'),name='garden::RosAdapter')
+    if profile in ('manipulation','plant') and concept=='tracked':add_arm(robot)
     ET.SubElement(robot,'pose').text='0 -0.8 0.005 0 0 0'
     world.append(robot)
     ET.indent(tree);tree.write(path,encoding='utf-8',xml_declaration=True)
@@ -63,10 +72,12 @@ class Application:
         import rclpy
         from tf2_msgs.msg import TFMessage
         from sensor_msgs.msg import Imu, JointState
-        from geometry_msgs.msg import Twist
+        from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+        from std_msgs.msg import String
+        from geometry_msgs.msg import Twist, WrenchStamped
         from rosgraph_msgs.msg import Clock
         from rclpy.qos import qos_profile_sensor_data
-        self.rclpy=rclpy;self.Twist=Twist
+        self.rclpy=rclpy;self.Twist=Twist;self.JointTrajectory=JointTrajectory;self.JointTrajectoryPoint=JointTrajectoryPoint;self.WrenchStamped=WrenchStamped
         self.lock=threading.RLock();self.operation_lock=threading.Lock()
         self.motion=Motion();self.owner=None;self.sequences={}
         self.temp=tempfile.TemporaryDirectory(prefix='garden-robot-viewer-')
@@ -75,11 +86,15 @@ class Application:
         self.concept='tracked';self.revision=0;self.switching=True
         self.poses={};self.last_pose=0.;self.last_clock=0.;self.sim_time=0.;self.paused=False
         self.objects=[];self.output=(0.,0.)
-        self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None
+        self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None;self.joint_positions={};self.arm_target=None;self.tool_task=None;self.tool_result=None;self.applied_force=[0.,0.,0.];self.body_tilt=0.;self.plant_state={};self.weed_cycle=None
         self.spin_thread=None
         rclpy.init()
         self.node=rclpy.create_node('garden_browser_teleop')
         self.publisher=self.node.create_publisher(Twist,'/garden/cmd_vel',10)
+        self.tool_publisher=self.node.create_publisher(WrenchStamped,'/garden/tool/wrench',10)
+        self.node.create_subscription(WrenchStamped,'/garden/tool/applied_wrench',self.on_tool_force,qos_profile_sensor_data)
+        self.node.create_subscription(String,'/garden/plant/state',self.on_plant,qos_profile_sensor_data)
+        self.arm_publisher=self.node.create_publisher(JointTrajectory,'/garden/arm/trajectory',10)
         self.node.create_subscription(TFMessage,'/model/robot/pose',self.on_pose,qos_profile_sensor_data)
         self.node.create_subscription(Imu,'/garden/imu',self.on_imu,qos_profile_sensor_data)
         self.node.create_subscription(JointState,'/garden/joint_states',self.on_joints,qos_profile_sensor_data)
@@ -98,15 +113,6 @@ class Application:
                 try:process.wait(timeout=3)
                 except subprocess.TimeoutExpired:os.killpg(process.pid,signal.SIGKILL);process.wait()
             self.logs.pop(name).close()
-    def start_bridge(self):
-        self.start_process('bridge',['ros2','run','ros_gz_bridge','parameter_bridge',
-            '/world/garden_preview/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
-            '/model/robot/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
-            '/garden/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-            '/garden/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
-            '/garden/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',
-            '/garden/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
-            '--ros-args','-r','/world/garden_preview/clock:=/clock'])
     def launch(self):
         self.replace_world('tracked')
         self.spin_thread=threading.Thread(target=self.spin,daemon=True);self.spin_thread.start()
@@ -118,7 +124,7 @@ class Application:
             updates={}
             for tf in msg.transforms:
                 name=tf.child_frame_id.replace("/", "::")
-                if name=='robot' or name.startswith('robot::'):
+                if name in ('robot','weed') or name.startswith('robot::'):
                     p,q=tf.transform.translation,tf.transform.rotation
                     updates[name]={'position':[p.x,p.y,p.z],'quaternion':[q.x,q.y,q.z,q.w]}
             if updates:self.poses.update(updates);self.last_pose=time.monotonic()
@@ -129,13 +135,22 @@ class Application:
             if self.switching or self.concept!='tracked':return
             yaw=heading_from_sample((q.x,q.y,q.z,q.w),stamp,self.sim_time,msg.orientation_covariance[0]>=0)
             if yaw is None:self.rejected_imu+=1;return
+            self.body_tilt=math.acos(max(-1.,min(1.,1-2*(q.x*q.x+q.y*q.y))))
             self.motion.heading(yaw,time.monotonic())
+    def on_plant(self,msg):
+        try:state=json.loads(msg.data)
+        except (ValueError,TypeError):return
+        with self.lock:self.plant_state=state
+    def on_tool_force(self,msg):
+        with self.lock:self.applied_force=[msg.wrench.force.x,msg.wrench.force.y,msg.wrench.force.z]
     def on_joints(self,msg):
         with self.lock:
             if self.switching:return
             if len(msg.name)!=len(msg.velocity):return
-            if set(msg.name)!={"left_joint","right_joint"} or not all(math.isfinite(v) for v in msg.velocity):return
+            if not {"left_joint","right_joint"}.issubset(msg.name) or not all(math.isfinite(v) for v in msg.velocity):return
             self.last_joints=time.monotonic()
+            for name,position in zip(msg.name,msg.position):
+                if math.isfinite(position):self.joint_positions[name]=position
             for name,velocity in zip(msg.name,msg.velocity):
                 self.joints[name]=velocity
                 self.joint_peak=max(self.joint_peak,abs(velocity)) if math.isfinite(velocity) else float('inf')
@@ -149,10 +164,20 @@ class Application:
             self.output=self.motion.output(time.monotonic())
             msg=self.Twist();msg.linear.x,msg.angular.z=map(float,self.output)
             self.publisher.publish(msg)
+            self.tool_tick()
+            self.cycle_tick()
     def halt(self,reason='stopped'):
         with self.lock:
+            if self.weed_cycle and not self.weed_cycle.result:self.weed_cycle.abort(reason,self.sim_time)
+            if self.tool_task:self.tool_result=dict(status='aborted',reason=reason,requested_N=self.tool_task['force'])
+            self.tool_task=None
+            force=self.WrenchStamped();force.header.frame_id='world';self.tool_publisher.publish(force)
             self.motion.stop(reason);self.output=(0.,0.)
             self.publisher.publish(self.Twist())
+            if self.profile in ('manipulation','plant') and all(n in self.joint_positions for n in JOINTS):
+                msg=self.JointTrajectory();msg.joint_names=JOINTS;pt=self.JointTrajectoryPoint()
+                pt.positions=[float(self.joint_positions[n]) for n in JOINTS];msg.points=[pt];self.arm_publisher.publish(msg)
+                self.arm_target=dict(command='hold',positions=list(pt.positions),duration_s=0.)
     def replace_world(self,concept):
         self.halt('world_change')
         with self.lock:self.switching=True
@@ -163,30 +188,34 @@ class Application:
             with self.lock:
                 self.concept=concept;self.revision+=1;self.objects=objects
                 self.run_seed=self.seed+self.revision-1
-                self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None
+                self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None;self.joint_positions={};self.arm_target=None;self.tool_task=None;self.tool_result=None;self.applied_force=[0.,0.,0.];self.body_tilt=0.;self.plant_state={};self.weed_cycle=None
                 self.poses={};self.last_pose=0.;self.last_clock=0.;self.sim_time=0.;self.paused=False
                 self.motion=Motion();self.owner=None;self.sequences={}
-            self.start_bridge()
-            self.start_process('gazebo',['gz','sim','-s','-r','-v','3','--seed',str(self.run_seed),str(self.path)])
+            self.start_process('gazebo',[str(ROOT/'build/simulation/garden-sim-server'),str(self.path),str(self.run_seed)])
         finally:
             with self.lock:self.switching=False
     def snapshot(self):
         with self.lock:
             now=time.monotonic()
-            alive=all(p.poll() is None for p in self.processes.values()) and len(self.processes)==2
+            alive=all(p.poll() is None for p in self.processes.values()) and set(self.processes)=={'gazebo'}
             connected=not self.switching and alive and self.last_clock>0 and (self.paused or now-self.last_clock<3)
             clock_age=now-self.last_clock if self.last_clock else None
             heading_age=now-self.motion.heading_at if self.motion.heading_at is not None else None
             joint_age=now-self.last_joints if self.last_joints is not None else None
             issues=readiness_issues(CATALOG[self.concept]['drive_ready'],self.switching,self.paused,alive,clock_age,heading_age,joint_age)
-            return dict(control_ready=not issues,readiness_issues=issues,clock_age_s=clock_age,imu_age_s=heading_age,joint_age_s=joint_age,process_exit_codes={k:p.poll() for k,p in self.processes.items()},gazebo_partition=os.environ['GZ_PARTITION'],world_profile=self.profile,seed=self.run_seed,joint_velocities=dict(self.joints),max_abs_joint_velocity=self.joint_peak,rejected_imu=self.rejected_imu,
+            return dict(weed_cycle=None if not self.weed_cycle else dict(phase=self.weed_cycle.phase,result=self.weed_cycle.result),plant_state=self.plant_state,tool_task=self.tool_task,tool_result=self.tool_result,applied_force_N=self.applied_force,body_tilt_deg=math.degrees(self.body_tilt),arm_available=self.profile in ('manipulation','plant') and self.concept=='tracked',joint_positions=dict(self.joint_positions),arm_target=self.arm_target,control_ready=not issues,readiness_issues=issues,clock_age_s=clock_age,imu_age_s=heading_age,joint_age_s=joint_age,process_exit_codes={k:p.poll() for k,p in self.processes.items()},gazebo_partition=os.environ['GZ_PARTITION'],world_profile=self.profile,seed=self.run_seed,joint_velocities=dict(self.joints),max_abs_joint_velocity=self.joint_peak,rejected_imu=self.rejected_imu,
                 concept=self.concept,revision=self.revision,poses=dict(self.poses),sim_time=self.sim_time,paused=self.paused,
                 connected=connected,switching=self.switching,pose_age_s=round(now-self.last_pose,3) if self.last_pose else None,
                 drive_ready=CATALOG[self.concept]['drive_ready'],motion=self.motion.command,motion_reason=self.motion.reason,
                 linear_velocity=self.output[0],angular_velocity=self.output[1],yaw=self.motion.yaw,
                 turn_remaining_rad=self.motion.remaining)
     def scene(self):
-        with self.lock:return dict(revision=self.revision,concept=self.concept,catalog=CATALOG,objects=self.objects)
+        with self.lock:
+            catalog=copy.deepcopy(CATALOG)
+            if self.profile in ('manipulation','plant'):
+                catalog['tracked']['mode']='Manipulationsprüfstand'
+                catalog['tracked']['description']='Rad-/Stützmodell mit beweglichem 6-DOF-Arm und zwei Greiferbacken. Bekannter Zielprüfstand; keine autonome Erkennung.'
+            return dict(world_profile=self.profile,revision=self.revision,concept=self.concept,catalog=catalog,objects=self.objects)
     def drive(self,payload,heartbeat=False):
         with self.lock:
             if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt. Bitte kurz warten.')
@@ -200,6 +229,7 @@ class Application:
             command=payload.get('command')
             if command not in COMMANDS:raise ValueError('Unbekannter Fahrbefehl')
             if command!='stop':
+                if self.tool_task or (self.weed_cycle and not self.weed_cycle.result):raise ValueError('Während einer Werkzeugaufgabe ist die Fahrt gesperrt.')
                 if not CATALOG[self.concept]['drive_ready']:raise ValueError('Gang- und Balanceregler für dieses Konzept noch nicht implementiert.')
                 if self.paused:raise ValueError('Simulation ist pausiert.')
                 state=self.snapshot()
@@ -208,6 +238,79 @@ class Application:
             self.sequences[client]=seq;self.owner=client
             self.motion.request(command,time.monotonic())
             if command=='stop':self.halt()
+    def tool_command(self,payload):
+        with self.lock:
+            if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt.')
+            force=payload.get('force');direction=payload.get('direction')
+            if type(force) not in (int,float) or force not in (100,250,500,1000):raise ValueError('Laststufe muss 100/250/500/1000 N sein.')
+            if direction not in ('+x','-x','+y','-y','+z','-z'):raise ValueError('Ungültige Lastrichtung.')
+            if self.profile not in ('manipulation','plant') or self.concept!='tracked' or not self.snapshot()['control_ready'] or self.motion.command!='stop':raise ValueError('Lastversuch benötigt einen stehenden, fahrbereiten Manipulationsprüfstand.')
+            if self.weed_cycle and not self.weed_cycle.result:raise ValueError('Automatikaufgabe läuft.')
+            if not self.arm_target or self.tool_task:raise ValueError('Zuerst eine Armpose anfahren; nur ein Lastversuch gleichzeitig.')
+            error=max(abs(self.joint_positions.get(n,99)-v) for n,v in zip(JOINTS,self.arm_target['positions']))
+            if error>.12:raise ValueError('Arm hat die Zielpose noch nicht erreicht.')
+            self.tool_task=dict(force=float(force),direction=direction,start_sim_s=self.sim_time,phase='prepare',peak_applied_N=0.)
+            self.tool_result=None
+    def tool_tick(self):
+        msg=self.WrenchStamped();msg.header.frame_id='world'
+        if self.tool_task:
+            task=self.tool_task;elapsed=self.sim_time-task['start_sim_s']
+            error=max(abs(self.joint_positions.get(n,99)-v) for n,v in zip(JOINTS,self.arm_target['positions']))
+            reason='tool_ground_contact' if self.plant_state.get('tool_ground_contact',False) else 'tilt_limit' if self.body_tilt>math.radians(10) else 'joint_tracking_limit' if error>.18 else 'sensor_unavailable' if not self.snapshot()['control_ready'] else None
+            task['peak_applied_N']=max(task['peak_applied_N'],math.sqrt(sum(f*f for f in self.applied_force)))
+            if reason or elapsed>=9:
+                self.tool_result=dict(status='aborted' if reason else 'completed',reason=reason or 'load_cycle_finished',requested_N=task['force'],peak_applied_N=task['peak_applied_N'])
+                self.tool_task=None
+            else:
+                scale=0. if elapsed<2 else (elapsed-2)/2 if elapsed<4 else 1. if elapsed<7 else (9-elapsed)/2
+                task['phase']='prepare' if elapsed<2 else 'ramp' if elapsed<4 else 'hold' if elapsed<7 else 'unload'
+                setattr(msg.wrench.force,task['direction'][1],float(scale*task['force']*(1 if task['direction'][0]=='+' else -1)))
+        self.tool_publisher.publish(msg)
+
+    def cycle_start(self,payload):
+        with self.lock:
+            if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt.')
+            if self.profile!='plant' or not self.snapshot()['control_ready'] or self.motion.command!='stop' or self.tool_task:raise ValueError('Pflanzenprüfstand muss bereit und angehalten sein.')
+            if self.weed_cycle and not self.weed_cycle.result:raise ValueError('Aufgabe läuft bereits.')
+            self.weed_cycle=WeedCycle(self.sim_time)
+    def cycle_tick(self):
+        if not self.weed_cycle or self.weed_cycle.result or self.paused:return
+        if not self.snapshot()['control_ready']:
+            self.halt('sensor_unavailable');return
+        done=False
+        if self.arm_target:
+            errors=[abs(self.joint_positions.get(n,99)-v) for n,v in zip(JOINTS,self.arm_target['positions'])]
+            done=max(errors[:6])<.12 and max(errors[6:])<.005 and self.sim_time-self.arm_target.get('start_sim_s',self.sim_time)>self.arm_target['duration_s']+.5
+        command=self.weed_cycle.update(self.sim_time,done,self.plant_state)
+        if command:
+            try:self.arm_command(dict(command=command,revision=self.revision),internal=True)
+            except ValueError as error:self.weed_cycle.abort(str(error),self.sim_time);self.halt('task_aborted')
+    def arm_command(self,payload,internal=False):
+        with self.lock:
+            if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt.')
+            if self.profile not in ('manipulation','plant') or self.concept!='tracked':raise ValueError('Arm nur im Ketten-Manipulationsprüfstand verfügbar.')
+            if self.paused or self.switching or self.motion.command!='stop':raise ValueError('Arm benötigt eine stehende Basis und laufende Simulation.')
+            state=self.snapshot()
+            if not state['control_ready'] or not all(n in self.joint_positions for n in JOINTS):raise ValueError('Arm-Messdaten noch nicht bereit.')
+            if self.tool_task:raise ValueError('Während des Lastversuchs ist der Arm gesperrt; Anhalten bricht den Versuch ab.')
+            if self.weed_cycle and not self.weed_cycle.result and not internal:raise ValueError('Automatikaufgabe läuft; Anhalten bricht sie ab.')
+            current=[self.joint_positions[n] for n in JOINTS];command=payload.get('command')
+            if command in PRESETS:target=list(PRESETS[command])
+            elif command in ('open','close'):target=current[:6]+([.035,.035] if command=='open' else [-.004,-.004])
+            elif command=='hold':target=current
+            else:raise ValueError('Unbekannter Armbefehl')
+            if any(not lo<=v<=hi for v,(lo,hi) in zip(target,LIMITS)):raise ValueError('Gelenkgrenze überschritten.')
+            targets=fixture_waypoints(command) if command in PRESETS else [target]
+            msg=self.JointTrajectory();msg.joint_names=JOINTS;duration=0.
+            for target in targets:
+                segment=max(.2,max(abs(t-c)/(.025 if i>=6 else .3) for i,(t,c) in enumerate(zip(target,current))))
+                count=max(2,int(segment*50))
+                for step in range(0 if not msg.points else 1,count+1):
+                    f=step/count;pt=self.JointTrajectoryPoint();pt.positions=[float(c+(t-c)*f) for c,t in zip(current,target)]
+                    ns=round((duration+segment*f)*1e9);pt.time_from_start.sec=ns//1000000000;pt.time_from_start.nanosec=ns%1000000000;msg.points.append(pt)
+                duration+=segment;current=target
+            self.arm_publisher.publish(msg);self.arm_target=dict(command=command,positions=target,duration_s=duration,start_sim_s=self.sim_time)
+
     def world_control(self,pause):
         self.halt('simulation_paused' if pause else 'stopped')
         result=subprocess.run(['gz','service','-s','/world/garden_preview/control','--reqtype','gz.msgs.WorldControl',
@@ -256,13 +359,23 @@ def handler_for(app):
                 if not isinstance(payload,dict):raise ValueError('Ungültiger Auftrag')
                 if self.path in ('/api/motion','/api/heartbeat'):
                     app.drive(payload,heartbeat=self.path=='/api/heartbeat');return self.send(200,{'ok':True})
-                if self.path not in ('/api/select','/api/reset','/api/pause','/api/play'):return self.send(404,{})
+                if self.path=='/api/weed_cycle':
+                    app.cycle_start(payload);return self.send(200,{'ok':True})
+                if self.path=='/api/tool_load':
+                    app.tool_command(payload);return self.send(200,{'ok':True})
+                if self.path=='/api/arm':
+                    app.arm_command(payload);return self.send(200,{'ok':True})
+                if self.path not in ('/api/select','/api/reset','/api/pause','/api/play','/api/profile'):return self.send(404,{})
                 if not app.operation_lock.acquire(blocking=False):return self.send(409,{'error':'Ein Wechsel läuft bereits.'})
                 try:
                     if self.path=='/api/select':
                         concept=payload.get('concept')
                         if concept not in CATALOG:raise ValueError('Unbekannter Roboter')
                         app.replace_world(concept)
+                    elif self.path=='/api/profile':
+                        profile=payload.get('profile')
+                        if profile not in PROFILES:raise ValueError('Unbekannte Testumgebung')
+                        app.profile=profile;app.replace_world(app.concept)
                     elif self.path=='/api/reset':app.replace_world(app.concept)
                     else:app.world_control(self.path=='/api/pause')
                     return self.send(200,{'ok':True,'revision':app.revision})
@@ -274,7 +387,7 @@ def handler_for(app):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--host',default='127.0.0.1');parser.add_argument('--port',type=int,default=8088)
     parser.add_argument('--ros-domain-id',type=int,default=174)
-    parser.add_argument('--world-profile',choices=['garden','flat'],default='garden')
+    parser.add_argument('--world-profile',choices=PROFILES,default='garden')
     parser.add_argument('--seed',type=int,default=0)
     parser.add_argument('--log-dir')
     args=parser.parse_args()

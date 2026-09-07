@@ -192,7 +192,7 @@ def main():
     process=subprocess.Popen(['bash',str(ROOT/'scripts/start-browser.sh'),'--port',str(args.port),'--ros-domain-id',str(args.ros_domain_id),'--world-profile','flat','--log-dir',str(out/'logs')],stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
     suite=Suite(url,out)
     manifest=dict(created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),concept='tracked_drive_proxy',profile='flat',runs=args.runs,ros_domain=args.ros_domain_id,gazebo_partition=f'garden-viewer-{process.pid}',port=args.port,git_revision=run_command(['git','rev-parse','HEAD']),git_status=run_command(['git','status','--porcelain']),versions=run_command(['dpkg-query','-W','ros-jazzy-ros-gz','ros-jazzy-gz-sim-vendor','ros-jazzy-ros-gz-bridge']),source_sha256={})
-    for relative in ['config/preview-concepts.json','scripts/build_preview_models.py','models/tracked/model.sdf','worlds/browser-preview.sdf','scripts/browser_server.py','scripts/motion_core.py','tests/accept_m1_tracked.py','docs/06-umsetzung.md']:
+    for relative in ['simulation/plant_fixture.hh','scripts/plant_model.py','scripts/task_core.py','scripts/terrain_model.py','simulation/ros_adapter.cc','scripts/arm_model.py','simulation/server.cc','simulation/CMakeLists.txt','scripts/start-browser.sh','config/preview-concepts.json','scripts/build_preview_models.py','models/tracked/model.sdf','worlds/browser-preview.sdf','scripts/browser_server.py','scripts/motion_core.py','tests/accept_m1_tracked.py','docs/06-umsetzung.md']:
         content=(ROOT/relative).read_bytes()
         manifest['source_sha256'][relative]=hashlib.sha256(content).hexdigest()
         snapshot=out/'sources'/relative;snapshot.parent.mkdir(parents=True,exist_ok=True);snapshot.write_bytes(content)

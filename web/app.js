@@ -14,7 +14,7 @@ resetCamera();$('camera').onclick=resetCamera;
 scene.add(new THREE.AmbientLight(0xffffff,2));const sun=new THREE.DirectionalLight(0xfff9e8,3);sun.position.set(-3,-4,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5});sun.shadow.normalBias=.02;scene.add(sun);
 const grid=new THREE.GridHelper(6,24,0x86977f,0xa2b09a);grid.rotation.x=Math.PI/2;grid.position.z=.003;grid.material.transparent=true;grid.material.opacity=.3;scene.add(grid);
 let sceneGroup=new THREE.Group();scene.add(sceneGroup);const frames=new Map();
-let revision=-1,catalog={},connected=false,paused=false,driveReady=false,busy=false,loading=false,currentMotion='stop';
+let revision=-1,catalog={},connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop';
 let sequence=0,active=null,heartbeatBusy=false;
 const clientId=globalThis.crypto?.randomUUID?.() ?? 'browser-'+Math.random().toString(36).slice(2)+Date.now();
 function setPose(object,pose){object.position.fromArray(pose.slice(0,3));object.rotation.set(...pose.slice(3),'ZYX');}
@@ -42,7 +42,7 @@ async function loadScene(){
  }finally{loading=false;buttons();}
 }
 function buttons(){
- const canDrive=connected&&driveReady&&!paused&&!busy&&!loading;
+ const canDrive=connected&&driveReady&&controlReady&&!paused&&!busy&&!loading;
  for(const button of document.querySelectorAll('[data-motion]')){button.disabled=!canDrive;button.classList.toggle('active',button.dataset.motion===currentMotion);}
  $('turn').disabled=!canDrive;$('stop').disabled=busy||loading;$('pause').disabled=!connected||busy;$('reset').disabled=busy||loading;$('concept').disabled=busy||loading;
  $('pause').textContent=paused?'Simulation fortsetzen':'Simulation pausieren';
@@ -54,7 +54,7 @@ async function post(path,payload={}){
 function report(error){$('error').hidden=false;$('error').textContent=error.message;}
 function envelope(command,seq=sequence){return {command,client_id:clientId,sequence:seq,revision};}
 async function startMotion(command){
- if(!connected||!driveReady||paused||busy)return;
+ if(!connected||!driveReady||!controlReady||paused||busy)return;
  const seq=++sequence;active={command,seq};
  try{await post('motion',envelope(command,seq));$('error').hidden=true;}
  catch(error){if(sequence===seq)active=null;report(error);}
@@ -102,10 +102,16 @@ async function poll(){
  try{
   const response=await fetch('/api/state',{signal:AbortSignal.timeout(2000)});if(!response.ok)throw Error('Keine Verbindung');const data=await response.json();
   if(data.revision!==revision){await loadScene();setTimeout(poll,100);return;}
-  paused=data.paused;driveReady=data.drive_ready;connected=data.connected&&(!driveReady||(data.pose_age_s!==null&&(paused||data.pose_age_s<3)));
+  paused=data.paused;controlReady=data.control_ready===undefined?data.drive_ready:data.control_ready===true;driveReady=data.drive_ready;connected=data.connected&&(!driveReady||(data.pose_age_s!==null&&(paused||data.pose_age_s<3)));
   currentMotion=data.motion;
   if(active?.command==='turn_around'&&data.motion==='stop'&&data.motion_reason==='turn_complete')active=null;
   $('status').textContent=data.switching?'Roboter wird gewechselt …':connected?(paused?'● Verbunden · pausiert':'● Live verbunden'):'Verbindung wird aufgebaut …';$('status').className='status '+(connected?'connected':'disconnected');
+  if(driveReady&&!paused&&!data.switching&&!controlReady){
+   const waiting={clock_missing:'Simulationsuhr fehlt',clock_stale:'Simulationsuhr veraltet',imu_missing:'IMU fehlt',imu_stale:'IMU veraltet',joints_missing:'Gelenkdaten fehlen',joints_stale:'Gelenkdaten veraltet',process_unavailable:'Simulationsprozess nicht verfügbar'};
+   $('status').textContent='Nicht fahrbereit: '+(data.readiness_issues||[]).map(k=>waiting[k]||k).join(', ');
+   $('status').className='status disconnected';
+  }
+
   $('sim-time').textContent=data.sim_time.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
   const before=frames.get('robot')?.position.clone();
   for(const [name,p] of Object.entries(data.poses)){const object=frames.get(name);if(object){object.position.fromArray(p.position);object.quaternion.fromArray(p.quaternion);}}

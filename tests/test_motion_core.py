@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from motion_core import Motion, heading_from_sample
+from motion_core import Motion, heading_from_sample, readiness_issues
 
 class MotionTests(unittest.TestCase):
     def test_timeout_stops_without_browser(self):
@@ -39,3 +39,13 @@ class MotionTests(unittest.TestCase):
         with self.assertRaises(ValueError):Motion().request('forward',0)
 
 if __name__=='__main__':unittest.main()
+
+
+class ReadinessTests(unittest.TestCase):
+    def test_clock_alone_does_not_enable_driving(self):
+        self.assertEqual(readiness_issues(True,False,False,True,.01,None,None),['imu_missing','joints_missing'])
+    def test_fresh_complete_state_and_expiry(self):
+        self.assertEqual(readiness_issues(True,False,False,True,.01,.02,.03),[])
+        self.assertEqual(readiness_issues(True,False,False,True,.01,.51,1.01),['imu_stale','joints_stale'])
+    def test_process_pause_and_controller_gates(self):
+        self.assertEqual(readiness_issues(False,True,True,False,.01,.01,.01),['controller_missing','world_switching','simulation_paused','process_unavailable'])

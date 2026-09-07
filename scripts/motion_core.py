@@ -46,3 +46,16 @@ class Motion:
             if now>self.turn_deadline:self.stop('turn_timeout');return 0.,0.
             return 0.,min(.5,max(.07,self.remaining*1.5))
         return COMMANDS[self.command]
+
+
+def readiness_issues(enabled, switching, paused, alive, clock_age, heading_age, joint_age):
+    """Explain why a new drive command cannot start; ages are monotonic seconds."""
+    issues=[]
+    if not enabled:issues.append('controller_missing')
+    if switching:issues.append('world_switching')
+    if paused:issues.append('simulation_paused')
+    if not alive:issues.append('process_unavailable')
+    for name,age,limit in [('clock',clock_age,3.),('imu',heading_age,.5),('joints',joint_age,1.)]:
+        if age is None:issues.append(name+'_missing')
+        elif not math.isfinite(age) or age<0 or age>limit:issues.append(name+'_stale')
+    return issues

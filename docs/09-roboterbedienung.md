@@ -76,3 +76,11 @@ NODE_PATH=/tmp/garden-browser-test/node_modules \
 Quelle für den Antriebsadapter: [Gazebo Harmonic DiffDrive](https://gazebosim.org/api/sim/8/classgz_1_1sim_1_1systems_1_1DiffDrive.html).
 
 Die spätere aufgezeichnete M1-Serienprüfung blieb wegen unzuverlässiger Weltstarts offen. Einzelner Fahrtest und korrigierte Sensorfehlerinjektion bestanden; abschließender Browserstart nicht bereit. Maßgeblich für die Freigabe ist der [M1-Prüfbericht](10-m1-abnahme.md), nicht die früheren einzelnen Funktionsprüfungen.
+
+## Fahrbereitschaft und Startdiagnose
+
+Der aktuelle Backendstand meldet `control_ready` getrennt von `connected` und der grundsätzlichen Modellfähigkeit `drive_ready`. Ein neuer Fahrbefehl benötigt laufende Simulator-/Bridge-Prozesse, eine höchstens 3 s alte Uhr, eine höchstens 0,5 s alte gültige Orientierung und vollständige, endliche Radgelenkdaten mit höchstens 1 s Alter. Weltwechsel, Pause und fehlende Gangregler sperren die Freigabe ebenfalls. Stop bleibt ohne diese Messvoraussetzungen möglich. Diese Prüfung ergänzt die vorhandenen Bewegungs-Watchdogs; sie ist keine neue Freigabe eines realen Sicherheitscontrollers.
+
+`/api/state` enthält dazu `readiness_issues`, `clock_age_s`, `imu_age_s`, `joint_age_s` und `process_exit_codes`. Der Browser nennt fehlende oder veraltete Daten ausdrücklich. Die bisher laufende ältere Backendinstanz bleibt bis zum Neustart mit der neuen Webseite kompatibel; dort gelten noch die bisherigen Freigaberegeln. Elf Unit-Tests prüfen jetzt auch unvollständige Bereitschaft, abgelaufene Daten und die Prozess-/Pausensperren. Native Gazebo-Start-/Abbauprobleme bleiben offen.
+
+Ein isolierter Gazebo-Fahrdurchlauf mit diesem Backendstand sowie die korrigierte Sensorfehlerinjektion bestanden am 2026-09-07: [Ergebnis](validation/m1-readiness-summary.json), [Quellmanifest](validation/m1-readiness-manifest.json). Dies ersetzt nicht die weiterhin offene Zehner-Abnahme. Die Browseränderung wurde auf JavaScript-Syntax geprüft; eine erneute vollständige Browserabnahme ist damit nicht behauptet.

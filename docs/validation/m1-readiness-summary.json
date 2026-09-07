@@ -1,0 +1,75 @@
+{
+  "scope": "M1 tracked drive proxy, flat ground only",
+  "runs": [
+    {
+      "index": 0,
+      "seed": 0,
+      "gazebo_partition": "garden-viewer-3007746",
+      "checks": {
+        "forward_1m": {
+          "distance_m": 0.9976496207708262,
+          "error_m": 0.0023503792291738046,
+          "lateral_error_m": 2.616909577985915e-09,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.0001987399761507,
+          "error_m": 0.00019873997615071914,
+          "lateral_error_m": 4.1481034608509016e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 92.48701823008595,
+          "error_deg": 2.487018230085957,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -91.60954006627492,
+          "error_deg": 1.6095400662749244,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 179.00195416991602,
+          "error_deg": 0.9980458300839782,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.13235293355471545,
+          "post_stop_distance_m": 0.02647441657901681,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.7004031929536723,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 6.952466694456745e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2499999999863072,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 33.086,
+      "wall_duration_s": 33.57178869296331,
+      "real_time_factor": 0.9855298537290885,
+      "passed": true
+    }
+  ],
+  "fault_checks": {
+    "stale_sensor": {
+      "injected_stale_messages": 51,
+      "rejected_imu": 51,
+      "stop_latency_wall_s": 0.5254559559980407,
+      "latency_reference": "last observed simulation clock advance before stop",
+      "reason": "heading_timeout",
+      "drift_after_resume_m": 0.0,
+      "passed": true
+    }
+  },
+  "passed": 1,
+  "total": 1,
+  "accepted": true
+}

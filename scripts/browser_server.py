@@ -15,7 +15,7 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
-from motion_core import Motion, COMMANDS, heading_from_sample
+from motion_core import Motion, COMMANDS, heading_from_sample, readiness_issues
 
 ROOT=Path(__file__).resolve().parents[1]
 WEB=ROOT/'web'
@@ -75,7 +75,7 @@ class Application:
         self.concept='tracked';self.revision=0;self.switching=True
         self.poses={};self.last_pose=0.;self.last_clock=0.;self.sim_time=0.;self.paused=False
         self.objects=[];self.output=(0.,0.)
-        self.joints={};self.joint_peak=0.;self.rejected_imu=0
+        self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None
         self.spin_thread=None
         rclpy.init()
         self.node=rclpy.create_node('garden_browser_teleop')
@@ -133,6 +133,9 @@ class Application:
     def on_joints(self,msg):
         with self.lock:
             if self.switching:return
+            if len(msg.name)!=len(msg.velocity):return
+            if set(msg.name)!={"left_joint","right_joint"} or not all(math.isfinite(v) for v in msg.velocity):return
+            self.last_joints=time.monotonic()
             for name,velocity in zip(msg.name,msg.velocity):
                 self.joints[name]=velocity
                 self.joint_peak=max(self.joint_peak,abs(velocity)) if math.isfinite(velocity) else float('inf')
@@ -160,7 +163,7 @@ class Application:
             with self.lock:
                 self.concept=concept;self.revision+=1;self.objects=objects
                 self.run_seed=self.seed+self.revision-1
-                self.joints={};self.joint_peak=0.;self.rejected_imu=0
+                self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None
                 self.poses={};self.last_pose=0.;self.last_clock=0.;self.sim_time=0.;self.paused=False
                 self.motion=Motion();self.owner=None;self.sequences={}
             self.start_bridge()
@@ -172,7 +175,11 @@ class Application:
             now=time.monotonic()
             alive=all(p.poll() is None for p in self.processes.values()) and len(self.processes)==2
             connected=not self.switching and alive and self.last_clock>0 and (self.paused or now-self.last_clock<3)
-            return dict(gazebo_partition=os.environ['GZ_PARTITION'],world_profile=self.profile,seed=self.run_seed,joint_velocities=dict(self.joints),max_abs_joint_velocity=self.joint_peak,rejected_imu=self.rejected_imu,
+            clock_age=now-self.last_clock if self.last_clock else None
+            heading_age=now-self.motion.heading_at if self.motion.heading_at is not None else None
+            joint_age=now-self.last_joints if self.last_joints is not None else None
+            issues=readiness_issues(CATALOG[self.concept]['drive_ready'],self.switching,self.paused,alive,clock_age,heading_age,joint_age)
+            return dict(control_ready=not issues,readiness_issues=issues,clock_age_s=clock_age,imu_age_s=heading_age,joint_age_s=joint_age,process_exit_codes={k:p.poll() for k,p in self.processes.items()},gazebo_partition=os.environ['GZ_PARTITION'],world_profile=self.profile,seed=self.run_seed,joint_velocities=dict(self.joints),max_abs_joint_velocity=self.joint_peak,rejected_imu=self.rejected_imu,
                 concept=self.concept,revision=self.revision,poses=dict(self.poses),sim_time=self.sim_time,paused=self.paused,
                 connected=connected,switching=self.switching,pose_age_s=round(now-self.last_pose,3) if self.last_pose else None,
                 drive_ready=CATALOG[self.concept]['drive_ready'],motion=self.motion.command,motion_reason=self.motion.reason,
@@ -195,7 +202,8 @@ class Application:
             if command!='stop':
                 if not CATALOG[self.concept]['drive_ready']:raise ValueError('Gang- und Balanceregler für dieses Konzept noch nicht implementiert.')
                 if self.paused:raise ValueError('Simulation ist pausiert.')
-                if not self.snapshot()['connected']:raise ValueError('Keine Verbindung zur Simulation')
+                state=self.snapshot()
+                if not state['control_ready']:raise ValueError('Fahrbereitschaft fehlt: '+', '.join(state['readiness_issues']))
             if len(self.sequences)>64 and client not in self.sequences:raise ValueError('Zu viele Bedienclients')
             self.sequences[client]=seq;self.owner=client
             self.motion.request(command,time.monotonic())

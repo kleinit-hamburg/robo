@@ -1,0 +1,74 @@
+{
+  "scope": "M1 tracked drive proxy, flat ground only",
+  "runs": [
+    {
+      "index": 0,
+      "seed": 0,
+      "gazebo_partition": "garden-viewer-2936871",
+      "checks": {
+        "forward_1m": {
+          "distance_m": 1.0000492782476487,
+          "error_m": 4.9278247648665285e-05,
+          "lateral_error_m": 1.8279767921507357e-08,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.000798739941586,
+          "error_m": 0.0007987399415860796,
+          "lateral_error_m": 4.1058304702449645e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 91.58627957324445,
+          "error_deg": 1.5862795732444583,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -92.37271364550945,
+          "error_deg": 2.3727136455094446,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.93273002155755,
+          "error_deg": 1.0672699784424586,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.13888888088546938,
+          "post_stop_distance_m": 0.026774416522908392,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.6940715860109776,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 1.9277461364410543e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2500026408772689,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 33.132999999999996,
+      "wall_duration_s": 38.45874632400228,
+      "real_time_factor": 0.8615205425799733,
+      "passed": true
+    }
+  ],
+  "fault_checks": {
+    "stale_sensor": {
+      "injected_stale_messages": 44,
+      "rejected_imu": 0,
+      "stop_latency_wall_s": 0.014069642988033593,
+      "reason": "command_timeout",
+      "drift_after_resume_m": 0.0,
+      "passed": false
+    }
+  },
+  "passed": 1,
+  "total": 1,
+  "accepted": false
+}

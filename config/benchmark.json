@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "status": "planned_not_executable",
+  "stack": {
+    "os": "Ubuntu 24.04",
+    "ros": "jazzy",
+    "gazebo": "harmonic",
+    "physics_target": "DART"
+  },
+  "world_size_m": [
+    12,
+    8
+  ],
+  "physics_step_s": 0.001,
+  "convergence_step_s": 0.0005,
+  "friction": {
+    "normal": 0.6,
+    "soft_proxy": 0.25,
+    "robustness": 0.15
+  },
+  "restitution": 0,
+  "development_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "evaluation_seeds": [
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129
+  ],
+  "start_hull_distance_m": 1,
+  "plant_timeout_s": 120,
+  "batch_10_plants_timeout_s": 1200,
+  "max_tool_attempts_per_plant": 2,
+  "tool_change_time_s": 15,
+  "terrain": {
+    "slope_deg": [
+      5,
+      10,
+      15
+    ],
+    "roughness_amplitude_m": [
+      0.01,
+      0.025,
+      0.05
+    ],
+    "roughness_wavelength_m": 0.2,
+    "step_height_m": [
+      0.02,
+      0.05,
+      0.1
+    ]
+  },
+  "plant": {
+    "nominal_height_m": 0.15,
+    "nominal_diameter_m": 0.008,
+    "mass_kg": 0.2,
+    "pull_peak_N": [
+      25,
+      75,
+      150,
+      300
+    ],
+    "pull_peak_displacement_m": 0.02,
+    "release_displacement_m": 0.06,
+    "axial_damping_Ns_m": 30,
+    "lateral_stiffness_N_m": 2000,
+    "lateral_damping_Ns_m": 20,
+    "stem_break_N": 200,
+    "stem_break_duration_s": 0.1,
+    "grip_friction_sweep": [
+      0.2,
+      0.5,
+      0.8
+    ],
+    "lateral_break_N": 150,
+    "lateral_break_duration_s": 0.1
+  },
+  "tools": {
+    "cut_peak_N": [
+      50,
+      150,
+      300
+    ],
+    "cut_stroke_m": 0.01,
+    "stab_peak_N": [
+      50,
+      150,
+      300
+    ],
+    "stab_max_depth_m": 0.08,
+    "stab_success_depth_m": 0.06,
+    "post_stab_pull_factor": 0.3,
+    "side_force_N": [
+      25,
+      75,
+      150
+    ],
+    "side_force_height_m": [
+      0.1,
+      0.4
+    ]
+  },
+  "seed_variations_uniform": {
+    "plant_xy_each_axis_m": [
+      -0.02,
+      0.02
+    ],
+    "root_peak_multiplier": [
+      0.9,
+      1.1
+    ],
+    "start_yaw_deg": [
+      -2,
+      2
+    ]
+  },
+  "test_ids": [
+    "T01",
+    "T02",
+    "T03",
+    "T04",
+    "T05",
+    "T06",
+    "T07",
+    "T08",
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "T15"
+  ],
+  "milestone_tests": {
+    "M1": [
+      "T01"
+    ],
+    "M2": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05"
+    ],
+    "M3": [
+      "T13"
+    ],
+    "M4": [
+      "T14"
+    ],
+    "M5": [
+      "T07"
+    ],
+    "M6": [
+      "T06",
+      "T08",
+      "T09",
+      "T12",
+      "T15"
+    ]
+  },
+  "tool_load_benchmark": {
+    "milestone": "M4",
+    "test_id": "T14",
+    "status": "planned_not_implemented",
+    "force_levels_N": [
+      100,
+      250,
+      500,
+      1000
+    ],
+    "force_convention": "external_reaction_on_robot_at_tool",
+    "frame": "local_ground_aligned",
+    "directions": [
+      "+x",
+      "-x",
+      "+y",
+      "-y",
+      "+z",
+      "-z"
+    ],
+    "tool_heights_m": [
+      0.1,
+      0.4
+    ],
+    "nominal_friction": 0.6,
+    "prepare_s": 2,
+    "ramp_up_s": 2,
+    "hold_s": 3,
+    "ramp_down_s": 2,
+    "force_tolerance_fraction": 0.05,
+    "max_tool_position_error_m": 0.02,
+    "apply_root_peak_randomization": false,
+    "fixture": "non_breaking_rigid_tool_fixture",
+    "required_outcomes": [
+      "held",
+      "safe_abort",
+      "failure",
+      "not_tested"
+    ]
+  },
+  "shared_weed_course": {
+    "milestone": "M6",
+    "test_id": "T15",
+    "status": "planned_not_implemented",
+    "course_artifact": null,
+    "plant_count": 10,
+    "same_scene_and_seeds_for_all_concepts": true,
+    "baseline_pull_peaks_N": [
+      25,
+      75,
+      150,
+      25,
+      75,
+      150,
+      25,
+      75,
+      150,
+      75
+    ],
+    "separate_uniform_root_peak_variants_N": [
+      100,
+      250,
+      500,
+      1000
+    ],
+    "variant_root_peak_randomization": false,
+    "stem_break_remains_enabled": true,
+    "modes": [
+      "oracle_mechanics",
+      "autonomous_perception"
+    ],
+    "record_course_hash": true
+  }
+}

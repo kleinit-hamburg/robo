@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.10">
+  <model name="robot">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="torso">
+        <pose>0 0 0.8 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.33 0.34</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="waist">
+        <pose>0 0 0.59 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.3 0.12</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="head">
+        <pose>0 0 1.095 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.22 0.17</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="face">
+        <pose>0.108 0 1.1 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.018 0.17 0.08</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.96 0.6 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="thigh_-0.17">
+        <pose>0 -0.17 0.43 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.11 0.105 0.25</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="knee_-0.17">
+        <pose>0 -0.17 0.29 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.064</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="shin_-0.17">
+        <pose>0 -0.17 0.17 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.085 0.09 0.23</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="foot_-0.17">
+        <pose>0.045 -0.17 0.035 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.25 0.12 0.07</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="thigh_0.17">
+        <pose>0 0.17 0.43 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.11 0.105 0.25</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="knee_0.17">
+        <pose>0 0.17 0.29 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.064</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="shin_0.17">
+        <pose>0 0.17 0.17 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.085 0.09 0.23</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="foot_0.17">
+        <pose>0.045 0.17 0.035 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.25 0.12 0.07</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="upper_arm_-0.25">
+        <pose>0 -0.25 0.82 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.075 0.075 0.24</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="forearm_-0.25">
+        <pose>0.05 -0.25 0.61 0 -0.35 0</pose>
+        <geometry>
+          <box>
+            <size>0.075 0.075 0.22</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="finger_-0.25_-0.035">
+        <pose>0.1 -0.28500000000000003 0.455 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.055 0.02 0.09</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.96 0.6 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="finger_-0.25_0.035">
+        <pose>0.1 -0.215 0.455 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.055 0.02 0.09</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.96 0.6 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="upper_arm_0.25">
+        <pose>0 0.25 0.82 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.075 0.075 0.24</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="forearm_0.25">
+        <pose>0.05 0.25 0.61 0 -0.35 0</pose>
+        <geometry>
+          <box>
+            <size>0.075 0.075 0.22</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="finger_0.25_-0.035">
+        <pose>0.1 0.215 0.455 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.055 0.02 0.09</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.96 0.6 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="finger_0.25_0.035">
+        <pose>0.1 0.28500000000000003 0.455 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.055 0.02 0.09</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.96 0.6 0.24 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

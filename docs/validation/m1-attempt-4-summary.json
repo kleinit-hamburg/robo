@@ -1,0 +1,76 @@
+{
+  "scope": "M1 tracked drive proxy, flat ground only",
+  "runs": [
+    {
+      "index": 0,
+      "seed": 0,
+      "gazebo_partition": "garden-viewer-2932226-world-1",
+      "checks": {
+        "forward_1m": {
+          "distance_m": 1.0027489040254416,
+          "error_m": 0.0027489040254415897,
+          "lateral_error_m": 8.974267398097966e-07,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.0078487395355349,
+          "error_m": 0.007848739535534888,
+          "lateral_error_m": 4.1831034103828124e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 92.41773493642414,
+          "error_deg": 2.4177349364241243,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -91.44187205479558,
+          "error_deg": 1.4418720547955728,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.9411744792126,
+          "error_deg": 1.0588255207874029,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.15350876309015238,
+          "post_stop_distance_m": 0.025124416656949932,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.6596388200414367,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 9.226017168044104e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2499999999863074,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 33.048,
+      "wall_duration_s": 35.259171374025755,
+      "real_time_factor": 0.9372880505168466,
+      "passed": true
+    },
+    {
+      "index": 1,
+      "passed": false,
+      "phase": "setup",
+      "error": "RuntimeError('Simulator not ready: {\"gazebo_partition\": \"garden-viewer-2932226-world-2\", \"world_profile\": \"flat\", \"seed\": 1, \"joint_velocities\": {}, \"max_abs_joint_velocity\": 0.0, \"rejected_imu\": 0, \"concept\": \"tracked\", \"revision\": 2, \"poses\": {}, \"sim_time\": 0.0, \"paused\": false, \"connected\": false, \"switching\": false, \"pose_age_s\": null, \"drive_ready\": true, \"motion\": \"stop\", \"motion_reason\": \"ready\", \"linear_velocity\": 0.0, \"angular_velocity\": 0.0, \"yaw\": null, \"turn_remaining_rad\": 0.0}')"
+    }
+  ],
+  "fault_checks": {
+    "stale_sensor": {
+      "passed": false,
+      "error": "<HTTPError 400: 'Bad Request'>"
+    }
+  },
+  "passed": 1,
+  "total": 10,
+  "accepted": false
+}

@@ -1,0 +1,350 @@
+{
+  "scope": "M1 tracked drive proxy, flat ground only",
+  "runs": [
+    {
+      "index": 0,
+      "seed": 0,
+      "checks": {
+        "forward_1m": {
+          "distance_m": 1.0013996205700195,
+          "error_m": 0.001399620570019522,
+          "lateral_error_m": 1.0767562397885787e-09,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.0042487397429583,
+          "error_m": 0.004248739742958252,
+          "lateral_error_m": 4.164619942450473e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 92.14057992903224,
+          "error_deg": 2.1405799290322425,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -92.74567608953096,
+          "error_deg": 2.7456760895309564,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.84135404665014,
+          "error_deg": 1.1586459533498568,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.1480263072592759,
+          "post_stop_distance_m": 0.02212441679432426,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.6622811530251056,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 7.446167414296132e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2499999999863072,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 32.968,
+      "wall_duration_s": 35.336166943015996,
+      "real_time_factor": 0.9329817818996905,
+      "passed": true
+    },
+    {
+      "index": 1,
+      "seed": 1,
+      "checks": {
+        "forward_1m": {
+          "distance_m": 1.0054496203152141,
+          "error_m": 0.005449620315214121,
+          "lateral_error_m": 3.464400766324668e-09,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.0076987395443127,
+          "error_m": 0.0076987395443126605,
+          "lateral_error_m": 4.178370343052041e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 92.31379906863408,
+          "error_deg": 2.3137990686340855,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -93.18235771909097,
+          "error_deg": 3.182357719090972,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.78784234346102,
+          "error_deg": 1.212157656538958,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.14062499189733127,
+          "post_stop_distance_m": 0.026174416548065148,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.7413588740164414,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 6.205282475739249e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2499999999863072,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 32.821999999999996,
+      "wall_duration_s": 38.96530771901598,
+      "real_time_factor": 0.8423390426346381,
+      "passed": true
+    },
+    {
+      "index": 2,
+      "seed": 2,
+      "checks": {
+        "forward_1m": {
+          "distance_m": 0.07934967366027054,
+          "error_m": 0.9206503263397294,
+          "lateral_error_m": 6.968030597014879e-10,
+          "passed": false
+        },
+        "backward_1m": {
+          "distance_m": -1.0037987397688706,
+          "error_m": 0.0037987397688705737,
+          "lateral_error_m": 4.162732025823404e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 93.0759633796465,
+          "error_deg": 3.0759633796464927,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -92.80844882399504,
+          "error_deg": 2.8084488239950276,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.8705564429624,
+          "error_deg": 1.1294435570376062,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.15395893541039563,
+          "post_stop_distance_m": 0.020174416932585124,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.6879122090176679,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 1.1397625997070072e-06,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2499999999863072,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 33.061,
+      "wall_duration_s": 38.017837324994616,
+      "real_time_factor": 0.8696181141862119,
+      "passed": false
+    },
+    {
+      "index": 3,
+      "seed": 3,
+      "checks": {
+        "forward_1m": {
+          "distance_m": 1.003199620451265,
+          "error_m": 0.003199620451264984,
+          "lateral_error_m": 2.5663108305720618e-09,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.004098739751595,
+          "error_m": 0.004098739751595026,
+          "lateral_error_m": 4.163874524606365e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 91.75949781392923,
+          "error_deg": 1.7594978139292228,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -92.42880301115359,
+          "error_deg": 2.4288030111535956,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.75746377250616,
+          "error_deg": 1.2425362274938567,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.14240505508526927,
+          "post_stop_distance_m": 0.02392441668481925,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.7019462820026092,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 7.716174870040376e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.2499999999863072,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 32.979,
+      "wall_duration_s": 37.5858873440302,
+      "real_time_factor": 0.8774303955667575,
+      "passed": true
+    },
+    {
+      "index": 4,
+      "seed": 4,
+      "checks": {
+        "forward_1m": {
+          "distance_m": 0.9956992784981132,
+          "error_m": 0.004300721501886762,
+          "lateral_error_m": 7.628051412682724e-09,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.0018487398811287,
+          "error_m": 0.0018487398811286582,
+          "lateral_error_m": 4.1100418491199255e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 91.58627956977149,
+          "error_deg": 1.5862795697714835,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -91.71448083999522,
+          "error_deg": 1.7144808399952163,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.77971753821512,
+          "error_deg": 1.2202824617848829,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.13931887742017138,
+          "post_stop_distance_m": 0.02647441655755483,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.7056708330055699,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 2.2384394364707002e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.250002640877273,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 32.931,
+      "wall_duration_s": 33.71006628801115,
+      "real_time_factor": 0.9768892092541442,
+      "passed": true
+    },
+    {
+      "index": 5,
+      "seed": 5,
+      "checks": {
+        "forward_1m": {
+          "distance_m": 1.0016992781526424,
+          "error_m": 0.0016992781526423695,
+          "lateral_error_m": 1.170266306076844e-08,
+          "passed": true
+        },
+        "backward_1m": {
+          "distance_m": -1.0018487398811287,
+          "error_m": 0.0018487398811286582,
+          "lateral_error_m": 4.11004181261761e-09,
+          "passed": true
+        },
+        "left_90": {
+          "angle_deg": 92.72952595108582,
+          "error_deg": 2.7295259510858085,
+          "passed": true
+        },
+        "right_90": {
+          "angle_deg": -92.6292034555657,
+          "error_deg": 2.629203455565699,
+          "passed": true
+        },
+        "turn_180": {
+          "angle_deg": 178.98504937880836,
+          "error_deg": 1.0149506211916348,
+          "reason": "turn_complete",
+          "passed": true
+        },
+        "braking": {
+          "initial_speed_m_s": 0.14705881505557672,
+          "post_stop_distance_m": 0.028424416456132473,
+          "passed": true
+        },
+        "disconnect": {
+          "stop_latency_wall_s": 0.7014471119618975,
+          "stationary_drift_m": 0.0,
+          "reason": "command_timeout",
+          "passed": true
+        },
+        "body_and_joints": {
+          "max_roll_pitch_deg": 2.2160550388117e-07,
+          "min_body_clearance_m": 0.16999922675721438,
+          "max_joint_velocity_rad_s": 1.250002640877273,
+          "passed": true
+        }
+      },
+      "sim_duration_s": 33.016999999999996,
+      "wall_duration_s": 37.2609281889745,
+      "real_time_factor": 0.8861024565075036,
+      "passed": true
+    },
+    {
+      "index": 6,
+      "passed": false,
+      "phase": "setup",
+      "error": "RuntimeError('Simulator not ready: {\"world_profile\": \"flat\", \"seed\": 6, \"joint_velocities\": {\"left_joint\": 4.2411227338200104e-19, \"right_joint\": -3.3146620214154293e-19}, \"max_abs_joint_velocity\": 7.207058380613474e-17, \"rejected_imu\": 866, \"concept\": \"tracked\", \"revision\": 7, \"poses\": {\"robot::caster_0.28_0.19\": {\"position\": [0.28, 0.18999999999999995, 0.06500000000000002], \"quaternion\": [0.0, -5.699509854681439e-37, 0.0, 1.0]}, \"robot::caster_0.28_-0.19\": {\"position\": [0.28, -0.18999999999999995, 0.06499999999999999], \"quaternion\": [0.0, -5.699509854681439e-37, 0.0, 1.0]}, \"robot::caster_-0.28_0.19\": {\"position\": [-0.28, 0.18999999999999995, 0.06500000000000002], \"quaternion\": [0.0, -5.699509854681439e-37, 0.0, 1.0]}, \"robot::caster_-0.28_-0.19\": {\"position\": [-0.28, -0.18999999999999995, 0.06499999999999999], \"quaternion\": [0.0, -5.699509854681439e-37, 0.0, 1.0]}, \"robot::right_wheel\": {\"position\": [-2.407412430484045e-35, -0.26, 0.11999999999999998], \"quaternion\": [0.7071067811865475, -7.631267907028027e-19, 7.631267907028028e-19, 0.7071067811865476]}, \"robot::left_wheel\": {\"position\": [2.407412430484045e-35, 0.26, 0.12000000000000001], \"quaternion\": [0.7071067811865475, -1.0073995280859962e-20, 1.0073995280859914e-20, 0.7071067811865476]}, \"robot::base_link\": {\"position\": [0.0, 0.0, 0.0], \"quaternion\": [0.0, 0.0, 0.0, 1.0]}, \"robot\": {\"position\": [-1.0309806216346098e-19, -0.8, -7.732427856546993e-07], \"quaternion\": [1.831438597238938e-17, -8.561030730241744e-19, 3.112039826655381e-20, 1.0]}}, \"sim_time\": 0.0, \"paused\": false, \"connected\": false, \"switching\": false, \"pose_age_s\": 0.029, \"drive_ready\": true, \"motion\": \"stop\", \"motion_reason\": \"ready\", \"linear_velocity\": 0.0, \"angular_velocity\": 0.0, \"yaw\": 1.667701258860678e-21, \"turn_remaining_rad\": 0.0}')"
+    }
+  ],
+  "fault_checks": {
+    "stale_sensor": {
+      "passed": false,
+      "error": "<HTTPError 400: 'Bad Request'>"
+    }
+  },
+  "passed": 5,
+  "total": 10,
+  "accepted": false
+}

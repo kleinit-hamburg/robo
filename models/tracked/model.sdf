@@ -1,0 +1,678 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.10">
+  <model name="robot">
+    <static>false</static>
+    <link name="base_link">
+      <inertial>
+        <mass>60.6</mass>
+        <inertia>
+          <ixx>1.6160000000000003</ixx>
+          <iyy>3.2824999999999993</iyy>
+          <izz>3.2824999999999993</izz>
+        </inertia>
+        <pose>0 0 0.3 0 0 0</pose>
+      </inertial>
+      <collision name="body_collision">
+        <pose>0 0 0.27 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.68 0.37 0.2</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu>
+              <mu2>0.6</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="body">
+        <pose>0 0 0.28 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.7 0.4 0.22</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="lid">
+        <pose>-0.05 0 0.41 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 0.32 0.035</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.5 0.63 0.42 1</diffuse>
+        </material>
+      </visual>
+      <visual name="front_marker">
+        <pose>0.36 0 0.29 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.035 0.3 0.075</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.96 0.6 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="camera">
+        <pose>0.29 0 0.43 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.07 0.13 0.07</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_belt">
+        <pose>0 0.26 0.125 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.54 0.13 0.21</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_end_-0.27">
+        <pose>-0.27 0.26 0.125 1.5707963267948966 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.105</radius>
+            <length>0.13</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_end_0.27">
+        <pose>0.27 0.26 0.125 1.5707963267948966 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.105</radius>
+            <length>0.13</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_0">
+        <pose>-0.25 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_1">
+        <pose>-0.1875 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_2">
+        <pose>-0.125 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_3">
+        <pose>-0.0625 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_4">
+        <pose>0.0 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_5">
+        <pose>0.0625 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_6">
+        <pose>0.125 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_7">
+        <pose>0.1875 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="left_tread_8">
+        <pose>0.25 0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_belt">
+        <pose>0 -0.26 0.125 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.54 0.13 0.21</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_end_-0.27">
+        <pose>-0.27 -0.26 0.125 1.5707963267948966 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.105</radius>
+            <length>0.13</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_end_0.27">
+        <pose>0.27 -0.26 0.125 1.5707963267948966 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.105</radius>
+            <length>0.13</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.16 0.2 0.17 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_0">
+        <pose>-0.25 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_1">
+        <pose>-0.1875 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_2">
+        <pose>-0.125 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_3">
+        <pose>-0.0625 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_4">
+        <pose>0.0 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_5">
+        <pose>0.0625 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_6">
+        <pose>0.125 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_7">
+        <pose>0.1875 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="right_tread_8">
+        <pose>0.25 -0.26 0.238 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.026 0.143 0.015</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.26 0.3 0.26 1</diffuse>
+        </material>
+      </visual>
+      <visual name="arm_base_0">
+        <pose>0.12 0 0.38 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.07</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.18 0.23 0.19 1</diffuse>
+        </material>
+      </visual>
+      <visual name="upper_arm_0">
+        <pose>0.13 0 0.53 0 -0.25 0</pose>
+        <geometry>
+          <box>
+            <size>0.075 0.075 0.23</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="forearm_0">
+        <pose>0.27 0 0.64 0 0.18 0</pose>
+        <geometry>
+          <box>
+            <size>0.25 0.06 0.06</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="wrist_0">
+        <pose>0.42 0 0.62 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.08 0.1 0.055</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.18 0.23 0.19 1</diffuse>
+        </material>
+      </visual>
+      <visual name="jaw_0_-0.055">
+        <pose>0.48 -0.055 0.6 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.02 0.045</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.94 0.58 0.24 1</diffuse>
+        </material>
+      </visual>
+      <visual name="jaw_0_0.055">
+        <pose>0.48 0.055 0.6 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.02 0.045</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.94 0.58 0.24 1</diffuse>
+        </material>
+      </visual>
+      <sensor name="imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <topic>/garden/imu</topic>
+        <imu />
+      </sensor>
+    </link>
+    <link name="left_wheel">
+      <pose>0 0.26 0.12 1.5707963267948966 0 0</pose>
+      <inertial>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.01095</ixx>
+          <iyy>0.01095</iyy>
+          <izz>0.0192</izz>
+        </inertia>
+      </inertial>
+      <collision name="wheel_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.12</radius>
+            <length>0.09</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu>
+              <mu2>0.6</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="hub">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.065</radius>
+            <length>0.145</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.48 0.53 0.42 1</diffuse>
+        </material>
+      </visual>
+    </link>
+    <joint name="left_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>left_wheel</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <effort>40</effort>
+          <velocity>8</velocity>
+        </limit>
+      </axis>
+    </joint>
+    <link name="right_wheel">
+      <pose>0 -0.26 0.12 1.5707963267948966 0 0</pose>
+      <inertial>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.01095</ixx>
+          <iyy>0.01095</iyy>
+          <izz>0.0192</izz>
+        </inertia>
+      </inertial>
+      <collision name="wheel_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.12</radius>
+            <length>0.09</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu>
+              <mu2>0.6</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="hub">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.065</radius>
+            <length>0.145</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.48 0.53 0.42 1</diffuse>
+        </material>
+      </visual>
+    </link>
+    <joint name="right_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>right_wheel</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <effort>40</effort>
+          <velocity>8</velocity>
+        </limit>
+      </axis>
+    </joint>
+    <link name="caster_-0.28_-0.19">
+      <pose>-0.28 -0.19 0.065 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.0002816666666666667</ixx>
+          <iyy>0.0002816666666666667</iyy>
+          <izz>0.0002816666666666667</izz>
+        </inertia>
+      </inertial>
+      <collision name="contact_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.015</mu>
+              <mu2>0.015</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="caster_-0.28_-0.19_fixed" type="fixed">
+      <parent>base_link</parent>
+      <child>caster_-0.28_-0.19</child>
+    </joint>
+    <link name="caster_-0.28_0.19">
+      <pose>-0.28 0.19 0.065 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.0002816666666666667</ixx>
+          <iyy>0.0002816666666666667</iyy>
+          <izz>0.0002816666666666667</izz>
+        </inertia>
+      </inertial>
+      <collision name="contact_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.015</mu>
+              <mu2>0.015</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="caster_-0.28_0.19_fixed" type="fixed">
+      <parent>base_link</parent>
+      <child>caster_-0.28_0.19</child>
+    </joint>
+    <link name="caster_0.28_-0.19">
+      <pose>0.28 -0.19 0.065 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.0002816666666666667</ixx>
+          <iyy>0.0002816666666666667</iyy>
+          <izz>0.0002816666666666667</izz>
+        </inertia>
+      </inertial>
+      <collision name="contact_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.015</mu>
+              <mu2>0.015</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="caster_0.28_-0.19_fixed" type="fixed">
+      <parent>base_link</parent>
+      <child>caster_0.28_-0.19</child>
+    </joint>
+    <link name="caster_0.28_0.19">
+      <pose>0.28 0.19 0.065 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.0002816666666666667</ixx>
+          <iyy>0.0002816666666666667</iyy>
+          <izz>0.0002816666666666667</izz>
+        </inertia>
+      </inertial>
+      <collision name="contact_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.065</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.015</mu>
+              <mu2>0.015</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+    <joint name="caster_0.28_0.19_fixed" type="fixed">
+      <parent>base_link</parent>
+      <child>caster_0.28_0.19</child>
+    </joint>
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <left_joint>left_joint</left_joint>
+      <right_joint>right_joint</right_joint>
+      <wheel_separation>0.52</wheel_separation>
+      <wheel_radius>0.12</wheel_radius>
+      <topic>/garden/cmd_vel</topic>
+      <odom_topic>/garden/odom</odom_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
+      <odom_publish_frequency>30</odom_publish_frequency>
+      <min_linear_velocity>-0.25</min_linear_velocity>
+      <max_linear_velocity>0.25</max_linear_velocity>
+      <min_angular_velocity>-0.6</min_angular_velocity>
+      <max_angular_velocity>0.6</max_angular_velocity>
+      <min_linear_acceleration>-0.6</min_linear_acceleration>
+      <max_linear_acceleration>0.6</max_linear_acceleration>
+      <min_angular_acceleration>-1.5</min_angular_acceleration>
+      <max_angular_acceleration>1.5</max_angular_acceleration>
+    </plugin>
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>/garden/joint_states</topic>
+      <joint_name>left_joint</joint_name>
+      <joint_name>right_joint</joint_name>
+      <update_rate>100</update_rate>
+    </plugin>
+    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_model_pose>true</publish_model_pose>
+      <publish_link_pose>true</publish_link_pose>
+      <publish_visual_pose>false</publish_visual_pose>
+      <publish_collision_pose>false</publish_collision_pose>
+      <publish_sensor_pose>false</publish_sensor_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg>
+      <update_frequency>20</update_frequency>
+    </plugin>
+  </model>
+</sdf>

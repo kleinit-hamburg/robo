@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "requirements_recorded_layout_pending",
+  "source": "user_description_2026-09-07",
+  "location": "Kirchwerder",
+  "soil": {
+    "description": "schwerer Marschboden",
+    "source": "user",
+    "measured_parameters_available": false,
+    "simulation_friction_is_site_calibrated": false
+  },
+  "areas": {
+    "total_approx_m2": 4000,
+    "arable_approx_m2": 2000,
+    "typical_cultivated_fraction_of_arable": 0.3333333333333333,
+    "typical_cultivated_approx_m2": 666.6666666666666,
+    "typical_fallow_approx_m2": 1333.3333333333333,
+    "other_approx_m2": 2000,
+    "other_use": "unspecified",
+    "fallow_robot_maintenance": "excluded",
+    "fallow_maintenance_by": "user_with_tractor_or_other_agricultural_machine"
+  },
+  "crops": {
+    "potato": {
+      "row_spacing_m": 0.62,
+      "source": "current_user_practice"
+    },
+    "strawberry": {
+      "row_spacing_m": 0.75,
+      "source": "typical_user_statement"
+    }
+  },
+  "tracked_adjustment_request": {
+    "minimum_m": 0.65,
+    "maximum_m": 0.75,
+    "dimension_reference": "track_center_to_center",
+    "interpretation_status": "confirmed_by_user",
+    "actuation": "unspecified",
+    "current_model_updated": false
+  },
+  "mission": {
+    "primary": "repeated autonomous weed control between crop plants and rows",
+    "style": "regular maintenance analogous to robotic mower",
+    "repeat_interval_days": null,
+    "treatment_zone": "cultivated crop areas only; fallow excluded from weed treatment",
+    "exclude_crop_damage": true
+  },
+  "geometry_pending": [
+    "travel arrangement relative to crop rows",
+    "track width",
+    "crop envelope including potato ridges",
+    "underbody clearance",
+    "headland and access widths"
+  ],
+  "implementation_status": "documentation_only_no_simulation_or_hardware_changes"
+}

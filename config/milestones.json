@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "scope": "virtual_only",
+  "status_date": "2026-09-07",
+  "numbering": "user_defined_M1_to_M6_replaces_previous_plan",
+  "milestones": [
+    {
+      "id": "M1",
+      "title": "Bewegen",
+      "status": "in_progress",
+      "per_concept": {
+        "tracked": "partially_implemented",
+        "quadruped": "planned",
+        "humanoid": "planned"
+      },
+      "depends_on": [],
+      "tests": [
+        "T01"
+      ],
+      "acceptance_document": "docs/06-umsetzung.md",
+      "evidence_document": "docs/10-m1-abnahme.md",
+      "acceptance_status": "not_accepted_restart_instability"
+    },
+    {
+      "id": "M2",
+      "title": "Gelände bewältigen",
+      "status": "planned",
+      "per_concept": {
+        "tracked": "planned",
+        "quadruped": "planned",
+        "humanoid": "planned"
+      },
+      "depends_on": [
+        "M1"
+      ],
+      "tests": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05"
+      ],
+      "acceptance_document": "docs/06-umsetzung.md"
+    },
+    {
+      "id": "M3",
+      "title": "Arm bewegen",
+      "status": "planned",
+      "per_concept": {
+        "tracked": "planned",
+        "quadruped": "planned",
+        "humanoid": "planned"
+      },
+      "depends_on": [
+        "M2"
+      ],
+      "tests": [
+        "T13"
+      ],
+      "acceptance_document": "docs/06-umsetzung.md"
+    },
+    {
+      "id": "M4",
+      "title": "100/250/500/1000 N Werkzeuglast",
+      "status": "planned",
+      "per_concept": {
+        "tracked": "planned",
+        "quadruped": "planned",
+        "humanoid": "planned"
+      },
+      "depends_on": [
+        "M3"
+      ],
+      "tests": [
+        "T14"
+      ],
+      "acceptance_document": "docs/06-umsetzung.md"
+    },
+    {
+      "id": "M5",
+      "title": "Virtuelle Pflanze greifen",
+      "status": "planned",
+      "per_concept": {
+        "tracked": "planned",
+        "quadruped": "planned",
+        "humanoid": "planned"
+      },
+      "depends_on": [
+        "M4"
+      ],
+      "tests": [
+        "T07"
+      ],
+      "acceptance_document": "docs/06-umsetzung.md"
+    },
+    {
+      "id": "M6",
+      "title": "Identische Unkraut-Teststrecke für alle drei",
+      "status": "planned",
+      "per_concept": {
+        "tracked": "planned",
+        "quadruped": "planned",
+        "humanoid": "planned"
+      },
+      "depends_on": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "tests": [
+        "T06",
+        "T08",
+        "T09",
+        "T12",
+        "T15"
+      ],
+      "acceptance_document": "docs/06-umsetzung.md"
+    }
+  ]
+}

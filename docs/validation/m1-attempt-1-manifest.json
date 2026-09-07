@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-09-07T15:22:51.710743+00:00",
+  "concept": "tracked_drive_proxy",
+  "profile": "flat",
+  "runs": 10,
+  "ros_domain": 175,
+  "gazebo_partition": "garden-viewer-2877983",
+  "port": 8089,
+  "git_revision": null,
+  "git_status": "?? .gitignore\n?? README.md\n?? config/\n?? docs/\n?? models/\n?? results/\n?? ros2_ws/\n?? scripts/\n?? tests/\n?? web/\n?? worlds/",
+  "versions": "ros-jazzy-gz-sim-vendor\t0.0.10-1noble.20260604.111001\nros-jazzy-ros-gz\t1.0.22-1noble.20260616.074726\nros-jazzy-ros-gz-bridge\t1.0.22-1noble.20260615.142443",
+  "source_sha256": {
+    "config/preview-concepts.json": "c9242c2cd7ae26422419aab545ef2b0cdca55f6619f06804f9f9fd3b60050b48",
+    "scripts/build_preview_models.py": "e2f2dd835b231bb27a81598a81a6ca7eda482eb3b63861979d914791ca22d9d2",
+    "models/tracked/model.sdf": "7710dbf89bc3f1d1674af3595ac7f216c8a725453ac948351adf786e9cdf6bfe",
+    "worlds/browser-preview.sdf": "4f35ea8c6e1907465eeca6bf6b03da4fd5f15fd4b4fc14953d30b05e98d73cc1",
+    "scripts/browser_server.py": "1d60067e1baa6382bf70cb6af90791c188bd010e62f6877491c0fbd3f193a7ec",
+    "scripts/motion_core.py": "9b52b190795f445e23a70890bf5bc2f771f74746cd70321e9c98ca7f406da427",
+    "tests/accept_m1_tracked.py": "fc73b57141d99ff6a729bae98c2a25e0210af9698c61deba0df4bc993fd85cca",
+    "docs/06-umsetzung.md": "c0aaca7c7745a25204b7f70be985533461b43e1d88cd974e677d7aff56b72818"
+  }
+}

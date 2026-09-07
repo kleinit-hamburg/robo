@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "status": "concept_assumptions_not_validated",
+  "common": {
+    "gravity_m_s2": 9.81,
+    "tool_mass_kg": 2,
+    "max_payload_kg": 1,
+    "cruise_speed_m_s": 0.15,
+    "tool_speed_m_s": 0.02,
+    "usable_battery_fraction": 0.8,
+    "aux_power_W": 40,
+    "joint_efficiency": 0.65,
+    "hold_loss_W_per_Nm2": 0.005,
+    "peak_torque_duration_s": 2,
+    "linear_hold_loss_W_per_N2": 0.0002
+  },
+  "concepts": [
+    {
+      "id": "tracked",
+      "dimensions_m": [
+        0.8,
+        0.6,
+        0.5
+      ],
+      "mass_kg": 65,
+      "work_com_height_m": 0.25,
+      "active_dof": 9,
+      "arm_reach_m": 0.65,
+      "battery_V": 48,
+      "battery_Ah": 20,
+      "power_estimate_W": [
+        200,
+        450
+      ],
+      "joint_torque_cont_peak_Nm": {
+        "track": [
+          15,
+          40
+        ],
+        "shoulder": [
+          120,
+          200
+        ],
+        "elbow": [
+          80,
+          140
+        ],
+        "wrist": [
+          25,
+          50
+        ]
+      }
+    },
+    {
+      "id": "quadruped",
+      "dimensions_m": [
+        0.9,
+        0.65,
+        0.65
+      ],
+      "mass_kg": 55,
+      "work_com_height_m": 0.4,
+      "active_dof": 19,
+      "arm_reach_m": 0.6,
+      "battery_V": 48,
+      "battery_Ah": 15,
+      "power_estimate_W": [
+        350,
+        750
+      ],
+      "joint_torque_cont_peak_Nm": {
+        "hip_knee": [
+          60,
+          120
+        ],
+        "hip_abduction": [
+          35,
+          70
+        ],
+        "shoulder": [
+          110,
+          190
+        ],
+        "elbow": [
+          75,
+          130
+        ],
+        "wrist": [
+          25,
+          50
+        ]
+      }
+    },
+    {
+      "id": "humanoid",
+      "dimensions_m": [
+        0.45,
+        0.55,
+        1.2
+      ],
+      "mass_kg": 65,
+      "work_com_height_m": 0.55,
+      "active_dof": 30,
+      "arm_reach_m": 0.55,
+      "battery_V": 48,
+      "battery_Ah": 20,
+      "power_estimate_W": [
+        450,
+        1000
+      ],
+      "joint_torque_cont_peak_Nm": {
+        "hip_pitch_knee": [
+          100,
+          180
+        ],
+        "other_hip": [
+          60,
+          120
+        ],
+        "ankle": [
+          50,
+          100
+        ],
+        "torso": [
+          80,
+          150
+        ],
+        "shoulder": [
+          70,
+          120
+        ],
+        "elbow": [
+          50,
+          90
+        ],
+        "wrist": [
+          20,
+          40
+        ]
+      }
+    }
+  ]
+}

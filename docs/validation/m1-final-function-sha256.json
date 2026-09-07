@@ -1,0 +1,19 @@
+{
+  "logs/garden-viewer-bridge.log": "41785de7bfa8fa4f268b17ab625e3ddaeed51bd735a8348b81cc1d5e9474e2ce",
+  "logs/garden-viewer-gazebo.log": "67012f11258518609475b87db6e7b20abec9bb79156aa1e5296146b006abb1bf",
+  "logs/ros/parameter_bridge_2942695_1788796055827.log": "76cf07c40027fb94927280e9ba2d381d9c62969bf7507d6a6ea6e4e71a835bfb",
+  "logs/ros/python3_2942631_1788796055331.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "manifest.json": "3c17f77c0c58312cef53a47f71d83e08b63dc0f0f9625724f76c398ef51f1560",
+  "run-00.json": "c37c832259faa779f770abdab1fe88e1a473b8160b4db93ff8447e9d17cf687c",
+  "run-00.jsonl": "aa276c9630157f70177f0894978fdd80a6fd03f08322f41d990106ad25c76266",
+  "server.log": "5727aaa601bdd495e71f2cf9076f70adfbdb004ebc0546859fb65701656a5ba7",
+  "sources/config/preview-concepts.json": "c9242c2cd7ae26422419aab545ef2b0cdca55f6619f06804f9f9fd3b60050b48",
+  "sources/docs/06-umsetzung.md": "c0aaca7c7745a25204b7f70be985533461b43e1d88cd974e677d7aff56b72818",
+  "sources/models/tracked/model.sdf": "7710dbf89bc3f1d1674af3595ac7f216c8a725453ac948351adf786e9cdf6bfe",
+  "sources/scripts/browser_server.py": "434ec5a4adf9048997a442b1869214ca4fd28870f1300b95f20edf4ba1356724",
+  "sources/scripts/build_preview_models.py": "e2f2dd835b231bb27a81598a81a6ca7eda482eb3b63861979d914791ca22d9d2",
+  "sources/scripts/motion_core.py": "9b52b190795f445e23a70890bf5bc2f771f74746cd70321e9c98ca7f406da427",
+  "sources/tests/accept_m1_tracked.py": "45b722c42425342a5509593f625b76aaafa10aa718af0511e82efc2c433ebe51",
+  "sources/worlds/browser-preview.sdf": "4f35ea8c6e1907465eeca6bf6b03da4fd5f15fd4b4fc14953d30b05e98d73cc1",
+  "summary.json": "fb61d8f1be3b54ab153525ad7cab17ce56cdee3db4be60765b750489458afcef"
+}

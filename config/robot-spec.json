@@ -308,6 +308,72 @@
         "sdf": "models/tracked_guided/model.sdf",
         "cad_file": null
       }
+    },
+    "quadruped_trot": {
+      "name": "Quadruped Trot-Pruefmodell",
+      "description": "Dynamisches Hund-/Quadruped-Pruefmodell mit vier zweigelenkigen Beinen, Fusskontakten und einfachem Gazebo-Trot-Regler auf /garden/cmd_vel. Noch kein ausgereifter Balanceregler.",
+      "drive_ready": true,
+      "mode": "Beinsteuerung Trot-Pruefmodell",
+      "mass_kg": 65.0,
+      "body": {
+        "part_id": "QDP-BASE-001",
+        "length_m": 0.82,
+        "width_m": 0.34,
+        "height_m": 0.18,
+        "collision_length_m": 0.78,
+        "collision_width_m": 0.3,
+        "collision_height_m": 0.16,
+        "collision_center_z_m": 0.46,
+        "visual_center_z_m": 0.46,
+        "inertial_mass_kg": 45.0,
+        "com_z_m": 0.46,
+        "material": "virtuell: 3D-Druck/Alu-Rahmen, zentrale Batteriemasse"
+      },
+      "legs": {
+        "part_id": "QDP-LEG-001",
+        "hip_x_m": [
+          0.3,
+          -0.3
+        ],
+        "hip_y_m": [
+          0.24,
+          -0.24
+        ],
+        "hip_z_m": 0.43,
+        "upper_length_m": 0.22,
+        "lower_length_m": 0.24,
+        "upper_mass_kg": 1.2,
+        "lower_mass_kg": 1.1,
+        "foot_radius_m": 0.055,
+        "foot_mass_kg": 0.45,
+        "foot_mu": 0.95,
+        "hip_effort_Nm": 55.0,
+        "knee_effort_Nm": 55.0,
+        "velocity_limit_radps": 8.0
+      },
+      "gait": {
+        "plugin": "garden-quadruped-trot",
+        "kp": 85,
+        "kd": 4.5,
+        "effort_Nm": 55,
+        "frequency_hz": 1.45,
+        "stride_rad": 0.38,
+        "lift_rad": 0.45,
+        "max_linear_velocity_mps": 0.18,
+        "max_angular_velocity_radps": 0.35
+      },
+      "support_polygon": {
+        "length_m": 0.74,
+        "width_m": 0.5,
+        "nominal_com_height_m": 0.46,
+        "tool_height_m": 0.5,
+        "mu": 0.75
+      },
+      "cad_references": {
+        "xacro": "urdf/quadruped_trot.urdf.xacro",
+        "sdf": "models/quadruped_trot/model.sdf",
+        "cad_file": null
+      }
     }
   },
   "structural_parts": [
@@ -381,6 +447,18 @@
       "part_id": "TRK4-SPRUNG-GUIDE-ROLLER-001",
       "role": "larger sprung roller and guide contact module",
       "material": "virtual bearing/shaft/spring module",
+      "cad_file": null
+    },
+    {
+      "part_id": "QDP-BASE-001",
+      "role": "quadruped trunk chassis mass and collision",
+      "material": "virtual 3D-print/aluminium estimate",
+      "cad_file": null
+    },
+    {
+      "part_id": "QDP-LEG-001",
+      "role": "two-link actuated quadruped leg with foot contact",
+      "material": "virtual bearing/servo leg module",
       "cad_file": null
     }
   ],

@@ -17,3 +17,7 @@ add_library(garden-ros-adapter SHARED ros_adapter.cc)
 target_link_libraries(garden-ros-adapter gz-sim8::gz-sim8)
 ament_target_dependencies(garden-ros-adapter rclcpp geometry_msgs trajectory_msgs sensor_msgs rosgraph_msgs tf2_msgs std_msgs nav_msgs)
 target_compile_features(garden-ros-adapter PRIVATE cxx_std_17)
+
+add_library(garden-quadruped-trot SHARED quadruped_trot.cc)
+target_link_libraries(garden-quadruped-trot PRIVATE gz-sim8::gz-sim8)
+target_compile_features(garden-quadruped-trot PRIVATE cxx_std_17)

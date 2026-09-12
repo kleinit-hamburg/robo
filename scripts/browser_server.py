@@ -149,7 +149,7 @@ class Application:
         with self.lock:
             if self.switching:return
             if len(msg.name)!=len(msg.velocity):return
-            if not {"left_joint","right_joint"}.issubset(msg.name) or not all(math.isfinite(v) for v in msg.velocity):return
+            if not msg.name or not all(math.isfinite(v) for v in msg.velocity):return
             self.last_joints=time.monotonic()
             for name,position in zip(msg.name,msg.position):
                 if math.isfinite(position):self.joint_positions[name]=position

@@ -12,7 +12,8 @@
     "tracked",
     "tracked_improved",
     "tracked_bogie",
-    "tracked_guided"
+    "tracked_guided",
+    "quadruped_trot"
   ],
   "cases": [
     "step_30",

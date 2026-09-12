@@ -17,11 +17,15 @@ def concept_map():
 def support_geometry(platform,spec,concepts):
     if platform in spec['variants']:
         v=spec['variants'][platform]
-        length=v['track'].get('ground_contact_length_m',v['track']['visual_length_m'])
-        width=v['track']['gauge_m']+v['track']['belt_width_m']
-        height=v['body']['com_z_m']
-        tool_height=max(0.25,height+0.10)
-        return length,width,height,tool_height,v['drive'].get('wheel_mu',DEFAULT_MU),True
+        if 'track' in v:
+            length=v['track'].get('ground_contact_length_m',v['track']['visual_length_m'])
+            width=v['track']['gauge_m']+v['track']['belt_width_m']
+            height=v['body']['com_z_m']
+            tool_height=max(0.25,height+0.10)
+            return length,width,height,tool_height,v['drive'].get('wheel_mu',DEFAULT_MU),True
+        if 'support_polygon' in v:
+            sp=v['support_polygon']
+            return sp['length_m'],sp['width_m'],sp['nominal_com_height_m'],sp['tool_height_m'],sp.get('mu',DEFAULT_MU),True
     c=concepts[platform]
     length,width,_=c['dimensions_m']
     height=c['work_com_height_m']
@@ -90,7 +94,7 @@ def main():
     spec=load_spec();concepts=concept_map()
     rows=load_json(args.benchmark_summary) if args.benchmark_summary and args.benchmark_summary.exists() else []
     mass_classes=spec.get('weight_classes',{})
-    platforms=['tracked_bogie','tracked_guided','quadruped','humanoid']
+    platforms=['tracked_bogie','tracked_guided','quadruped_trot','quadruped','humanoid']
     stability=[]
     for platform in platforms:
         for key,klass in mass_classes.items():
@@ -98,13 +102,13 @@ def main():
             row['mass_class']=key;row['mass_class_name']=klass['name'];stability.append(row)
     report={
         'schema':1,
-        'scope':'mechanical comparison; Gazebo truth for drive_ready tracked variants, static estimates for not-yet-actuated legged concepts',
+        'scope':'mechanical comparison; Gazebo truth for drive_ready tracked and quadruped_trot variants; static estimates for conceptual legged models without controllers',
         'weight_classes':mass_classes,
         'benchmark_source':str(args.benchmark_summary) if args.benchmark_summary else None,
         'gazebo_rollup':benchmark_rollup(rows),
         'static_tool_pull_limits':stability,
         'limitations':[
-            'Quadruped und Humanoid haben noch keinen echten Gang-/Balanceregler; Hinderniswerte sind deshalb nicht gemessen.',
+            'quadruped_trot hat einen ersten echten Gazebo-Trot-Regler und ist gemessen, faellt aber in der aktuellen Auslegung in allen Hindernisfaellen durch; quadruped und humanoid bleiben statische Konzepte ohne Gang-/Balanceregler.',
             'Energie ist mechanische Gelenk-/Radleistung aus Gazebo, noch ohne Motorwirkungsgrad, Elektronik und Akkuverluste.',
             'Boden ist noch starr mit Reibwerten; schwerer Marschboden braucht ein eigenes Tragfähigkeits-/Schlupfmodell.'
         ]

@@ -1,9 +1,11 @@
 {
-  "schema": 1,
+  "schema": 2,
   "source_runs": [
     "results/bogie-weight-smoke-20260912",
-    "results/guided-weight-smoke-20260912"
+    "results/tracked-guided-full-weight-20260912",
+    "results/quadruped-trot-full-20260912"
   ],
-  "scope": "tracked_bogie and tracked_guided, mass classes 45/65/85 kg, key obstacle cases 80/100/120 mm and 30 degree ramp",
-  "rows": 24
+  "scope": "weight classes 45/65/85 kg; tracked_bogie key cases, tracked_guided full chassis matrix, quadruped_trot full chassis matrix",
+  "rows": 96,
+  "note": "quadruped_trot has real Gazebo joints and foot contacts but the first trot controller is unstable; failures are kept as measured results."
 }

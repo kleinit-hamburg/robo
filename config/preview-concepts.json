@@ -23,6 +23,12 @@
     "mode": "Geführtes Raupen-Pruefmodell",
     "description": "Raupen-Pruefmodell mit groesseren physikalischen Front-/Heckrollen, sechs gefederten Laufrollen pro Seite und sichtbarer Kettenfuehrung. Ziel: Hindernisse bis 120 mm pruefen, ohne Browserphysik."
   },
+  "quadruped_trot": {
+    "name": "Quadruped Trot-Pruefmodell",
+    "drive_ready": true,
+    "mode": "Beinsteuerung Trot-Pruefmodell",
+    "description": "Dynamisches Hund-/Quadruped-Pruefmodell mit vier zweigelenkigen Beinen, Fusskontakten und einfachem Gazebo-Trot-Regler auf /garden/cmd_vel. Noch kein ausgereifter Balanceregler."
+  },
   "quadruped": {
     "name": "Quadruped mit Manipulator",
     "drive_ready": false,

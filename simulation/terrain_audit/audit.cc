@@ -29,6 +29,7 @@ class TerrainAudit:public gz::sim::System,public gz::sim::ISystemConfigure,
   gz::sim::Model model;
   gz::sim::Entity base;
   std::array<std::vector<gz::sim::Entity>,2> wheels,joints;
+  std::vector<gz::sim::Entity> legJoints;
   std::vector<gz::sim::Entity> links,collisions;
   gz::transport::Node node;
   gz::transport::Node::Publisher publisher;
@@ -66,6 +67,13 @@ class TerrainAudit:public gz::sim::System,public gz::sim::ISystemConfigure,
       jointCmd[i].assign(joints[i].size(),NAN);forceCmd[i].assign(joints[i].size(),NAN);
       csv<<","<<side<<"_omega_cmd_radps,"<<side<<"_omega_radps,"<<side<<"_force_cmd_Nm,"<<side<<"_axis_torque_Nm,"<<side<<"_rim_speed_mps,"<<side<<"_hub_forward_mps,"<<side<<"_slip_mps,"<<side<<"_slip_ratio,"<<side<<"_mech_power_W";
     }
+    for(auto entity:model.Joints(ecm)) {
+      auto name=gz::sim::Joint(entity).Name(ecm).value_or("");
+      if(name.find("_hip_joint")!=std::string::npos || name.find("_knee_joint")!=std::string::npos) {
+        legJoints.push_back(entity);gz::sim::Joint j(entity);j.EnableVelocityCheck(ecm);j.EnablePositionCheck(ecm);j.EnableTransmittedWrenchCheck(ecm);
+      }
+    }
+    csv<<",leg_peak_axis_torque_Nm,leg_mech_power_W";
     for(auto link:links) {
       gz::sim::Link(link).EnableVelocityChecks(ecm);
       for(auto c:ecm.ChildrenByComponents(link,gz::sim::components::Collision()))collisions.push_back(c);

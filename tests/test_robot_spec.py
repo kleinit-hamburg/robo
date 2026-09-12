@@ -12,8 +12,16 @@ class RobotSpecTests(unittest.TestCase):
             self.assertTrue((ROOT/data['cad_references']['sdf']).exists())
             self.assertTrue((ROOT/data['cad_references']['xacro']).exists())
             model=E.parse(ROOT/data['cad_references']['sdf']).getroot().find('model')
-            self.assertIsNotNone(model.find("plugin[@name='gz::sim::systems::DiffDrive']"))
-            self.assertEqual(model.findtext("plugin[@name='gz::sim::systems::DiffDrive']/wheel_radius"),str(data['drive']['wheel_radius_m']))
+            if 'track' in data:
+                self.assertIsNotNone(model.find("plugin[@name='gz::sim::systems::DiffDrive']"))
+                self.assertEqual(model.findtext("plugin[@name='gz::sim::systems::DiffDrive']/wheel_radius"),str(data['drive']['wheel_radius_m']))
+            elif 'legs' in data:
+                self.assertIsNotNone(model.find("plugin[@name='garden::QuadrupedTrot']"))
+                actuated=[j for j in model.findall("joint[@type='revolute']") if j.get('name','').endswith(('_hip_joint','_knee_joint'))]
+                self.assertEqual(len(actuated),8)
+                self.assertEqual(len(model.findall("link")),13)
+            else:
+                self.fail(f"unknown dynamic variant schema for {name}")
     def test_structural_part_ids_are_unique_and_referenced(self):
         spec=load_spec();ids=[p['part_id'] for p in spec['structural_parts']]
         self.assertEqual(len(ids),len(set(ids)))
@@ -71,6 +79,7 @@ class ChassisBenchmarkArtifactTests(unittest.TestCase):
 class WeightClassBenchmarkArtifactTests(unittest.TestCase):
     def test_weight_class_results_capture_current_limit(self):
         rows=json.loads((ROOT/'docs/validation/weight-class-chassis-summary.json').read_text())
+        cfg=json.loads((ROOT/'config/chassis-benchmark.json').read_text())
         by={(r['variant'],r['mass_class'],r['case']):r for r in rows}
         for variant in ('tracked_bogie','tracked_guided'):
             for mass_class in ('light45','medium65','heavy85'):
@@ -80,13 +89,24 @@ class WeightClassBenchmarkArtifactTests(unittest.TestCase):
             self.assertTrue(by[('tracked_guided',mass_class,'step_100')]['succeeded'])
             self.assertFalse(by[('tracked_bogie',mass_class,'step_100')]['succeeded'])
             self.assertIsNotNone(by[('tracked_guided',mass_class,'ramp_30')]['mechanical_drive_energy_per_m_Wh_m'])
+            for case in cfg['cases']:
+                self.assertIn(('quadruped_trot',mass_class,case),by)
+                self.assertFalse(by[('quadruped_trot',mass_class,case)]['succeeded'])
+            smoke=by[('quadruped_trot',mass_class,'step_30')]
+            self.assertGreater(smoke['body_contact_samples'],0)
+            self.assertGreater(smoke['max_tilt_deg'],30)
+            self.assertGreater(smoke['mechanical_drive_energy_Wh'],0)
 
-    def test_mechanical_comparison_marks_legged_locomotion_unready(self):
+    def test_mechanical_comparison_distinguishes_tested_and_static_legged_models(self):
         report=json.loads((ROOT/'docs/validation/mechanical-comparison-summary.json').read_text())
+        rollup={(r['variant'],r['mass_class']):r for r in report['gazebo_rollup']}
         static=report['static_tool_pull_limits']
-        for platform in ('quadruped','humanoid'):
+        for mass_class in ('light45','medium65','heavy85'):
+            self.assertIsNone(rollup[('quadruped_trot',mass_class)]['max_passed_step_mm'])
+            self.assertEqual(rollup[('quadruped_trot',mass_class)]['runs'],14)
+        for platform,ready in (('quadruped_trot',True),('quadruped',False),('humanoid',False)):
             rows=[r for r in static if r['platform']==platform]
             self.assertEqual(len(rows),3)
-            self.assertFalse(any(r['locomotion_ready_in_gazebo'] for r in rows))
+            self.assertEqual({r['locomotion_ready_in_gazebo'] for r in rows},{ready})
 
 if __name__=='__main__':unittest.main()

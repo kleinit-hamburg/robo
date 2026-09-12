@@ -116,6 +116,51 @@ def make_tracked_variant(kind,data):
     publisher(m)
     E.indent(root);path=ROOT/'models'/kind/'model.sdf';path.parent.mkdir(parents=True,exist_ok=True);E.ElementTree(root).write(path,encoding='utf-8',xml_declaration=True)
 
+def make_quadruped_trot(kind,data):
+    root=E.Element('sdf',version='1.10');m=add(root,'model',name='robot');add(m,'static','false')
+    green=(.38,.52,.34);dark=(.16,.20,.17);orange=(.96,.60,.24)
+    body=data['body'];legs=data['legs'];gait=data['gait']
+    base=add(m,'link',name='base_link')
+    box_inertia(base,body['inertial_mass_kg'],(body['length_m'],body['width_m'],body['height_m']),(0,0,body['com_z_m'],0,0,0))
+    collision(base,'body','box',(body['collision_length_m'],body['collision_width_m'],body['collision_height_m']),(0,0,body['collision_center_z_m'],0,0,0),mu=.6)
+    visual(base,'body','box',(body['length_m'],body['width_m'],body['height_m']),(0,0,body['visual_center_z_m'],0,0,0),green)
+    visual(base,'front_marker','box',(.06,body['width_m']*.7,.06),(body['length_m']/2+.02,0,body['visual_center_z_m'],0,0,0),orange)
+    joints=[]
+    for x,label_x in [(legs['hip_x_m'][0],'front'),(legs['hip_x_m'][1],'rear')]:
+        for y,label_y in [(legs['hip_y_m'][0],'left'),(legs['hip_y_m'][1],'right')]:
+            name=f'{label_x}_{label_y}'
+            thigh=add(m,'link',name=f'{name}_thigh');pose(thigh,(x,y,legs['hip_z_m']-.10,0,0,0));box_inertia(thigh,legs['upper_mass_kg'],(.06,.05,legs['upper_length_m']))
+            collision(thigh,'thigh','box',(.06,.05,legs['upper_length_m']),mu=.4);visual(thigh,'thigh','box',(.06,.05,legs['upper_length_m']),(0,0,0,0,0,0),green)
+            shin=add(m,'link',name=f'{name}_shin');pose(shin,(x+.03,y,legs['hip_z_m']-.31,0,0,0));box_inertia(shin,legs['lower_mass_kg'],(.05,.045,legs['lower_length_m']))
+            collision(shin,'shin','box',(.05,.045,legs['lower_length_m']),mu=.4);visual(shin,'shin','box',(.05,.045,legs['lower_length_m']),(0,0,0,0,0,0),dark)
+            foot=add(m,'link',name=f'{name}_foot');pose(foot,(x+.06,y,legs['foot_radius_m'],0,0,0));sphere_inertia(foot,legs['foot_mass_kg'],legs['foot_radius_m'])
+            collision(foot,'foot','sphere',(legs['foot_radius_m'],),mu=legs['foot_mu']);visual(foot,'foot','sphere',(legs['foot_radius_m'],),(0,0,0,0,0,0),orange)
+            hip=f'{name}_hip_joint';knee=f'{name}_knee_joint';ankle=f'{name}_ankle_fixed'
+            j=add(m,'joint',name=hip,type='revolute');add(j,'parent','base_link');add(j,'child',f'{name}_thigh');pose(j,(x,y,legs['hip_z_m'],0,0,0));axis=add(j,'axis');add(axis,'xyz','0 1 0');lim=add(axis,'limit');add(lim,'lower',-0.85);add(lim,'upper',0.85);add(lim,'effort',legs['hip_effort_Nm']);add(lim,'velocity',legs['velocity_limit_radps']);joints.append(hip)
+            j=add(m,'joint',name=knee,type='revolute');add(j,'parent',f'{name}_thigh');add(j,'child',f'{name}_shin');pose(j,(x+.02,y,legs['hip_z_m']-.20,0,0,0));axis=add(j,'axis');add(axis,'xyz','0 1 0');lim=add(axis,'limit');add(lim,'lower',0.15);add(lim,'upper',1.45);add(lim,'effort',legs['knee_effort_Nm']);add(lim,'velocity',legs['velocity_limit_radps']);joints.append(knee)
+            j=add(m,'joint',name=ankle,type='fixed');add(j,'parent',f'{name}_shin');add(j,'child',f'{name}_foot')
+    arm(base,z=body['visual_center_z_m']+.18)
+    plug=add(m,'plugin',filename=str(ROOT/'build/simulation/libgarden-quadruped-trot.so'),name='garden::QuadrupedTrot')
+    for k,v in {'kp':gait['kp'],'kd':gait['kd'],'effort':gait['effort_Nm'],'frequency':gait['frequency_hz'],'stride':gait['stride_rad'],'lift':gait['lift_rad']}.items():add(plug,k,v)
+    sensor=add(base,'sensor',name='imu',type='imu');add(sensor,'always_on','true');add(sensor,'update_rate',50);add(sensor,'topic','/garden/imu');add(sensor,'imu')
+    jp=add(m,'plugin',filename='gz-sim-joint-state-publisher-system',name='gz::sim::systems::JointStatePublisher');add(jp,'topic','/garden/joint_states')
+    for name in joints:add(jp,'joint_name',name)
+    add(jp,'update_rate',100);publisher(m)
+    E.indent(root);path=ROOT/'models'/kind/'model.sdf';path.parent.mkdir(parents=True,exist_ok=True);E.ElementTree(root).write(path,encoding='utf-8',xml_declaration=True)
+
+def make_quadruped_xacro(kind,data):
+    body=data['body'];legs=data['legs']
+    lines=["<?xml version='1.0'?>",f"<robot xmlns:xacro='http://www.ros.org/wiki/xacro' name='garden_{kind}'>",f"  <xacro:property name='variant' value='{kind}'/>",f"  <xacro:property name='mass_kg' value='{data['mass_kg']}'/>","  <link name='base_link'>",f"    <visual name='{body['part_id']}_visual'><origin xyz='0 0 {body['visual_center_z_m']}' rpy='0 0 0'/><geometry><box size='{body['length_m']} {body['width_m']} {body['height_m']}'/></geometry></visual>",f"    <collision name='{body['part_id']}_collision'><origin xyz='0 0 {body['collision_center_z_m']}' rpy='0 0 0'/><geometry><box size='{body['collision_length_m']} {body['collision_width_m']} {body['collision_height_m']}'/></geometry></collision>","  </link>"]
+    for label_x in ('front','rear'):
+      for label_y in ('left','right'):
+        name=f'{label_x}_{label_y}'
+        lines.append(f"  <link name='{name}_thigh'/><link name='{name}_shin'/><link name='{name}_foot'/>")
+        lines.append(f"  <joint name='{name}_hip_joint' type='revolute'><parent link='base_link'/><child link='{name}_thigh'/><axis xyz='0 1 0'/><limit lower='-0.85' upper='0.85' effort='{legs['hip_effort_Nm']}' velocity='{legs['velocity_limit_radps']}'/></joint>")
+        lines.append(f"  <joint name='{name}_knee_joint' type='revolute'><parent link='{name}_thigh'/><child link='{name}_shin'/><axis xyz='0 1 0'/><limit lower='0.15' upper='1.45' effort='{legs['knee_effort_Nm']}' velocity='{legs['velocity_limit_radps']}'/></joint>")
+    lines.append(f"  <!-- Future CAD references: {body['part_id']}, {legs['part_id']}. Visual and collision geometry remain separate. -->")
+    lines.append('</robot>')
+    path=ROOT/'urdf'/f'{kind}.urdf.xacro';path.parent.mkdir(parents=True,exist_ok=True);path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+
 def make_static(kind):
     root=E.Element('sdf',version='1.10');m=add(root,'model',name='robot');add(m,'static','true');base=add(m,'link',name='base_link')
     green=(.38,.52,.34);dark=(.16,.20,.17);orange=(.96,.60,.24)
@@ -172,7 +217,10 @@ def make_xacro(kind,data):
 def main():
     spec=load_spec()
     for kind,data in spec['variants'].items():
-        make_tracked_variant(kind,data);make_xacro(kind,data)
+        if 'legs' in data:
+            make_quadruped_trot(kind,data);make_quadruped_xacro(kind,data)
+        else:
+            make_tracked_variant(kind,data);make_xacro(kind,data)
     make_static('quadruped');make_static('humanoid')
     catalog={}
     for kind,data in spec['variants'].items():

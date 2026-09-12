@@ -74,7 +74,7 @@ def make_world(variant,case,directory,config,mass_kg=None):
     robot=copy.deepcopy(E.parse(ROOT/'models'/variant/'model.sdf').getroot().find('model'))
     actual_mass_kg=scale_robot_mass(robot,mass_kg)
     for plug in list(robot.findall('plugin')):
-        if plug.get('name')!='gz::sim::systems::DiffDrive':robot.remove(plug)
+        if plug.get('name') not in ('gz::sim::systems::DiffDrive','garden::QuadrupedTrot'):robot.remove(plug)
     for link in robot.findall('link'):
         for sensor in list(link.findall('sensor')):link.remove(sensor)
         for collision in link.findall('collision'):
@@ -90,17 +90,17 @@ def make_world(variant,case,directory,config,mass_kg=None):
     world.append(robot);E.indent(root);path=directory/'world.sdf';E.ElementTree(root).write(path,encoding='utf-8',xml_declaration=True);return path
 
 def summarize(directory,case,variant,config,mass_class=None,mass_kg=None):
-    rows=[{k:float(v) for k,v in row.items()} for row in csv.DictReader((directory/'telemetry.csv').open())]
+    rows=[{k:(float(v) if v not in (None,'') else float('nan')) for k,v in row.items() if k is not None} for row in csv.DictReader((directory/'telemetry.csv').open())]
     drive=[r for r in rows if config['settle_s']<=r['sim_s']<=config['settle_s']+config['drive_s']]
     steady=[r for r in rows if config['settle_s']+2<=r['sim_s']<=config['settle_s']+config['drive_s']]
     links=[k.removesuffix('_contacts') for k in rows[0] if k.endswith('_contacts')]
     body_hits=sum(r.get('base_link_contacts',0)>0 for r in drive)
-    mean=lambda key:statistics.mean(r[key] for r in steady) if steady else float('nan')
+    mean=lambda key:statistics.mean(r.get(key,float('nan')) for r in steady) if steady else float('nan')
     progress=drive[-1]['x_m']-drive[0]['x_m'] if drive else 0
     max_tilt=max(max(abs(r['pitch_deg']),abs(r['roll_deg'])) for r in drive) if drive else float('inf')
     passed=progress>=config['success_x_m'] and body_hits<=config['max_body_contact_samples'] and max_tilt<=config['max_tilt_deg']
     energy_Wh=0.0
-    power_keys=[k for k in ('left_mech_power_W','right_mech_power_W') if drive and k in drive[0]]
+    power_keys=[k for k in ('left_mech_power_W','right_mech_power_W','leg_mech_power_W') if drive and k in drive[0]]
     if power_keys and len(drive)>1:
         for a,b in zip(drive,drive[1:]):
             dt=max(0,b['sim_s']-a['sim_s'])
@@ -111,7 +111,13 @@ def summarize(directory,case,variant,config,mass_class=None,mass_kg=None):
             dt=max(0,b['sim_s']-a['sim_s'])
             power=sum(abs(a[f'{side}_axis_torque_Nm']*a[f'{side}_omega_radps']) for side in ('left','right'))
             energy_Wh+=power*dt/3600
-    result=dict(variant=variant,case=case,data_complete=rows[-1]['sim_s']>=config['settle_s']+config['drive_s']+config['stop_s']-.02,succeeded=passed,progress_m=progress,max_pitch_deg=max(abs(r['pitch_deg']) for r in drive),max_roll_deg=max(abs(r['roll_deg']) for r in drive),max_tilt_deg=max_tilt,body_contact_samples=body_hits,mean_speed_mps=mean('v_body_x_mps'),mean_slip_ratio=max(abs(mean('left_slip_ratio')),abs(mean('right_slip_ratio'))),peak_axis_torque_Nm=max(max(abs(r['left_axis_torque_Nm']),abs(r['right_axis_torque_Nm'])) for r in drive),mechanical_drive_energy_Wh=energy_Wh,mechanical_drive_energy_per_m_Wh_m=energy_Wh/progress if progress>0.05 else None,final_x_m=rows[-1]['x_m'],final_com_x_m=rows[-1]['com_x_m'],final_com_y_m=rows[-1]['com_y_m'],final_com_z_m=rows[-1]['com_z_m'],contact_links=[link for link in links if any(r[link+'_contacts']>0 for r in drive)])
+    slips=[abs(x) for x in (mean('left_slip_ratio'),mean('right_slip_ratio')) if math.isfinite(x)]
+    peak_torques=[]
+    for r in drive:
+        for key in ('left_axis_torque_Nm','right_axis_torque_Nm','leg_peak_axis_torque_Nm'):
+            value=r.get(key,float('nan'))
+            if math.isfinite(value):peak_torques.append(abs(value))
+    result=dict(variant=variant,case=case,data_complete=rows[-1]['sim_s']>=config['settle_s']+config['drive_s']+config['stop_s']-.02,succeeded=passed,progress_m=progress,max_pitch_deg=max(abs(r['pitch_deg']) for r in drive),max_roll_deg=max(abs(r['roll_deg']) for r in drive),max_tilt_deg=max_tilt,body_contact_samples=body_hits,mean_speed_mps=mean('v_body_x_mps'),mean_slip_ratio=max(slips) if slips else None,peak_axis_torque_Nm=max(peak_torques) if peak_torques else None,mechanical_drive_energy_Wh=energy_Wh if math.isfinite(energy_Wh) else None,mechanical_drive_energy_per_m_Wh_m=energy_Wh/progress if progress>0.05 and math.isfinite(energy_Wh) else None,final_x_m=rows[-1]['x_m'],final_com_x_m=rows[-1]['com_x_m'],final_com_y_m=rows[-1]['com_y_m'],final_com_z_m=rows[-1]['com_z_m'],contact_links=[link for link in links if any(r[link+'_contacts']>0 for r in drive)])
     if mass_class is not None:result['mass_class']=mass_class
     if mass_kg is not None:result['mass_kg']=mass_kg
     return result

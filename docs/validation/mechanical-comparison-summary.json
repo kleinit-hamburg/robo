@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "mechanical comparison; Gazebo truth for drive_ready tracked variants, static estimates for not-yet-actuated legged concepts",
+  "scope": "mechanical comparison; Gazebo truth for drive_ready tracked and quadruped_trot variants; static estimates for conceptual legged models without controllers",
   "weight_classes": {
     "light45": {
       "name": "leicht",
@@ -20,6 +20,36 @@
   },
   "benchmark_source": "docs/validation/weight-class-chassis-summary.json",
   "gazebo_rollup": [
+    {
+      "variant": "quadruped_trot",
+      "mass_class": "heavy85",
+      "mass_kg": 85.0,
+      "max_passed_step_mm": null,
+      "max_passed_ramp_deg": null,
+      "passed_cases": [],
+      "mean_energy_per_m_Wh_m": null,
+      "runs": 14
+    },
+    {
+      "variant": "quadruped_trot",
+      "mass_class": "light45",
+      "mass_kg": 45.0,
+      "max_passed_step_mm": null,
+      "max_passed_ramp_deg": null,
+      "passed_cases": [],
+      "mean_energy_per_m_Wh_m": null,
+      "runs": 14
+    },
+    {
+      "variant": "quadruped_trot",
+      "mass_class": "medium65",
+      "mass_kg": 65.0,
+      "max_passed_step_mm": null,
+      "max_passed_ramp_deg": null,
+      "passed_cases": [],
+      "mean_energy_per_m_Wh_m": null,
+      "runs": 14
+    },
     {
       "variant": "tracked_bogie",
       "mass_class": "heavy85",
@@ -66,12 +96,20 @@
       "max_passed_step_mm": 100,
       "max_passed_ramp_deg": 30,
       "passed_cases": [
+        "step_30",
+        "step_50",
         "step_80",
         "step_100",
-        "ramp_30"
+        "ramp_10",
+        "ramp_20",
+        "ramp_30",
+        "trench",
+        "diagonal_wave",
+        "side_slope",
+        "narrow_gate"
       ],
-      "mean_energy_per_m_Wh_m": 0.11192820179340832,
-      "runs": 4
+      "mean_energy_per_m_Wh_m": 0.08384632548003847,
+      "runs": 14
     },
     {
       "variant": "tracked_guided",
@@ -80,12 +118,20 @@
       "max_passed_step_mm": 100,
       "max_passed_ramp_deg": 30,
       "passed_cases": [
+        "step_30",
+        "step_50",
         "step_80",
         "step_100",
-        "ramp_30"
+        "ramp_10",
+        "ramp_20",
+        "ramp_30",
+        "trench",
+        "diagonal_wave",
+        "side_slope",
+        "narrow_gate"
       ],
-      "mean_energy_per_m_Wh_m": 0.052915728879944154,
-      "runs": 4
+      "mean_energy_per_m_Wh_m": 0.03995760905671375,
+      "runs": 14
     },
     {
       "variant": "tracked_guided",
@@ -94,12 +140,20 @@
       "max_passed_step_mm": 100,
       "max_passed_ramp_deg": 30,
       "passed_cases": [
+        "step_30",
+        "step_50",
         "step_80",
         "step_100",
-        "ramp_30"
+        "ramp_10",
+        "ramp_20",
+        "ramp_30",
+        "trench",
+        "diagonal_wave",
+        "side_slope",
+        "narrow_gate"
       ],
-      "mean_energy_per_m_Wh_m": 0.08245273760872524,
-      "runs": 4
+      "mean_energy_per_m_Wh_m": 0.06148515865853676,
+      "runs": 14
     }
   ],
   "static_tool_pull_limits": [
@@ -201,6 +255,57 @@
       "side_pull_tip_limit_N": 762.8840425531915,
       "friction_limited_side_force_N": 767.142,
       "conservative_horizontal_tool_force_limit_N": 762.8840425531915,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "heavy85",
+      "mass_class_name": "schwer"
+    },
+    {
+      "platform": "quadruped_trot",
+      "mass_kg": 45.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.74,
+      "support_width_m": 0.5,
+      "com_height_m": 0.46,
+      "tool_height_m": 0.5,
+      "friction_mu_assumed": 0.75,
+      "forward_pull_tip_limit_N": 326.673,
+      "side_pull_tip_limit_N": 220.72500000000002,
+      "friction_limited_side_force_N": 331.08750000000003,
+      "conservative_horizontal_tool_force_limit_N": 220.72500000000002,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "light45",
+      "mass_class_name": "leicht"
+    },
+    {
+      "platform": "quadruped_trot",
+      "mass_kg": 65.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.74,
+      "support_width_m": 0.5,
+      "com_height_m": 0.46,
+      "tool_height_m": 0.5,
+      "friction_mu_assumed": 0.75,
+      "forward_pull_tip_limit_N": 471.861,
+      "side_pull_tip_limit_N": 318.825,
+      "friction_limited_side_force_N": 478.23749999999995,
+      "conservative_horizontal_tool_force_limit_N": 318.825,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "medium65",
+      "mass_class_name": "mittel"
+    },
+    {
+      "platform": "quadruped_trot",
+      "mass_kg": 85.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.74,
+      "support_width_m": 0.5,
+      "com_height_m": 0.46,
+      "tool_height_m": 0.5,
+      "friction_mu_assumed": 0.75,
+      "forward_pull_tip_limit_N": 617.049,
+      "side_pull_tip_limit_N": 416.925,
+      "friction_limited_side_force_N": 625.3875,
+      "conservative_horizontal_tool_force_limit_N": 416.925,
       "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
       "mass_class": "heavy85",
       "mass_class_name": "schwer"
@@ -309,7 +414,7 @@
     }
   ],
   "limitations": [
-    "Quadruped und Humanoid haben noch keinen echten Gang-/Balanceregler; Hinderniswerte sind deshalb nicht gemessen.",
+    "quadruped_trot hat einen ersten echten Gazebo-Trot-Regler und ist gemessen, faellt aber in der aktuellen Auslegung in allen Hindernisfaellen durch; quadruped und humanoid bleiben statische Konzepte ohne Gang-/Balanceregler.",
     "Energie ist mechanische Gelenk-/Radleistung aus Gazebo, noch ohne Motorwirkungsgrad, Elektronik und Akkuverluste.",
     "Boden ist noch starr mit Reibwerten; schwerer Marschboden braucht ein eigenes Tragfähigkeits-/Schlupfmodell."
   ]

@@ -1,7 +1,7 @@
 """Hardware-independent bounded teleoperation logic. Inputs are heading and commands."""
 import math
 
-COMMANDS = {'forward':(.15,0.), 'backward':(-.15,0.), 'left':(0.,.5), 'right':(0.,-.5), 'stop':(0.,0.), 'turn_around':(0.,0.)}
+COMMANDS = {'forward':(.28,0.), 'backward':(-.22,0.), 'left':(0.,.8), 'right':(0.,-.8), 'stop':(0.,0.), 'turn_around':(0.,0.)}
 def wrapped(angle):
     return math.atan2(math.sin(angle),math.cos(angle))
 
@@ -44,7 +44,7 @@ class Motion:
         if self.command=='turn_around':
             if self.remaining<.025:self.stop('turn_complete');return 0.,0.
             if now>self.turn_deadline:self.stop('turn_timeout');return 0.,0.
-            return 0.,min(.5,max(.07,self.remaining*1.5))
+            return 0.,min(.8,max(.10,self.remaining*1.8))
         return COMMANDS[self.command]
 
 

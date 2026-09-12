@@ -45,8 +45,8 @@
         "wheel_mu": 0.6,
         "effort_limit_Nm": 40.0,
         "velocity_limit_radps": 8.0,
-        "max_linear_velocity_mps": 0.25,
-        "max_angular_velocity_radps": 0.6
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
       },
       "supports": {
         "type": "fixed_low_friction_spheres",
@@ -129,8 +129,8 @@
         "wheel_mu": 0.85,
         "effort_limit_Nm": 80.0,
         "velocity_limit_radps": 8.0,
-        "max_linear_velocity_mps": 0.25,
-        "max_angular_velocity_radps": 0.55
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
       },
       "supports": {
         "type": "rear_low_friction_rollers_placeholder",
@@ -203,8 +203,8 @@
         "wheel_mu": 0.9,
         "effort_limit_Nm": 55.0,
         "velocity_limit_radps": 12.0,
-        "max_linear_velocity_mps": 0.22,
-        "max_angular_velocity_radps": 0.5
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
       },
       "supports": {
         "type": "spring_bogie_rollers",
@@ -277,8 +277,8 @@
         "wheel_mu": 0.92,
         "effort_limit_Nm": 55.0,
         "velocity_limit_radps": 9.0,
-        "max_linear_velocity_mps": 0.22,
-        "max_angular_velocity_radps": 0.5
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
       },
       "supports": {
         "type": "spring_bogie_rollers",

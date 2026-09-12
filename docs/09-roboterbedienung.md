@@ -96,3 +96,7 @@ Manuell sind Ausgangs-, Reich-, Arbeits- und Ausziehpose sowie Öffnen, Schließ
 ROS-Schnittstellen: `/garden/arm/trajectory` (`trajectory_msgs/JointTrajectory`, derzeit Positionswegpunkte), `/garden/tool/wrench` und `/garden/tool/applied_wrench` (`geometry_msgs/WrenchStamped`, Weltkoordinaten), `/garden/plant/state` (`std_msgs/String`, JSON für den vereinfachten Prüfstand). Der Kraftbefehl verfällt im Simulator nach 250 ms ohne Aktualisierung.
 
 [Aktuelle Messergebnisse und Einschränkungen](13-grundfunktionen.md) ergänzen die oben erhaltenen früheren Einzelprüfungen.
+
+## Manuelle Fahrgeschwindigkeit im Browser
+
+Stand 2026-09-12: Die manuelle Browserfahrt ist auf 0,28 m/s vorwärts, 0,22 m/s rückwärts und 0,8 rad/s Drehgeschwindigkeit erhöht. Die DiffDrive-Grenzen der Raupenvarianten liegen bei 0,35 m/s und 0,9 rad/s. Die reproduzierbaren Benchmarkläufe bleiben vorerst bei 0,15 m/s, damit alte und neue Messreihen nicht vermischt werden.

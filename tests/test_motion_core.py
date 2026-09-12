@@ -8,7 +8,7 @@ from motion_core import Motion, heading_from_sample, readiness_issues
 class MotionTests(unittest.TestCase):
     def test_timeout_stops_without_browser(self):
         m=Motion();m.heading(0,0);m.request('forward',0)
-        self.assertEqual(m.output(.1),(.15,0))
+        self.assertEqual(m.output(.1),(.28,0.0))
         m.heading(0,.7)
         self.assertEqual(m.output(.7),(0.,0.));self.assertEqual(m.reason,'command_timeout')
     def test_heartbeat_does_not_hide_missing_heading(self):

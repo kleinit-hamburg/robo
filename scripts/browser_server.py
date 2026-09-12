@@ -57,6 +57,14 @@ def build_world(concept, path, profile="garden"):
     robot=copy.deepcopy(ET.parse(ROOT/'models'/concept/'model.sdf').getroot().find('model'))
     ET.SubElement(robot,'plugin',filename=str(ROOT/'build/simulation/libgarden-ros-adapter.so'),name='garden::RosAdapter')
     if profile in ('manipulation','plant') and concept=='tracked':add_arm(robot)
+    if profile=='potato_ridge' and concept.startswith('tracked'):
+        base=robot.find("link[@name='base_link']")
+        if base is not None:
+            visual=ET.SubElement(base,'visual',name='visual_robot_shell')
+            ET.SubElement(visual,'pose').text='0 0 0 0 0 0'
+            mesh=ET.SubElement(ET.SubElement(visual,'geometry'),'mesh')
+            ET.SubElement(mesh,'uri').text='file://'+str((ROOT/'assets/visual/tracked_robot_shell.glb').resolve())
+            ET.SubElement(mesh,'scale').text='1 1 1'
     ET.SubElement(robot,'pose').text='0 -0.8 0.005 0 0 0'
     world.append(robot)
     ET.indent(tree);tree.write(path,encoding='utf-8',xml_declaration=True)

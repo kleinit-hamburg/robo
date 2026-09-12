@@ -4,7 +4,7 @@ Stand 2026-09-12. FreeCAD und Blender sind als lokale Modellierungswerkzeuge in 
 
 ## Werkzeuge
 
-- Blender 4.0.2 erzeugt GLB-Visuals fuer Damm, Kartoffelkraut und Unkraut.
+- Blender 4.0.2 erzeugt GLB-Visuals fuer Bodenoberflaeche, Kartoffeldamm, Kartoffelkraut, Unkraut und eine erste Kettenroboter-Visualhuelle.
 - FreeCAD 1.1.1 erzeugt parametrische CAD-Referenzen als STEP/STL.
 - FreeCAD-GUI ist auf dieser Maschine wegen Display/Qt nicht nutzbar; `freecad.cmd` funktioniert im Skriptmodus.
 
@@ -16,9 +16,11 @@ Stand 2026-09-12. FreeCAD und Blender sind als lokale Modellierungswerkzeuge in 
 
 Das Skript erzeugt:
 
+- `assets/visual/soil_patch_6x4.glb`
 - `assets/visual/potato_ridge_340cm.glb`
 - `assets/visual/potato_haulm.glb`
 - `assets/visual/weed_broadleaf.glb`
+- `assets/visual/tracked_robot_shell.glb`
 - `assets/cad/TRK-BASE-001-visual-reference.step`
 - `assets/cad/TRK-BASE-001-visual-reference.stl`
 
@@ -26,10 +28,10 @@ Der FreeCAD-Snap kann Skripte unter `/opt/...` nicht direkt ausfuehren. Der Wrap
 
 ## Einbindung in die Simulation
 
-Das Profil `potato_ridge` referenziert die GLB-Dateien als SDF-Visual-Meshes. Die Collision-Geometrien bleiben einfache Zylinder, Boxen und Kugeln. Dadurch sind die sichtbaren Modelle deutlich besser, aber Gazebo rechnet weiterhin mit kontrollierten Proxy-Kontakten.
+Das Profil `potato_ridge` referenziert die GLB-Dateien als SDF-Visual-Meshes. Die Collision-Geometrien bleiben einfache Zylinder, Boxen und Kugeln. Dadurch werden Boden, Dämme und Pflanzen sichtbarer, aber Gazebo rechnet weiterhin mit kontrollierten Proxy-Kontakten.
 
-Der Browser laedt Meshes ueber Three.js `GLTFLoader`. `file://.../assets/...`-URIs aus der SDF werden serverseitig nicht direkt im Browser verwendet, sondern im Frontend auf `/assets/...` abgebildet.
+Der Browser laedt Meshes ueber Three.js `GLTFLoader`. `file://.../assets/...`-URIs aus der SDF werden im Frontend auf `/assets/...` abgebildet. Fuer das Kartoffeldammprofil wird der Roboter zusaetzlich mit einer visuellen Shell dargestellt; die einfache Kollisions- und Gelenkstruktur bleibt unveraendert.
 
 ## Grenzen
 
-Diese Assets sind keine fertige CAD-Konstruktion und kein elastisches Pflanzenmodell. Sie verbessern die Sichtpruefung und Kommunikation. Fuer Messer, Greifer, rotierende Zieher und nachgiebiges Kartoffelkraut brauchen wir als naechstes separate Werkzeug- und Pflanzen-Kraftmodelle.
+Diese Assets sind noch keine fertige CAD-Konstruktion und kein elastisches Pflanzenmodell. Sie verbessern Sichtpruefung und Kommunikation. Fuer Messer, Greifer, rotierende Zieher und nachgiebiges Kartoffelkraut brauchen wir als naechstes separate Werkzeug- und Pflanzen-Kraftmodelle.

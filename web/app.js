@@ -12,7 +12,7 @@ const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamp
 const robotCenter=new THREE.Vector3(-.6,-.7,.3);
 function resetCamera(){controls.target.copy(robotCenter);camera.position.copy(robotCenter).add(new THREE.Vector3(3.7,-4.5,3.8).multiplyScalar(Math.max(1,1/camera.aspect)));controls.update();}
 resetCamera();$('camera').onclick=resetCamera;
-scene.add(new THREE.AmbientLight(0xffffff,2));const sun=new THREE.DirectionalLight(0xfff9e8,3);sun.position.set(-3,-4,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5});sun.shadow.normalBias=.02;scene.add(sun);
+scene.add(new THREE.HemisphereLight(0xdfeee0,0x5d4028,1.6));scene.add(new THREE.AmbientLight(0xffffff,.8));const sun=new THREE.DirectionalLight(0xfff2d5,4.2);sun.position.set(-3.5,-4.8,7.5);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5});sun.shadow.normalBias=.02;scene.add(sun);
 const grid=new THREE.GridHelper(6,24,0x86977f,0xa2b09a);grid.rotation.x=Math.PI/2;grid.position.z=.003;grid.material.transparent=true;grid.material.opacity=.3;scene.add(grid);
 let sceneGroup=new THREE.Group();scene.add(sceneGroup);const frames=new Map();
 let revision=-1,catalog={},robotSpec={},benchmark=[],connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop',taskBusy=false;
@@ -61,7 +61,9 @@ async function loadScene(){
     const linkGroup=new THREE.Group();setPose(linkGroup,link.pose);group.add(linkGroup);frames.set(link.frame,linkGroup);
     for(const visual of link.visuals){
      const color=new THREE.Color().setRGB(...visual.color,THREE.SRGBColorSpace);
-     const isSoil=model.name==='ground'||model.name.includes('ridge')||model.name.includes('clod');
+     const isSoil=model.name==='ground'||model.name.includes('ridge')||model.name.includes('clod')||model.name.includes('soil');
+     const hasShell=link.visuals.some(v=>v.name==='visual_robot_shell');
+     if(hasShell&&['body','front_marker','camera'].includes(visual.name))continue;
      if(visual.shape==='mesh'){
       try{const mesh=await loadMeshAsset(visual.uri);setPose(mesh,visual.pose);mesh.scale.multiply(new THREE.Vector3(...(visual.scale||[1,1,1])));mesh.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.material.roughness=isSoil ? .97 : .82;}});linkGroup.add(mesh);continue;}
       catch(error){console.warn('Mesh konnte nicht geladen werden',visual.uri,error);}

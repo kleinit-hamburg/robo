@@ -117,10 +117,12 @@ class VisualAssetPipelineTests(unittest.TestCase):
         world=ROOT/'build/test-potato-ridge-visual.sdf'
         objects=build_world('tracked_guided',world,'potato_ridge')
         mesh_visuals=[v for o in objects for l in o['links'] for v in l['visuals'] if v['shape']=='mesh']
-        self.assertGreaterEqual(len(mesh_visuals),17)
+        self.assertGreaterEqual(len(mesh_visuals),21)
         self.assertTrue(any('potato_ridge_340cm.glb' in v['uri'] for v in mesh_visuals))
         self.assertTrue(any('potato_haulm.glb' in v['uri'] for v in mesh_visuals))
         self.assertTrue(any('weed_broadleaf.glb' in v['uri'] for v in mesh_visuals))
+        self.assertTrue(any('soil_patch_6x4.glb' in v['uri'] for v in mesh_visuals))
+        self.assertTrue(any('tracked_robot_shell.glb' in v['uri'] for v in mesh_visuals))
         text=world.read_text()
         self.assertIn('<collision name="collision">',text)
         self.assertIn('<mesh>',text)
@@ -130,6 +132,8 @@ class VisualAssetPipelineTests(unittest.TestCase):
             'assets/visual/potato_ridge_340cm.glb',
             'assets/visual/potato_haulm.glb',
             'assets/visual/weed_broadleaf.glb',
+            'assets/visual/soil_patch_6x4.glb',
+            'assets/visual/tracked_robot_shell.glb',
             'assets/cad/TRK-BASE-001-visual-reference.step',
             'assets/cad/TRK-BASE-001-visual-reference.stl',
         ):

@@ -9,8 +9,8 @@ def terrain(world,profile):
         E.SubElement(E.SubElement(node,'material'),'diffuse').text=color
     def friction(node,mu='0.6'):
         ode=E.SubElement(E.SubElement(E.SubElement(node,'surface'),'friction'),'ode');E.SubElement(ode,'mu').text=mu;E.SubElement(ode,'mu2').text=mu
-    def model_link(name,xyz):
-        model=E.SubElement(world,'model',name=name);E.SubElement(model,'static').text='true';E.SubElement(model,'pose').text=' '.join(map(str,(*xyz,0,0,0)))
+    def model_link(name,xyz,rpy=(0,0,0)):
+        model=E.SubElement(world,'model',name=name);E.SubElement(model,'static').text='true';E.SubElement(model,'pose').text=' '.join(map(str,(*xyz,*rpy)))
         return E.SubElement(model,'link',name='link')
     def geom(parent,kind,shape,dims,pose=(0,0,0,0,0,0),color='0.48 0.38 0.25 1',mu='0.6'):
         tag='collision' if kind.startswith('collision') else 'visual'
@@ -30,14 +30,14 @@ def terrain(world,profile):
         link=E.SubElement(model,'link',name='link')
         geom(link,'visual','box',size,color='0.48 0.38 0.25 1')
         geom(link,'collision','box',size)
-    def potato_plant(name,x,y):
-        link=model_link(name,(x,y,0))
+    def potato_plant(name,x,y,yaw=0,scale=1):
+        link=model_link(name,(x,y,0),(0,0,yaw))
         geom(link,'collision','cylinder',(.035,.32),(0,0,.16,0,0,0),mu='0.2')
-        geom(link,'visual_haulm_mesh','mesh',('assets/visual/potato_haulm.glb',(1,1,1)),(0,0,0,0,0,0),'0.20 0.42 0.16 1')
-    def weed(name,x,y,root_peak='75'):
-        link=model_link(name,(x,y,0))
+        geom(link,'visual_haulm_mesh','mesh',('assets/visual/potato_haulm.glb',(scale,scale,scale)),(0,0,0,0,0,0),'0.20 0.42 0.16 1')
+    def weed(name,x,y,yaw=0,scale=1,root_peak='75'):
+        link=model_link(name,(x,y,0),(0,0,yaw))
         geom(link,'collision','cylinder',(.018,.18),(0,0,.09,0,0,0),mu='0.35')
-        geom(link,'visual_weed_mesh','mesh',('assets/visual/weed_broadleaf.glb',(1,1,1)),(0,0,0,0,0,0),'0.25 0.55 0.18 1')
+        geom(link,'visual_weed_mesh','mesh',('assets/visual/weed_broadleaf.glb',(scale,scale,scale)),(0,0,0,0,0,0),'0.25 0.55 0.18 1')
     if profile=='uneven':
         for n in range(24):
             top=.01+.01*math.sin(n*math.pi/4)
@@ -51,14 +51,16 @@ def terrain(world,profile):
     elif profile=='potato_ridge':
         # Kirchwerder potato-row fixture: 62 cm row spacing, about 15 cm ridge height.
         # Visuals are richer than collisions; physics remains simple and deterministic.
+        soil=model_link('visual_soil_surface',(0,0,.002))
+        geom(soil,'visual_soil_mesh','mesh',('assets/visual/soil_patch_6x4.glb',(1,1,1)),(0,0,0,0,0,0),'0.34 0.25 0.16 1')
         for y,name in ((-.31,'left'),(.31,'right')):
             link=model_link(f'potato_{name}_ridge',(1.45,y,0))
             geom(link,'collision','box',(3.4,.34,.15),(0,0,.075,0,0,0),mu='0.45')
             geom(link,'visual_ridge_mesh','mesh',('assets/visual/potato_ridge_340cm.glb',(1,1,1)),(0,0,0,0,0,0),'0.50 0.36 0.21 1')
             for i,x in enumerate((.45,.95,1.45,1.95,2.45)):
-                potato_plant(f'potato_{name}_plant_{i}',x,y)
-        for i,(x,y) in enumerate(((.70,-.18),(1.10,.13),(1.55,-.12),(2.05,.18),(2.40,-.05))):
-            weed(f'weed_between_ridges_{i}',x,y)
+                potato_plant(f'potato_{name}_plant_{i}',x,y,yaw=(i*.71 + (0 if name=='left' else .35)),scale=.86+.05*(i%3))
+        for i,(x,y) in enumerate(((.70,-.18),(1.10,.13),(1.55,-.12),(2.05,.18),(2.40,-.05),(.92,.02),(1.82,-.02))):
+            weed(f'weed_between_ridges_{i}',x,y,yaw=i*.83,scale=.75+.08*(i%4))
         for i,x in enumerate((.55,1.35,2.15)):
             link=model_link(f'soil_clod_{i}',(x,.02,.025))
             geom(link,'collision','sphere',(.035,),(0,0,0,0,0,0),mu='0.45')

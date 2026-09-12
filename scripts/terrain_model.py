@@ -1,6 +1,8 @@
 """Small deterministic terrain fixtures, not calibrated Kirchwerder soil."""
 import math
+from pathlib import Path
 import xml.etree.ElementTree as E
+ROOT=Path(__file__).resolve().parents[1]
 PROFILES=('garden','flat','engineering','manipulation','plant','potato_ridge','uneven','slope','slippery','obstacle')
 def terrain(world,profile):
     def material(node,color):
@@ -17,6 +19,9 @@ def terrain(world,profile):
         elif shape=='sphere':E.SubElement(E.SubElement(g,'sphere'),'radius').text=str(dims[0])
         elif shape=='cylinder':
             c=E.SubElement(g,'cylinder');E.SubElement(c,'radius').text=str(dims[0]);E.SubElement(c,'length').text=str(dims[1])
+        elif shape=='mesh':
+            mesh=E.SubElement(g,'mesh');E.SubElement(mesh,'uri').text='file://'+str((ROOT/dims[0]).resolve())
+            if len(dims)>1:E.SubElement(mesh,'scale').text=' '.join(map(str,dims[1]))
         else:raise ValueError(shape)
         if tag=='visual':material(node,color)
         else:friction(node,mu)
@@ -28,14 +33,11 @@ def terrain(world,profile):
     def potato_plant(name,x,y):
         link=model_link(name,(x,y,0))
         geom(link,'collision','cylinder',(.035,.32),(0,0,.16,0,0,0),mu='0.2')
-        geom(link,'visual','cylinder',(.018,.28),(0,0,.19,0,0,0),'0.20 0.42 0.16 1')
-        for i,(dx,dy,z,rx,ry,rz,scale) in enumerate(((.05,.02,.30,.7,.2,.2,1),(-.04,.035,.27,-.4,.5,-.3,.9),(.01,-.055,.25,.2,-.6,.6,.85),(.075,-.02,.22,.9,-.1,-.4,.7),(-.065,-.035,.21,-.7,.3,.5,.75))):
-            geom(link,f'visual_leaf_{i}','sphere',(.055*scale,),(dx,dy,z,rx,ry,rz),'0.17 0.48 0.16 1')
+        geom(link,'visual_haulm_mesh','mesh',('assets/visual/potato_haulm.glb',(1,1,1)),(0,0,0,0,0,0),'0.20 0.42 0.16 1')
     def weed(name,x,y,root_peak='75'):
         link=model_link(name,(x,y,0))
         geom(link,'collision','cylinder',(.018,.18),(0,0,.09,0,0,0),mu='0.35')
-        geom(link,'visual','cylinder',(.008,.18),(0,0,.10,0,0,0),'0.16 0.36 0.10 1')
-        geom(link,'visual_top','sphere',(.035,),(0,0,.20,0,0,0),'0.25 0.55 0.18 1')
+        geom(link,'visual_weed_mesh','mesh',('assets/visual/weed_broadleaf.glb',(1,1,1)),(0,0,0,0,0,0),'0.25 0.55 0.18 1')
     if profile=='uneven':
         for n in range(24):
             top=.01+.01*math.sin(n*math.pi/4)
@@ -52,10 +54,7 @@ def terrain(world,profile):
         for y,name in ((-.31,'left'),(.31,'right')):
             link=model_link(f'potato_{name}_ridge',(1.45,y,0))
             geom(link,'collision','box',(3.4,.34,.15),(0,0,.075,0,0,0),mu='0.45')
-            geom(link,'visual_core','box',(3.4,.26,.12),(0,0,.06,0,0,0),'0.40 0.27 0.15 1')
-            geom(link,'visual_top','cylinder',(.15,3.4),(0,0,.15,0,math.pi/2,0),'0.50 0.36 0.21 1')
-            geom(link,'visual_left_slope','box',(3.4,.18,.08),(0,-.16,.055,.30,0,0),'0.46 0.31 0.18 1')
-            geom(link,'visual_right_slope','box',(3.4,.18,.08),(0,.16,.055,-.30,0,0),'0.46 0.31 0.18 1')
+            geom(link,'visual_ridge_mesh','mesh',('assets/visual/potato_ridge_340cm.glb',(1,1,1)),(0,0,0,0,0,0),'0.50 0.36 0.21 1')
             for i,x in enumerate((.45,.95,1.45,1.95,2.45)):
                 potato_plant(f'potato_{name}_plant_{i}',x,y)
         for i,(x,y) in enumerate(((.70,-.18),(1.10,.13),(1.55,-.12),(2.05,.18),(2.40,-.05))):

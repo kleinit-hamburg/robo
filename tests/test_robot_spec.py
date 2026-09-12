@@ -109,4 +109,32 @@ class WeightClassBenchmarkArtifactTests(unittest.TestCase):
             self.assertEqual(len(rows),3)
             self.assertEqual({r['locomotion_ready_in_gazebo'] for r in rows},{ready})
 
+class VisualAssetPipelineTests(unittest.TestCase):
+    def test_potato_ridge_uses_generated_mesh_visuals_and_keeps_collision_primitives(self):
+        import sys
+        sys.path.insert(0,str(ROOT/'scripts'))
+        from browser_server import build_world
+        world=ROOT/'build/test-potato-ridge-visual.sdf'
+        objects=build_world('tracked_guided',world,'potato_ridge')
+        mesh_visuals=[v for o in objects for l in o['links'] for v in l['visuals'] if v['shape']=='mesh']
+        self.assertGreaterEqual(len(mesh_visuals),17)
+        self.assertTrue(any('potato_ridge_340cm.glb' in v['uri'] for v in mesh_visuals))
+        self.assertTrue(any('potato_haulm.glb' in v['uri'] for v in mesh_visuals))
+        self.assertTrue(any('weed_broadleaf.glb' in v['uri'] for v in mesh_visuals))
+        text=world.read_text()
+        self.assertIn('<collision name="collision">',text)
+        self.assertIn('<mesh>',text)
+
+    def test_generated_assets_exist(self):
+        for rel in (
+            'assets/visual/potato_ridge_340cm.glb',
+            'assets/visual/potato_haulm.glb',
+            'assets/visual/weed_broadleaf.glb',
+            'assets/cad/TRK-BASE-001-visual-reference.step',
+            'assets/cad/TRK-BASE-001-visual-reference.stl',
+        ):
+            path=ROOT/rel
+            self.assertTrue(path.exists(),rel)
+            self.assertGreater(path.stat().st_size,1000,rel)
+
 if __name__=='__main__':unittest.main()

@@ -67,11 +67,15 @@ def build_world(concept, path, profile="garden"):
             visuals=[]
             for visual in link.findall('visual'):
                 geometry=visual.find('geometry')[0]
+                uri=None;scale=[1,1,1]
                 if geometry.tag=='box':dimensions=list(map(float,geometry.findtext('size').split()))
                 elif geometry.tag=='sphere':dimensions=[float(geometry.findtext('radius'))]
                 elif geometry.tag=='cylinder':dimensions=[float(geometry.findtext('radius')),float(geometry.findtext('length'))]
+                elif geometry.tag=='mesh':
+                    dimensions=[];uri=geometry.findtext('uri') or geometry.findtext('mesh/uri')
+                    scale=list(map(float,(geometry.findtext('scale') or geometry.findtext('mesh/scale') or '1 1 1').split()))
                 else:raise ValueError(f'Unsupported preview geometry: {geometry.tag}')
-                visuals.append(dict(name=visual.get('name'),shape=geometry.tag,dimensions=dimensions,pose=pose(visual),
+                visuals.append(dict(name=visual.get('name'),shape=geometry.tag,dimensions=dimensions,pose=pose(visual),uri=uri,scale=scale,
                                     color=list(map(float,visual.findtext('material/diffuse','0.4 0.5 0.4 1').split()))[:3]))
             links.append(dict(name=link.get('name'),frame=f"{model.get('name')}::{link.get('name')}",pose=pose(link),visuals=visuals))
         objects.append(dict(name=model.get('name'),pose=pose(model),links=links))
@@ -376,6 +380,10 @@ def handler_for(app):
                 prefix='/vendor/' if path.startswith('/vendor/') else '/addons/'
                 base=WEB/'node_modules/three'/('build' if prefix=='/vendor/' else 'examples/jsm')
                 file=(base/path.removeprefix(prefix)).resolve()
+                if not file.is_relative_to(base.resolve()):return self.send(404,{})
+            elif path.startswith('/assets/'):
+                base=ROOT/'assets'
+                file=(base/path.removeprefix('/assets/')).resolve()
                 if not file.is_relative_to(base.resolve()):return self.send(404,{})
             else:return self.send(404,{})
             if not file.is_file():return self.send(404,{})

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 const $=id=>document.getElementById(id);
 let renderer;
 try{renderer=new THREE.WebGLRenderer({antialias:true});}
@@ -17,7 +18,10 @@ let sceneGroup=new THREE.Group();scene.add(sceneGroup);const frames=new Map();
 let revision=-1,catalog={},robotSpec={},benchmark=[],connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop',taskBusy=false;
 let sequence=0,active=null,heartbeatBusy=false;
 const clientId=globalThis.crypto?.randomUUID?.() ?? 'browser-'+Math.random().toString(36).slice(2)+Date.now();
+const gltfLoader=new GLTFLoader();const meshCache=new Map();
 function setPose(object,pose){object.position.fromArray(pose.slice(0,3));object.rotation.set(...pose.slice(3),'ZYX');}
+function assetUrl(uri){if(!uri)return uri;if(uri.startsWith('file://')){const marker='/assets/';const i=uri.indexOf(marker);if(i>=0)return uri.slice(i);}return uri.startsWith('assets/')?'/'+uri:uri;}
+async function loadMeshAsset(uri){const url=assetUrl(uri);if(!url)throw Error('Mesh ohne URI');if(!meshCache.has(url))meshCache.set(url,new Promise((resolve,reject)=>gltfLoader.load(url,g=>resolve(g.scene),undefined,reject)));return (await meshCache.get(url)).clone(true);}
 
 function fmt(v,d=2){return Number.isFinite(v)?v.toLocaleString('de-DE',{maximumFractionDigits:d}):'—';}
 function renderConceptOptions(selected){
@@ -56,12 +60,17 @@ async function loadScene(){
    for(const link of model.links){
     const linkGroup=new THREE.Group();setPose(linkGroup,link.pose);group.add(linkGroup);frames.set(link.frame,linkGroup);
     for(const visual of link.visuals){
-     let geom;if(visual.shape==='box')geom=new THREE.BoxGeometry(...visual.dimensions);
-     else if(visual.shape==='sphere'){geom=new THREE.SphereGeometry(visual.dimensions[0],32,18);if((visual.name||'').includes('leaf'))geom.scale(1.7,.55,.22);}
-     else{geom=new THREE.CylinderGeometry(visual.dimensions[0],visual.dimensions[0],visual.dimensions[1],28);geom.rotateX(Math.PI/2);}
      const color=new THREE.Color().setRGB(...visual.color,THREE.SRGBColorSpace);
      const isSoil=model.name==='ground'||model.name.includes('ridge')||model.name.includes('clod');
-     const material=new THREE.MeshStandardMaterial({color,roughness:isSoil?.97:.82,metalness:0});
+     if(visual.shape==='mesh'){
+      try{const mesh=await loadMeshAsset(visual.uri);setPose(mesh,visual.pose);mesh.scale.multiply(new THREE.Vector3(...(visual.scale||[1,1,1])));mesh.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.material.roughness=isSoil ? .97 : .82;}});linkGroup.add(mesh);continue;}
+      catch(error){console.warn('Mesh konnte nicht geladen werden',visual.uri,error);}
+     }
+     let geom;if(visual.shape==='box')geom=new THREE.BoxGeometry(...visual.dimensions);
+     else if(visual.shape==='sphere'){geom=new THREE.SphereGeometry(visual.dimensions[0],32,18);if((visual.name||'').includes('leaf'))geom.scale(1.7,.55,.22);}
+     else if(visual.shape==='cylinder'){geom=new THREE.CylinderGeometry(visual.dimensions[0],visual.dimensions[0],visual.dimensions[1],28);geom.rotateX(Math.PI/2);}
+     else continue;
+     const material=new THREE.MeshStandardMaterial({color,roughness:isSoil ? .97 : .82,metalness:0});
      const mesh=new THREE.Mesh(geom,material);setPose(mesh,visual.pose);mesh.castShadow=model.name!=='ground';mesh.receiveShadow=true;linkGroup.add(mesh);
     }
    }

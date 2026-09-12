@@ -320,10 +320,15 @@ class Application:
         if result.returncode!=0 or 'data: true' not in result.stdout:raise ValueError('Gazebo hat den Steuerbefehl nicht bestätigt.')
         with self.lock:self.paused=pause
     def close(self):
-        self.halt('shutdown');self.quit.set()
+        self.quit.set()
+        try:
+            if self.rclpy.ok():self.halt('shutdown')
+        except Exception:
+            pass
         if self.spin_thread:self.spin_thread.join(timeout=2)
         for name in list(self.processes):self.stop_process(name)
-        self.node.destroy_node()
+        try:self.node.destroy_node()
+        except Exception:pass
         if self.rclpy.ok():self.rclpy.shutdown()
         self.temp.cleanup()
 

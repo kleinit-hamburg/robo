@@ -23,7 +23,10 @@
   "crops": {
     "potato": {
       "row_spacing_m": 0.62,
-      "source": "current_user_practice"
+      "source": "current_user_practice",
+      "ridge_height_m": 0.15,
+      "ridge_test_profile": "potato_ridge",
+      "weed_working_assumption": "robot travels between ridges; potato haulm may be gently displaced; weed is gripped/cut beside crop plant"
     },
     "strawberry": {
       "row_spacing_m": 0.75,
@@ -43,14 +46,17 @@
     "style": "regular maintenance analogous to robotic mower",
     "repeat_interval_days": null,
     "treatment_zone": "cultivated crop areas only; fallow excluded from weed treatment",
-    "exclude_crop_damage": true
+    "exclude_crop_damage": true,
+    "crop_interaction_model": "crop damage risk is side contact, bending or tool intrusion, not normal driving between rows"
   },
   "geometry_pending": [
     "travel arrangement relative to crop rows",
     "track width",
-    "crop envelope including potato ridges",
     "underbody clearance",
     "headland and access widths"
   ],
-  "implementation_status": "documentation_only_no_simulation_or_hardware_changes"
+  "implementation_status": "potato_ridge_visual_fixture_added_physics_proxy_pending",
+  "implemented_virtual_fixtures": {
+    "potato_ridge": "62 cm row spacing, 15 cm ridge height, visual potato haulm dummies, weeds between ridges; simple rigid collision/contact proxies"
+  }
 }

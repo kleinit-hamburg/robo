@@ -52,6 +52,15 @@ class RobotSpecTests(unittest.TestCase):
         self.assertIn('medium65',spec['weight_classes'])
         self.assertIn('heavy85',spec['weight_classes'])
 
+    def test_potato_row_variants_separate_overrow_and_inrow_geometry(self):
+        spec=load_spec();over=spec['variants']['tracked_overrow_high_clearance'];narrow=spec['variants']['tracked_inrow_narrow']
+        self.assertGreaterEqual(over['clearance']['nominal_body_bottom_m'],0.45)
+        self.assertGreaterEqual(over['track']['gauge_m'],0.62)
+        self.assertLessEqual(over['track']['belt_width_m'],0.13)
+        self.assertLessEqual(narrow['track']['gauge_m']+narrow['track']['belt_width_m'],0.45)
+        self.assertLess(narrow['body']['collision_width_m'],0.30)
+        self.assertGreater(narrow['clearance']['nominal_body_bottom_m'],0.18)
+
     def test_improved_variant_changes_mechanical_geometry(self):
         spec=load_spec();old=spec['variants']['tracked'];new=spec['variants']['tracked_improved']
         self.assertGreater(new['drive']['wheel_radius_m'],old['drive']['wheel_radius_m'])
@@ -115,13 +124,15 @@ class VisualAssetPipelineTests(unittest.TestCase):
         sys.path.insert(0,str(ROOT/'scripts'))
         from browser_server import build_world
         world=ROOT/'build/test-potato-ridge-visual.sdf'
-        objects=build_world('tracked_guided',world,'potato_ridge')
+        objects=build_world('tracked_overrow_high_clearance',world,'potato_ridge')
         mesh_visuals=[v for o in objects for l in o['links'] for v in l['visuals'] if v['shape']=='mesh']
-        self.assertGreaterEqual(len(mesh_visuals),21)
+        self.assertGreaterEqual(len(mesh_visuals),55)
         self.assertTrue(any('potato_ridge_340cm.glb' in v['uri'] for v in mesh_visuals))
         self.assertTrue(any('potato_haulm.glb' in v['uri'] for v in mesh_visuals))
         self.assertTrue(any('weed_broadleaf.glb' in v['uri'] for v in mesh_visuals))
-        self.assertTrue(any('soil_patch_6x4.glb' in v['uri'] for v in mesh_visuals))
+        self.assertTrue(any('soil_patch_7x5.glb' in v['uri'] for v in mesh_visuals))
+        ridge_count=sum(1 for o in objects if o['name'].startswith('potato_') and o['name'].endswith('_ridge'))
+        self.assertGreaterEqual(ridge_count,5)
         self.assertTrue(any('tracked_robot_shell.glb' in v['uri'] for v in mesh_visuals))
         text=world.read_text()
         self.assertIn('<collision name="collision">',text)
@@ -134,7 +145,7 @@ class VisualAssetPipelineTests(unittest.TestCase):
             'assets/visual/potato_haulm_b.glb',
             'assets/visual/potato_haulm_c.glb',
             'assets/visual/weed_broadleaf.glb',
-            'assets/visual/soil_patch_6x4.glb',
+            'assets/visual/soil_patch_7x5.glb',
             'assets/visual/tracked_robot_shell.glb',
             'assets/cad/TRK-BASE-001-visual-reference.step',
             'assets/cad/TRK-BASE-001-visual-reference.stl',

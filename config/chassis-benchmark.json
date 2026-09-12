@@ -13,6 +13,8 @@
     "tracked_improved",
     "tracked_bogie",
     "tracked_guided",
+    "tracked_overrow_high_clearance",
+    "tracked_inrow_narrow",
     "quadruped_trot"
   ],
   "cases": [

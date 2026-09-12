@@ -94,7 +94,7 @@ def main():
     spec=load_spec();concepts=concept_map()
     rows=load_json(args.benchmark_summary) if args.benchmark_summary and args.benchmark_summary.exists() else []
     mass_classes=spec.get('weight_classes',{})
-    platforms=['tracked_bogie','tracked_guided','quadruped_trot','quadruped','humanoid']
+    platforms=['tracked_bogie','tracked_guided','tracked_overrow_high_clearance','tracked_inrow_narrow','quadruped_trot','quadruped','humanoid']
     stability=[]
     for platform in platforms:
         for key,klass in mass_classes.items():

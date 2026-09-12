@@ -309,6 +309,154 @@
         "cad_file": null
       }
     },
+    "tracked_overrow_high_clearance": {
+      "name": "Kette Überreihe: hohe Bodenfreiheit",
+      "description": "Raupenvariante für Kartoffeldämme: Ketten laufen in den Furchen, der Rumpf überfährt die Kulturreihe mit hoher Unterbodenfreiheit. Physik bleibt Gazebo-Proxy mit gefederten Rollen.",
+      "drive_ready": true,
+      "mode": "Kartoffeldamm-Überreihe",
+      "mass_kg": 70.0,
+      "body": {
+        "part_id": "TRK5-BASE-001",
+        "length_m": 1.08,
+        "width_m": 0.46,
+        "height_m": 0.24,
+        "collision_length_m": 0.86,
+        "collision_width_m": 0.36,
+        "collision_height_m": 0.18,
+        "collision_center_z_m": 0.57,
+        "visual_center_z_m": 0.58,
+        "inertial_mass_kg": 51.0,
+        "com_z_m": 0.47,
+        "material": "virtuell: hochbeiniger 3D-Druck/Alu-Rahmen mit tief eingehängter Batteriemasse"
+      },
+      "track": {
+        "part_id": "TRK5-BELT-GUIDE-001",
+        "gauge_m": 0.72,
+        "belt_width_m": 0.12,
+        "visual_length_m": 1.08,
+        "visual_height_m": 0.36,
+        "visual_center_z_m": 0.21,
+        "front_x_m": 0.51,
+        "rear_x_m": -0.51,
+        "visual_radius_m": 0.18,
+        "ground_contact_length_m": 0.98,
+        "approach_angle_deg": 62.0
+      },
+      "drive": {
+        "wheel_radius_m": 0.12,
+        "wheel_width_m": 0.09,
+        "wheel_mass_kg": 1.25,
+        "wheel_x_m": 0.0,
+        "wheel_z_m": 0.12,
+        "wheel_mu": 0.9,
+        "effort_limit_Nm": 55.0,
+        "velocity_limit_radps": 9.0,
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
+      },
+      "supports": {
+        "type": "spring_bogie_rollers",
+        "part_id": "TRK5-SPRUNG-GUIDE-ROLLER-001",
+        "radius_m": 0.12,
+        "mass_kg": 1.25,
+        "carrier_mass_kg": 0.06,
+        "mu": 0.92,
+        "spring_stiffness_N_m": 8200,
+        "damping_N_s_m": 160,
+        "travel_m": 0.1,
+        "positions_x_m": [
+          -0.49,
+          -0.3,
+          -0.11,
+          0.11,
+          0.3,
+          0.49
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.48,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked_overrow_high_clearance.urdf.xacro",
+        "sdf": "models/tracked_overrow_high_clearance/model.sdf",
+        "cad_file": null
+      }
+    },
+    "tracked_inrow_narrow": {
+      "name": "Kette Fahrgasse: schmal",
+      "description": "Schmale Raupenvariante für die Fahrt zwischen 62-cm-Kartoffelreihen. Priorität ist geringe Gesamtbreite; Bodenfreiheit reicht für Furchen, aber nicht zum Überfahren von Kartoffelkraut.",
+      "drive_ready": true,
+      "mode": "Schmale Fahrgassen-Kette",
+      "mass_kg": 45.0,
+      "body": {
+        "part_id": "TRK6-BASE-001",
+        "length_m": 0.88,
+        "width_m": 0.3,
+        "height_m": 0.18,
+        "collision_length_m": 0.72,
+        "collision_width_m": 0.25,
+        "collision_height_m": 0.16,
+        "collision_center_z_m": 0.29,
+        "visual_center_z_m": 0.3,
+        "inertial_mass_kg": 32.6,
+        "com_z_m": 0.28,
+        "material": "virtuell: leichter 3D-Druck/Alu-Rahmen mit schmaler Batteriewanne"
+      },
+      "track": {
+        "part_id": "TRK6-NARROW-BELT-001",
+        "gauge_m": 0.34,
+        "belt_width_m": 0.08,
+        "visual_length_m": 0.88,
+        "visual_height_m": 0.24,
+        "visual_center_z_m": 0.15,
+        "front_x_m": 0.41,
+        "rear_x_m": -0.41,
+        "visual_radius_m": 0.12,
+        "ground_contact_length_m": 0.78,
+        "approach_angle_deg": 55.0
+      },
+      "drive": {
+        "wheel_radius_m": 0.09,
+        "wheel_width_m": 0.06,
+        "wheel_mass_kg": 0.85,
+        "wheel_x_m": 0.0,
+        "wheel_z_m": 0.09,
+        "wheel_mu": 0.9,
+        "effort_limit_Nm": 35.0,
+        "velocity_limit_radps": 11.0,
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 1.1
+      },
+      "supports": {
+        "type": "spring_bogie_rollers",
+        "part_id": "TRK6-SPRUNG-NARROW-ROLLER-001",
+        "radius_m": 0.09,
+        "mass_kg": 0.85,
+        "carrier_mass_kg": 0.04,
+        "mu": 0.92,
+        "spring_stiffness_N_m": 5600,
+        "damping_N_s_m": 115,
+        "travel_m": 0.065,
+        "positions_x_m": [
+          -0.39,
+          -0.23,
+          -0.08,
+          0.08,
+          0.23,
+          0.39
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.21,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked_inrow_narrow.urdf.xacro",
+        "sdf": "models/tracked_inrow_narrow/model.sdf",
+        "cad_file": null
+      }
+    },
     "quadruped_trot": {
       "name": "Quadruped Trot-Pruefmodell",
       "description": "Dynamisches Hund-/Quadruped-Pruefmodell mit vier zweigelenkigen Beinen, Fusskontakten und einfachem Gazebo-Trot-Regler auf /garden/cmd_vel. Noch kein ausgereifter Balanceregler.",
@@ -459,6 +607,48 @@
       "part_id": "QDP-LEG-001",
       "role": "two-link actuated quadruped leg with foot contact",
       "material": "virtual bearing/servo leg module",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK5-BASE-001",
+      "name": "Hochbeiniger Überreihen-Rahmen",
+      "material": "virtuell: 3D-Druck/Alu",
+      "mass_kg": 51.0,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK5-BELT-GUIDE-001",
+      "name": "Schmale Überreihen-Raupenbänder",
+      "material": "virtuell: Gummi/gedruckte Führungen",
+      "mass_kg": null,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK5-SPRUNG-GUIDE-ROLLER-001",
+      "name": "Gefederte Überreihen-Laufrollen",
+      "material": "virtuell: Kugellager/Rollen",
+      "mass_kg": 1.25,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK6-BASE-001",
+      "name": "Schmaler Fahrgassen-Rahmen",
+      "material": "virtuell: 3D-Druck/Alu",
+      "mass_kg": 32.6,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK6-NARROW-BELT-001",
+      "name": "Sehr schmale Raupenbänder",
+      "material": "virtuell: Gummi/gedruckte Führungen",
+      "mass_kg": null,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK6-SPRUNG-NARROW-ROLLER-001",
+      "name": "Gefederte schmale Laufrollen",
+      "material": "virtuell: Kugellager/Rollen",
+      "mass_kg": 0.85,
       "cad_file": null
     }
   ],

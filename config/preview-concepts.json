@@ -23,6 +23,18 @@
     "mode": "Geführtes Raupen-Pruefmodell",
     "description": "Raupen-Pruefmodell mit groesseren physikalischen Front-/Heckrollen, sechs gefederten Laufrollen pro Seite und sichtbarer Kettenfuehrung. Ziel: Hindernisse bis 120 mm pruefen, ohne Browserphysik."
   },
+  "tracked_overrow_high_clearance": {
+    "name": "Kette Überreihe: hohe Bodenfreiheit",
+    "drive_ready": true,
+    "mode": "Kartoffeldamm-Überreihe",
+    "description": "Raupenvariante für Kartoffeldämme: Ketten laufen in den Furchen, der Rumpf überfährt die Kulturreihe mit hoher Unterbodenfreiheit. Physik bleibt Gazebo-Proxy mit gefederten Rollen."
+  },
+  "tracked_inrow_narrow": {
+    "name": "Kette Fahrgasse: schmal",
+    "drive_ready": true,
+    "mode": "Schmale Fahrgassen-Kette",
+    "description": "Schmale Raupenvariante für die Fahrt zwischen 62-cm-Kartoffelreihen. Priorität ist geringe Gesamtbreite; Bodenfreiheit reicht für Furchen, aber nicht zum Überfahren von Kartoffelkraut."
+  },
   "quadruped_trot": {
     "name": "Quadruped Trot-Pruefmodell",
     "drive_ready": true,

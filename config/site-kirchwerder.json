@@ -39,7 +39,7 @@
     "dimension_reference": "track_center_to_center",
     "interpretation_status": "confirmed_by_user",
     "actuation": "unspecified",
-    "current_model_updated": false
+    "current_model_updated": true
   },
   "mission": {
     "primary": "repeated autonomous weed control between crop plants and rows",
@@ -50,13 +50,15 @@
     "crop_interaction_model": "crop damage risk is side contact, bending or tool intrusion, not normal driving between rows"
   },
   "geometry_pending": [
-    "travel arrangement relative to crop rows",
-    "track width",
-    "underbody clearance",
-    "headland and access widths"
+    "headland and access widths",
+    "exact tool side offset relative to potato stems",
+    "crop haulm bending force and damage threshold",
+    "soil sinkage and traction parameters for heavy marsh soil"
   ],
-  "implementation_status": "potato_ridge_visual_fixture_added_physics_proxy_pending",
+  "implementation_status": "potato_ridge_visual_fixture_with_overrow_and_inrow_variants",
   "implemented_virtual_fixtures": {
-    "potato_ridge": "62 cm row spacing, 15 cm ridge height, visual potato haulm dummies, weeds between ridges; simple rigid collision/contact proxies"
+    "potato_ridge": "five 62 cm rows, 15 cm ridge height, visual potato haulm dummies, weeds in furrows; simple rigid collision/contact proxies",
+    "tracked_overrow_high_clearance": "72 cm track-center gauge, 12 cm tracks, 48 cm nominal body clearance for straddling a potato row",
+    "tracked_inrow_narrow": "34 cm track-center gauge, about 42 cm total width, 21 cm nominal body clearance for driving in narrow furrows"
   }
 }

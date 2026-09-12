@@ -180,8 +180,8 @@ def ridge():
 
 def soil_patch():
     clear()
-    L, W = 6.0, 4.0
-    nx, ny = 70, 46
+    L, W = 7.0, 4.6
+    nx, ny = 82, 54
     verts = []
     for i in range(nx):
         x = -L / 2 + i * L / (nx - 1)
@@ -201,20 +201,21 @@ def soil_patch():
     bpy.context.collection.objects.link(obj)
     assign(obj, soil)
 
-    for k, y in enumerate([-0.62, 0.0, 0.62]):
-        strip = cube_obj(f'darker_furrow_{k}', (0, y, .004), (5.8, .045, .006), soil, .004)
+    for k, y in enumerate([-1.55, -0.93, -0.31, 0.31, 0.93, 1.55]):
+        strip = cube_obj(f'darker_furrow_{k}', (0, y, .004), (6.7, .045, .006), soil, .004)
         strip.rotation_euler.z = .015 * (k - 1)
     for i in range(95):
-        x = random.uniform(-2.8, 2.8)
-        y = random.uniform(-1.85, 1.85)
-        if abs(y - .31) < .24 or abs(y + .31) < .24:
+        x = random.uniform(-3.25, 3.25)
+        y = random.uniform(-2.10, 2.10)
+        row_centers=(-1.24,-.62,0,.62,1.24)
+        if min(abs(y - row) for row in row_centers) < .22:
             continue
         bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=4, radius=random.uniform(.006, .020), location=(x, y, random.uniform(.004, .016)))
         crumb = bpy.context.object
         crumb.name = f'field_crumb_{i}'
         crumb.scale.y = random.uniform(.55, 1.6)
         assign(crumb, soil_light if i % 5 == 0 else soil)
-    export('soil_patch_6x4.glb')
+    export('soil_patch_7x5.glb')
 
 
 def tracked_shell():

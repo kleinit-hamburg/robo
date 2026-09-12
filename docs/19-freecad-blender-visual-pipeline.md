@@ -16,7 +16,7 @@ Stand 2026-09-12. FreeCAD und Blender sind als lokale Modellierungswerkzeuge in 
 
 Das Skript erzeugt:
 
-- `assets/visual/soil_patch_6x4.glb`
+- `assets/visual/soil_patch_7x5.glb`
 - `assets/visual/potato_ridge_340cm.glb`
 - `assets/visual/potato_haulm.glb`
 - `assets/visual/potato_haulm_b.glb`
@@ -32,7 +32,7 @@ Der FreeCAD-Snap kann Skripte unter `/opt/...` nicht direkt ausfuehren. Der Wrap
 
 Das Profil `potato_ridge` referenziert die GLB-Dateien als SDF-Visual-Meshes. Die Collision-Geometrien bleiben einfache Zylinder, Boxen und Kugeln. Dadurch werden Boden, Dämme und Pflanzen sichtbarer, aber Gazebo rechnet weiterhin mit kontrollierten Proxy-Kontakten.
 
-Der Browser laedt Meshes ueber Three.js `GLTFLoader`. `file://.../assets/...`-URIs aus der SDF werden im Frontend auf `/assets/...` abgebildet. Fuer das Kartoffeldammprofil wird der Roboter zusaetzlich mit einer visuellen Shell dargestellt; die einfache Kollisions- und Gelenkstruktur bleibt unveraendert.
+Der Browser laedt Meshes ueber Three.js `GLTFLoader`. `file://.../assets/...`-URIs aus der SDF werden im Frontend auf `/assets/...` abgebildet. Fuer das Kartoffeldammprofil wird der Roboter zusaetzlich mit einer visuellen Shell dargestellt. Die Shell wird je nach Raupenvariante skaliert, waehrend die einfache Kollisions- und Gelenkstruktur aus der zentralen Roboterspezifikation stammt.
 
 ## Grenzen
 

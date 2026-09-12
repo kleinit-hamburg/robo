@@ -53,17 +53,22 @@ def terrain(world,profile):
         # Kirchwerder potato-row fixture: 62 cm row spacing, about 15 cm ridge height.
         # Visuals are richer than collisions; physics remains simple and deterministic.
         soil=model_link('visual_soil_surface',(0,0,.002))
-        geom(soil,'visual_soil_mesh','mesh',('assets/visual/soil_patch_6x4.glb',(1,1,1)),(0,0,0,0,0,0),'0.34 0.25 0.16 1')
-        for y,name in ((-.31,'left'),(.31,'right')):
-            link=model_link(f'potato_{name}_ridge',(1.45,y,0))
-            geom(link,'collision','box',(3.4,.34,.15),(0,0,.075,0,0,0),mu='0.45')
-            geom(link,'visual_ridge_mesh','mesh',('assets/visual/potato_ridge_340cm.glb',(1,1,1)),(0,0,0,0,0,0),'0.50 0.36 0.21 1')
-            for i,x in enumerate((.45,.95,1.45,1.95,2.45)):
-                potato_plant(f'potato_{name}_plant_{i}',x,y,yaw=(i*.71 + (0 if name=='left' else .35)),scale=.86+.05*(i%3))
-        for i,(x,y) in enumerate(((.70,-.18),(1.10,.13),(1.55,-.12),(2.05,.18),(2.40,-.05),(.92,.02),(1.82,-.02))):
-            weed(f'weed_between_ridges_{i}',x,y,yaw=i*.83,scale=.75+.08*(i%4))
-        for i,x in enumerate((.55,1.35,2.15)):
-            link=model_link(f'soil_clod_{i}',(x,.02,.025))
+        geom(soil,'visual_soil_mesh','mesh',('assets/visual/soil_patch_7x5.glb',(1,1,1)),(0,0,0,0,0,0),'0.34 0.25 0.16 1')
+        rows=[(-1.24,'outer_left'),(-.62,'left'),(0.0,'center'),(.62,'right'),(1.24,'outer_right')]
+        for row_index,(y,name) in enumerate(rows):
+            link=model_link(f'potato_{name}_ridge',(1.65,y,0))
+            geom(link,'collision','box',(4.4,.34,.15),(0,0,.075,0,0,0),mu='0.45')
+            geom(link,'visual_ridge_mesh','mesh',('assets/visual/potato_ridge_340cm.glb',(1.30,1,1)),(0,0,0,0,0,0),'0.50 0.36 0.21 1')
+            for i,x in enumerate((.10,.70,1.30,1.90,2.50,3.10)):
+                potato_plant(f'potato_{name}_plant_{i}',x,y,yaw=(i*.71 + row_index*.19),scale=.82+.05*((i+row_index)%3))
+        weed_positions=[]
+        for lane_y in (-.93,-.31,.31,.93):
+            for j,x in enumerate((.35,.95,1.55,2.15,2.75,3.35)):
+                weed_positions.append((x,lane_y+(.035 if j%2 else -.04)))
+        for i,(x,y) in enumerate(weed_positions):
+            weed(f'weed_between_ridges_{i}',x,y,yaw=i*.83,scale=.68+.07*(i%4))
+        for i,(x,y) in enumerate(((.55,-.31),(1.35,.31),(2.15,-.93),(2.85,.93),(3.25,.0))):
+            link=model_link(f'soil_clod_{i}',(x,y,.025))
             geom(link,'collision','sphere',(.035,),(0,0,0,0,0,0),mu='0.45')
             geom(link,'visual','sphere',(.045,),(0,0,0,0,0,0),'0.34 0.24 0.15 1')
     elif profile=='engineering':

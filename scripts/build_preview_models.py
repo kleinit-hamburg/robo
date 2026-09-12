@@ -49,10 +49,13 @@ def publisher(m):
     p=add(m,'plugin',filename='gz-sim-pose-publisher-system',name='gz::sim::systems::PosePublisher')
     for k,v in {'publish_model_pose':'true','publish_link_pose':'true','publish_visual_pose':'false','publish_collision_pose':'false','publish_sensor_pose':'false','use_pose_vector_msg':'true','update_frequency':20}.items():add(p,k,v)
 
-def add_diffdrive(m,data):
+def add_diffdrive(m,data,left_joints=None,right_joints=None):
     drive=data['drive'];track=data['track']
+    left_joints=left_joints or ['left_joint'];right_joints=right_joints or ['right_joint']
     p=add(m,'plugin',filename='gz-sim-diff-drive-system',name='gz::sim::systems::DiffDrive')
-    fields={'left_joint':'left_joint','right_joint':'right_joint','wheel_separation':track['gauge_m'],'wheel_radius':drive['wheel_radius_m'],'topic':'/garden/cmd_vel','odom_topic':'/garden/odom','frame_id':'odom','child_frame_id':'base_link','odom_publish_frequency':30,'min_linear_velocity':-drive['max_linear_velocity_mps'],'max_linear_velocity':drive['max_linear_velocity_mps'],'min_angular_velocity':-drive['max_angular_velocity_radps'],'max_angular_velocity':drive['max_angular_velocity_radps'],'min_linear_acceleration':-.6,'max_linear_acceleration':.6,'min_angular_acceleration':-1.5,'max_angular_acceleration':1.5}
+    for name in left_joints:add(p,'left_joint',name)
+    for name in right_joints:add(p,'right_joint',name)
+    fields={'wheel_separation':track['gauge_m'],'wheel_radius':drive['wheel_radius_m'],'topic':'/garden/cmd_vel','odom_topic':'/garden/odom','frame_id':'odom','child_frame_id':'base_link','odom_publish_frequency':30,'min_linear_velocity':-drive['max_linear_velocity_mps'],'max_linear_velocity':drive['max_linear_velocity_mps'],'min_angular_velocity':-drive['max_angular_velocity_radps'],'max_angular_velocity':drive['max_angular_velocity_radps'],'min_linear_acceleration':-.6,'max_linear_acceleration':.6,'min_angular_acceleration':-1.5,'max_angular_acceleration':1.5}
     for k,v in fields.items():add(p,k,v)
 
 def make_tracked_variant(kind,data):
@@ -65,6 +68,8 @@ def make_tracked_variant(kind,data):
     visual(base,'body','box',(body['length_m'],body['width_m'],body['height_m']),(0,0,body['visual_center_z_m'],0,0,0),green)
     visual(base,'front_marker','box',(.04,body['width_m']*.72,.08),(body['length_m']/2+.01,0,body['visual_center_z_m'],0,0,0),orange)
     visual(base,'camera','box',(.07,.13,.07),(body['length_m']*.35,0,body['visual_center_z_m']+body['height_m']*.65,0,0,0),dark)
+    left_drive_joints=[];right_drive_joints=[]
+    spring_mode=supports['type']=='spring_bogie_rollers'
     for side,y in [('left',track['gauge_m']/2),('right',-track['gauge_m']/2)]:
         visual(base,side+'_track_envelope','box',(track['visual_length_m'],track['belt_width_m'],track['visual_height_m']),(0,y,track['visual_center_z_m'],0,0,0),dark)
         for x,name in ((track['rear_x_m'],'rear'),(track['front_x_m'],'front')):
@@ -72,21 +77,42 @@ def make_tracked_variant(kind,data):
         for i in range(10):
             x=track['rear_x_m']+(i+.5)*(track['front_x_m']-track['rear_x_m'])/10
             visual(base,side+f'_tread_{i}','box',(.032,track['belt_width_m']*1.08,.018),(x,y,track['visual_center_z_m']+track['visual_height_m']/2+.012,0,0,0),(.26,.30,.26))
-        wheel=add(m,'link',name=side+'_wheel');pose(wheel,(drive['wheel_x_m'],y,drive['wheel_z_m'],math.pi/2,0,0));cylinder_inertia(wheel,drive['wheel_mass_kg'],drive['wheel_radius_m'],drive['wheel_width_m'])
-        collision(wheel,'wheel','cylinder',(drive['wheel_radius_m'],drive['wheel_width_m']),mu=drive['wheel_mu'])
-        visual(wheel,'hub','cylinder',(drive['wheel_radius_m']*.55,drive['wheel_width_m']*1.45),(0,0,0,0,0,0),(.48,.53,.42))
-        j=add(m,'joint',name=side+'_joint',type='revolute');add(j,'parent','base_link');add(j,'child',side+'_wheel')
-        axis=add(j,'axis');add(axis,'xyz','0 0 -1');limit=add(axis,'limit');add(limit,'effort',drive['effort_limit_Nm']);add(limit,'velocity',drive['velocity_limit_radps'])
-    for index,(x,y,z) in enumerate(supports['positions']):
-        radius=supports['radius_m'];name=f'support_{index}'
-        link=add(m,'link',name=name);pose(link,(x,y,z,0,0,0));sphere_inertia(link,supports['mass_kg'],radius)
-        collision(link,'contact','sphere',(radius,),mu=supports['mu']);visual(link,'contact','sphere',(radius,),(0,0,0,0,0,0),(.22,.24,.22))
-        joint=add(m,'joint',name=name+'_fixed',type='fixed');add(joint,'parent','base_link');add(joint,'child',name)
+        if spring_mode:
+            for index,x in enumerate(supports['positions_x_m']):
+                carrier=add(m,'link',name=f'{side}_carrier_{index}');pose(carrier,(x,y,drive['wheel_z_m'],0,0,0));box_inertia(carrier,supports.get('carrier_mass_kg',.05),(.03,.03,.03))
+                suspension=add(m,'joint',name=f'{side}_suspension_{index}',type='prismatic');add(suspension,'parent','base_link');add(suspension,'child',f'{side}_carrier_{index}')
+                axis=add(suspension,'axis');add(axis,'xyz','0 0 1');limit=add(axis,'limit');travel=supports['travel_m'];add(limit,'lower',-travel);add(limit,'upper',travel);add(limit,'effort',2500);add(limit,'velocity',1.5)
+                dynamics=add(axis,'dynamics');add(dynamics,'damping',supports['damping_N_s_m']);add(dynamics,'spring_reference',0);add(dynamics,'spring_stiffness',supports['spring_stiffness_N_m'])
+                wheel_name=f'{side}_wheel' if index==0 else f'{side}_wheel_{index}'
+                wheel=add(m,'link',name=wheel_name);pose(wheel,(x,y,drive['wheel_z_m'],math.pi/2,0,0));cylinder_inertia(wheel,drive['wheel_mass_kg'],drive['wheel_radius_m'],drive['wheel_width_m'])
+                collision(wheel,'wheel','cylinder',(drive['wheel_radius_m'],drive['wheel_width_m']),mu=drive['wheel_mu'])
+                visual(wheel,'roller','cylinder',(drive['wheel_radius_m']*.75,drive['wheel_width_m']*1.35),(0,0,0,0,0,0),(.48,.53,.42))
+                joint_name=f'{side}_joint' if index==0 else f'{side}_joint_{index}'
+                if side=='left':left_drive_joints.append(joint_name)
+                else:right_drive_joints.append(joint_name)
+                j=add(m,'joint',name=joint_name,type='revolute');add(j,'parent',f'{side}_carrier_{index}');add(j,'child',wheel_name)
+                ax=add(j,'axis');add(ax,'xyz','0 0 -1');lim=add(ax,'limit');add(lim,'effort',drive['effort_limit_Nm']);add(lim,'velocity',drive['velocity_limit_radps'])
+        else:
+            wheel=add(m,'link',name=side+'_wheel');pose(wheel,(drive['wheel_x_m'],y,drive['wheel_z_m'],math.pi/2,0,0));cylinder_inertia(wheel,drive['wheel_mass_kg'],drive['wheel_radius_m'],drive['wheel_width_m'])
+            collision(wheel,'wheel','cylinder',(drive['wheel_radius_m'],drive['wheel_width_m']),mu=drive['wheel_mu'])
+            visual(wheel,'hub','cylinder',(drive['wheel_radius_m']*.55,drive['wheel_width_m']*1.45),(0,0,0,0,0,0),(.48,.53,.42))
+            j=add(m,'joint',name=side+'_joint',type='revolute');add(j,'parent','base_link');add(j,'child',side+'_wheel')
+            axis=add(j,'axis');add(axis,'xyz','0 0 -1');limit=add(axis,'limit');add(limit,'effort',drive['effort_limit_Nm']);add(limit,'velocity',drive['velocity_limit_radps'])
+            if side=='left':left_drive_joints.append('left_joint')
+            else:right_drive_joints.append('right_joint')
+    if not spring_mode:
+        for index,(x,y,z) in enumerate(supports['positions']):
+            radius=supports['radius_m'];name=f'support_{index}'
+            link=add(m,'link',name=name);pose(link,(x,y,z,0,0,0));sphere_inertia(link,supports['mass_kg'],radius)
+            collision(link,'contact','sphere',(radius,),mu=supports['mu']);visual(link,'contact','sphere',(radius,),(0,0,0,0,0,0),(.22,.24,.22))
+            joint=add(m,'joint',name=name+'_fixed',type='fixed');add(joint,'parent','base_link');add(joint,'child',name)
     arm(base,z=body['visual_center_z_m']+.10)
-    add_diffdrive(m,data)
+    add_diffdrive(m,data,left_drive_joints,right_drive_joints)
     sensor=add(base,'sensor',name='imu',type='imu');add(sensor,'always_on','true');add(sensor,'update_rate',50);add(sensor,'topic','/garden/imu');add(sensor,'imu')
     jp=add(m,'plugin',filename='gz-sim-joint-state-publisher-system',name='gz::sim::systems::JointStatePublisher')
-    add(jp,'topic','/garden/joint_states');add(jp,'joint_name','left_joint');add(jp,'joint_name','right_joint');add(jp,'update_rate',100)
+    add(jp,'topic','/garden/joint_states')
+    for name in left_drive_joints+right_drive_joints:add(jp,'joint_name',name)
+    add(jp,'update_rate',100)
     publisher(m)
     E.indent(root);path=ROOT/'models'/kind/'model.sdf';path.parent.mkdir(parents=True,exist_ok=True);E.ElementTree(root).write(path,encoding='utf-8',xml_declaration=True)
 
@@ -113,36 +139,35 @@ def make_xacro(kind,data):
     ixx=body['inertial_mass_kg']*(body['width_m']**2+body['height_m']**2)/12
     iyy=body['inertial_mass_kg']*(body['length_m']**2+body['height_m']**2)/12
     izz=body['inertial_mass_kg']*(body['length_m']**2+body['width_m']**2)/12
-    text=f"""<?xml version='1.0'?>
-<robot xmlns:xacro='http://www.ros.org/wiki/xacro' name='garden_{kind}'>
-  <xacro:property name='variant' value='{kind}'/>
-  <xacro:property name='mass_kg' value='{data['mass_kg']}'/>
-  <xacro:property name='track_gauge' value='{track['gauge_m']}'/>
-  <xacro:property name='wheel_radius' value='{drive['wheel_radius_m']}'/>
-  <xacro:property name='body_clearance' value='{data['clearance']['nominal_body_bottom_m']}'/>
-  <link name='base_link'>
-    <visual name='{body['part_id']}_visual'>
-      <origin xyz='0 0 {body['visual_center_z_m']}' rpy='0 0 0'/>
-      <geometry><box size='{body['length_m']} {body['width_m']} {body['height_m']}'/></geometry>
-    </visual>
-    <collision name='{body['part_id']}_collision'>
-      <origin xyz='0 0 {body['collision_center_z_m']}' rpy='0 0 0'/>
-      <geometry><box size='{body['collision_length_m']} {body['collision_width_m']} {body['collision_height_m']}'/></geometry>
-    </collision>
-    <inertial>
-      <origin xyz='0 0 {body['com_z_m']}' rpy='0 0 0'/>
-      <mass value='{body['inertial_mass_kg']}'/>
-      <inertia ixx='{ixx}' ixy='0' ixz='0' iyy='{iyy}' iyz='0' izz='{izz}'/>
-    </inertial>
-  </link>
-  <link name='left_wheel'><collision name='left_wheel_collision'><geometry><cylinder radius='{drive['wheel_radius_m']}' length='{drive['wheel_width_m']}'/></geometry></collision></link>
-  <link name='right_wheel'><collision name='right_wheel_collision'><geometry><cylinder radius='{drive['wheel_radius_m']}' length='{drive['wheel_width_m']}'/></geometry></collision></link>
-  <joint name='left_joint' type='continuous'><parent link='base_link'/><child link='left_wheel'/><origin xyz='{drive['wheel_x_m']} {track['gauge_m']/2} {drive['wheel_z_m']}' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
-  <joint name='right_joint' type='continuous'><parent link='base_link'/><child link='right_wheel'/><origin xyz='{drive['wheel_x_m']} {-track['gauge_m']/2} {drive['wheel_z_m']}' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
-  <!-- Future CAD references: {body['part_id']}, {track['part_id']}, {supports['part_id']}. Visual and collision geometry remain separate. -->
-</robot>
-"""
-    path=ROOT/'urdf'/f'{kind}.urdf.xacro';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf-8')
+    lines=[
+        "<?xml version='1.0'?>",
+        f"<robot xmlns:xacro='http://www.ros.org/wiki/xacro' name='garden_{kind}'>",
+        f"  <xacro:property name='variant' value='{kind}'/>",
+        f"  <xacro:property name='mass_kg' value='{data['mass_kg']}'/>",
+        f"  <xacro:property name='track_gauge' value='{track['gauge_m']}'/>",
+        f"  <xacro:property name='wheel_radius' value='{drive['wheel_radius_m']}'/>",
+        f"  <xacro:property name='body_clearance' value='{data['clearance']['nominal_body_bottom_m']}'/>",
+        "  <link name='base_link'>",
+        f"    <visual name='{body['part_id']}_visual'><origin xyz='0 0 {body['visual_center_z_m']}' rpy='0 0 0'/><geometry><box size='{body['length_m']} {body['width_m']} {body['height_m']}'/></geometry></visual>",
+        f"    <collision name='{body['part_id']}_collision'><origin xyz='0 0 {body['collision_center_z_m']}' rpy='0 0 0'/><geometry><box size='{body['collision_length_m']} {body['collision_width_m']} {body['collision_height_m']}'/></geometry></collision>",
+        f"    <inertial><origin xyz='0 0 {body['com_z_m']}' rpy='0 0 0'/><mass value='{body['inertial_mass_kg']}'/><inertia ixx='{ixx}' ixy='0' ixz='0' iyy='{iyy}' iyz='0' izz='{izz}'/></inertial>",
+        "  </link>"
+    ]
+    if supports['type']=='spring_bogie_rollers':
+        for side,y in [('left',track['gauge_m']/2),('right',-track['gauge_m']/2)]:
+            for index,x in enumerate(supports['positions_x_m']):
+                carrier=f'{side}_carrier_{index}';wheel=f'{side}_wheel' if index==0 else f'{side}_wheel_{index}';joint=f'{side}_joint' if index==0 else f'{side}_joint_{index}'
+                lines.append(f"  <link name='{carrier}'/>")
+                lines.append(f"  <joint name='{side}_suspension_{index}' type='prismatic'><parent link='base_link'/><child link='{carrier}'/><origin xyz='{x} {y} {drive['wheel_z_m']}' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='{-supports['travel_m']}' upper='{supports['travel_m']}' effort='2500' velocity='1.5'/></joint>")
+                lines.append(f"  <link name='{wheel}'><visual name='{supports['part_id']}_visual_{side}_{index}'><geometry><cylinder radius='{drive['wheel_radius_m']}' length='{drive['wheel_width_m']}'/></geometry></visual><collision name='{supports['part_id']}_collision_{side}_{index}'><geometry><cylinder radius='{drive['wheel_radius_m']}' length='{drive['wheel_width_m']}'/></geometry></collision></link>")
+                lines.append(f"  <joint name='{joint}' type='continuous'><parent link='{carrier}'/><child link='{wheel}'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>")
+    else:
+        for side,y in [('left',track['gauge_m']/2),('right',-track['gauge_m']/2)]:
+            lines.append(f"  <link name='{side}_wheel'><collision name='{side}_wheel_collision'><geometry><cylinder radius='{drive['wheel_radius_m']}' length='{drive['wheel_width_m']}'/></geometry></collision></link>")
+            lines.append(f"  <joint name='{side}_joint' type='continuous'><parent link='base_link'/><child link='{side}_wheel'/><origin xyz='{drive['wheel_x_m']} {y} {drive['wheel_z_m']}' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>")
+    lines.append(f"  <!-- Future CAD references: {body['part_id']}, {track['part_id']}, {supports['part_id']}. Visual and collision geometry remain separate. -->")
+    lines.append('</robot>')
+    path=ROOT/'urdf'/f'{kind}.urdf.xacro';path.parent.mkdir(parents=True,exist_ok=True);path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
 
 def main():
     spec=load_spec()

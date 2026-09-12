@@ -19,6 +19,20 @@ class RobotSpecTests(unittest.TestCase):
         self.assertEqual(len(ids),len(set(ids)))
         text=json.dumps(spec['variants'])
         for part_id in ids:self.assertIn(part_id,text)
+
+    def test_bogie_variant_has_sprung_roller_spec(self):
+        spec=load_spec();bogie=spec['variants']['tracked_bogie']
+        self.assertEqual(bogie['supports']['type'],'spring_bogie_rollers')
+        self.assertEqual(len(bogie['supports']['positions_x_m']),6)
+        self.assertGreater(bogie['supports']['travel_m'],0.05)
+        self.assertGreater(bogie['supports']['spring_stiffness_N_m'],1000)
+        model=E.parse(ROOT/bogie['cad_references']['sdf']).getroot().find('model')
+        left_joints=model.findall("plugin[@name='gz::sim::systems::DiffDrive']/left_joint")
+        right_joints=model.findall("plugin[@name='gz::sim::systems::DiffDrive']/right_joint")
+        self.assertEqual(len(left_joints),6)
+        self.assertEqual(len(right_joints),6)
+        self.assertEqual(len(model.findall("joint[@type='prismatic']")),12)
+
     def test_improved_variant_changes_mechanical_geometry(self):
         spec=load_spec();old=spec['variants']['tracked'];new=spec['variants']['tracked_improved']
         self.assertGreater(new['drive']['wheel_radius_m'],old['drive']['wheel_radius_m'])
@@ -36,4 +50,9 @@ class ChassisBenchmarkArtifactTests(unittest.TestCase):
         self.assertTrue(by[('tracked_improved','step_30')]['succeeded'])
         self.assertTrue(by[('tracked_improved','step_50')]['succeeded'])
         self.assertFalse(by[('tracked_improved','step_80')]['succeeded'])
+        self.assertTrue(by[('tracked_bogie','step_80')]['succeeded'])
+        self.assertFalse(by[('tracked_bogie','step_100')]['succeeded'])
+        self.assertTrue(by[('tracked_bogie','ramp_30')]['succeeded'])
+        self.assertFalse(by[('tracked_bogie','ramp_40')]['succeeded'])
+        self.assertTrue(by[('tracked_bogie','diagonal_wave')]['succeeded'])
 if __name__=='__main__':unittest.main()

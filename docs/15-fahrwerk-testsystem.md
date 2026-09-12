@@ -7,31 +7,32 @@ Stand 2026-09-12. Dieser Schritt richtet das Projekt staerker auf mechanische En
 Die verstreuten Fahrwerkskonstanten sind in `config/robot-spec.json` gebuendelt. Daraus werden die SDF-Modelle und die vorbereitenden Xacro-Dateien erzeugt:
 
 - `models/tracked/model.sdf`: Baseline des bisherigen starren Platzhalter-Fahrwerks.
-- `models/tracked_improved/model.sdf`: verbesserte Kettengeometrie mit hoeherem Unterboden und groesseren vorderen angetriebenen Umlenkrollen.
-- `urdf/tracked.urdf.xacro` und `urdf/tracked_improved.urdf.xacro`: zentrale Robotikbeschreibung fuer den spaeteren URDF/Xacro-Pfad.
+- `models/tracked_improved/model.sdf`: Uebergangsvariante mit hoeherem Unterboden und groesseren vorderen angetriebenen Umlenkrollen. Diese Variante ist noch kein gutes Raupenmodell.
+- `models/tracked_bogie/model.sdf`: erstes federndes Raupen-Pruefmodell mit sechs angetriebenen, vertikal gefuehrten Laufrollen pro Seite.
+- `urdf/tracked*.urdf.xacro`: zentrale Robotikbeschreibung fuer den spaeteren URDF/Xacro-Pfad.
 
 Jedes strukturelle Bauteil hat jetzt eine `part_id`, Materialnotiz, Masse-/Massreferenz und einen Platzhalter fuer spaetere CAD-Dateien. Visual- und Collision-Geometrien sind getrennt. Es gibt keine monolithische Gesamt-STL.
 
 ## Warum das bisherige Modell an Hindernissen scheitert
 
-Die Baseline ist physikalisch kein Kettenlaufwerk. Sie besteht aus zwei mittigen Antriebsraedern und vier starr mit dem Chassis verbundenen, niedrig reibenden Kugelstuetzen. Die dekorativen Kettenbaender haben keine Kollision und keine Masse. Bei kleinen Stufen oder Rampeneinfahrten trifft der starre Stuetz-/Radverbund auf einen diskreten Kontaktuebergang. Die Raeder drehen fast mit Sollgeschwindigkeit, der Koerper bleibt aber stehen; der Schlupf liegt bei etwa 99 Prozent.
+Die Baseline ist physikalisch kein Kettenlaufwerk. Sie besteht aus zwei mittigen Antriebsraedern und vier starr mit dem Chassis verbundenen, niedrig reibenden Kugelstuetzen. Die dekorativen Kettenbaender haben keine Kollision und keine Masse. Das war fuer fruehe Fahrbefehle ausreichend, aber fuer die mechanische Bewertung eines Raupenfahrwerks fachlich zu grob. Bei kleinen Stufen oder Rampeneinfahrten trifft der starre Stuetz-/Radverbund auf einen diskreten Kontaktuebergang. Die Raeder drehen fast mit Sollgeschwindigkeit, der Koerper bleibt aber stehen; der Schlupf liegt bei etwa 99 Prozent.
 
 Wichtig: In den Stufenlaeufen setzt der Unterboden nicht auf. Der Fehler ist deshalb nicht primaer zu geringe Chassisfreiheit, sondern die Kombination aus schlechtem Anfahrwinkel, starren Stuetzpunkten, fehlender Raupenauflage und ungünstiger Lastuebertragung in der Platzhalterkinematik.
 
 ## Geometrieaenderung
 
-| Parameter | Baseline `tracked` | Neue Variante `tracked_improved` |
-| --- | ---: | ---: |
-| Spurweite | 0,52 m | 0,70 m |
-| grobe Gesamtbreite | 0,65 m | 0,86 m |
-| Laenge Kettenhuelle | 0,54 m | 0,86 m |
-| wirksamer Antriebsraddurchmesser | 0,24 m | 0,36 m |
-| Antriebsradposition x | 0,00 m | 0,16 m nach vorn |
-| nominelle Chassisfreiheit | 0,17 m | 0,25 m |
-| Gelenkmomentlimit | 40 Nm | 80 Nm |
-| Stuetzkonzept | vier starre Kugelstuetzen | zwei hintere Stuetzrollen-Platzhalter |
+| Parameter | Baseline `tracked` | Uebergang `tracked_improved` | Federrollen `tracked_bogie` |
+| --- | ---: | ---: | ---: |
+| Spurweite | 0,52 m | 0,70 m | 0,70 m |
+| grobe Gesamtbreite | 0,65 m | 0,86 m | 0,86 m |
+| Laenge Kettenhuelle | 0,54 m | 0,86 m | 0,92 m |
+| wirksamer Rollendurchmesser | 0,24 m | 0,36 m | 0,17 m, sechs Rollen je Seite |
+| nominelle Chassisfreiheit | 0,17 m | 0,25 m | 0,27 m |
+| Federweg | keiner | keiner | ±70 mm je Laufrolle |
+| Gelenkmomentlimit | 40 Nm | 80 Nm | 55 Nm je Rolle |
+| Stuetzkonzept | vier starre Kugelstuetzen | zwei hintere Stuetzrollen-Platzhalter | 12 gefederte Laufrollen |
 
-Die neue Variante ist immer noch ein Platzhalter. Sie ist eine mechanisch sinnvollere Kontaktgeometrie fuer die naechsten Tests, kein fertig konstruiertes Raupenfahrwerk.
+`tracked_improved` bleibt nur eine Uebergangsvariante. Das erste brauchbare Raupen-Pruefmodell ist `tracked_bogie`: Mehrpunktauflage, drehende Laufrollen und Feder-/Daempferfuehrung bilden das erwartete Kriechen ueber kleinere Hindernisse erstmals physikalisch ab.
 
 ## Gazebo-Testgelaende
 
@@ -58,23 +59,23 @@ python3 scripts/chassis_benchmark.py --variants tracked tracked_improved --outpu
 
 ## Ergebnis der aktuellen Matrix
 
-| Testfall | Baseline | Neue Variante |
-| --- | --- | --- |
-| 30-mm-Stufe | nein, 0,30 m | ja, 2,06 m |
-| 50-mm-Stufe | nein, 0,29 m | ja, 2,03 m |
-| 80-mm-Stufe | nein, 0,29 m | nein, 0,32 m |
-| 100-mm-Stufe | nein, 0,29 m | nein, 0,31 m |
-| 150-mm-Stufe | nein, 0,29 m | nein, 0,29 m |
-| 10-Grad-Rampe | nein, 0,26 m | ja, 2,07 m |
-| 20-Grad-Rampe | nein, 0,26 m | ja, 2,02 m |
-| 30-Grad-Rampe | nein, 0,25 m | nein, 0,88 m |
-| 40-Grad-Rampe | nein, 0,25 m | nein, 0,85 m |
-| Graben | ja | ja |
-| diagonale Bodenwelle | nein | nein |
-| Seitenneigung | nein | ja |
-| schmale Durchfahrt | ja | ja |
+| Testfall | Baseline | Uebergang | Federrollen/Bogie |
+| --- | --- | --- | --- |
+| 30-mm-Stufe | nein, 0,30 m | ja, 2,06 m | ja, 2,08 m |
+| 50-mm-Stufe | nein, 0,29 m | ja, 2,03 m | ja, 2,05 m |
+| 80-mm-Stufe | nein, 0,29 m | nein, 0,32 m | ja, 2,01 m |
+| 100-mm-Stufe | nein, 0,29 m | nein, 0,31 m | nein, 0,18 m |
+| 150-mm-Stufe | nein, 0,29 m | nein, 0,29 m | nein, 0,18 m |
+| 10-Grad-Rampe | nein, 0,26 m | ja, 2,07 m | ja, 2,07 m |
+| 20-Grad-Rampe | nein, 0,26 m | ja, 2,02 m | ja, 2,01 m |
+| 30-Grad-Rampe | nein, 0,25 m | nein, 0,88 m | ja, 1,92 m |
+| 40-Grad-Rampe | nein, 0,25 m | nein, 0,85 m | nein, 0,90 m |
+| Graben | ja | ja | ja |
+| diagonale Bodenwelle | nein | nein | ja |
+| Seitenneigung | nein | ja | ja |
+| schmale Durchfahrt | ja | ja | ja |
 
-Die neue Hindernisgrenze liegt mit dieser Ersatzgeometrie bei 50 mm Stufenhoehe und 20 Grad Rampe. 80 mm Stufen und 30 Grad Rampe verlangen ein anderes Fahrwerksmodell, wahrscheinlich mehr echte Aufstandslaenge, nachgiebige Laufrollen oder Bogie-/Pendelrollen statt nur groesserer Frontrolle und mehr Moment.
+Die neue Hindernisgrenze liegt mit dem federnden Bogie-Modell bei 80 mm Stufenhoehe und 30 Grad Rampe. 100 mm Stufen und 40 Grad Rampe bleiben offen. Die Verbesserung entsteht durch Federweg und Lastverteilung, nicht durch eine Browserdarstellung oder eine neue Autonomiefunktion.
 
 ## Dashboard
 
@@ -89,4 +90,4 @@ Die Weboberflaeche zeigt jetzt je Variante zentrale Fahrwerksparameter und die l
 - Bodenmodell fuer schweren Kirchwerder Marschboden mit reduzierter Tragfaehigkeit und Schlupf;
 - Bauteilmaterialien und Wandstaerken fuer 3D-Druck-Prototypen mit Metallachsen/Motoren.
 
-Die Richtung ist damit klar: Die reine Blockade an kleinen Steinen ist mit der verbesserten Frontrollengeometrie bis 50 mm beseitigt. Fuer echte Gartenrobustheit brauchen wir als naechstes ein Fahrwerk mit nachgiebiger, laengerer und seitlich stabiler Aufstandsgeometrie.
+Die Richtung ist damit klar: Die reine Blockade an kleinen Steinen ist erst mit der gefederten Mehrrollenauflage fachlich geloest. Fuer echte Gartenrobustheit brauchen wir als naechstes eine bessere Kettenfuehrung, ein validiertes Bodenmodell und eine Entscheidung, ob die reale Mechanik mit Bogies, Pendelrollen oder einem Gazebo-Track-System weitergefuehrt wird.

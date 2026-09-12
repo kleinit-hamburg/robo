@@ -11,6 +11,12 @@
     "mode": "Engineering-Fahrwerk",
     "description": "Verbesserter Platzhalter mit 0,70 m Spurweite, hoeherem Unterboden und grossen vorderen angetriebenen Umlenkrollen. Noch keine echte deformierbare Kette."
   },
+  "tracked_bogie": {
+    "name": "Kette Bogie/Federrollen",
+    "drive_ready": true,
+    "mode": "Federndes Raupen-Pruefmodell",
+    "description": "Mechanisches Raupen-Pruefmodell mit sechs gefederten Laufrollen pro Seite. Die Rollen werden gemeinsam ueber DiffDrive angetrieben; die Kettenhuelle bleibt Visual/CAD-Referenz."
+  },
   "quadruped": {
     "name": "Quadruped mit Manipulator",
     "drive_ready": false,

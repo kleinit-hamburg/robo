@@ -11,7 +11,8 @@
     "command_v_mps": 0.15,
     "variants": [
       "tracked",
-      "tracked_improved"
+      "tracked_improved",
+      "tracked_bogie"
     ],
     "cases": [
       "step_30",
@@ -173,6 +174,72 @@
       "variant": "tracked_improved",
       "case": "narrow_gate",
       "world_sha256": "b2500bd85c59e76ea30db4735da4dccf51375614868b447f8be0c0d06e7e6ad8"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "step_30",
+      "world_sha256": "09cd3cd460314310b969185d8372e9e581c23397855576abcb16ecf32eb6db8b"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "step_50",
+      "world_sha256": "4e2137d9114ead56926bcedcfb4bf09bd8035a8153c9ed5447779e084f7d4977"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "step_80",
+      "world_sha256": "0db17836a14d99b284a10d4cce856f03a7a943bfb4a350c2b1b191a08b8e2848"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "step_100",
+      "world_sha256": "a1ad9a12355c13c45da02c3ee3c8cb3194d3a4c04eadbfe54372fc4b5d8f3606"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "step_150",
+      "world_sha256": "229e12eebf357809d8ae169e5cae6e10447733c87d461086d466830d0c2a3091"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "ramp_10",
+      "world_sha256": "f352d63857f2c0de7aadc2bbc38f20878a7c61481f38bd9d9236ea16bf2c06f3"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "ramp_20",
+      "world_sha256": "2c5b541a7d419ee4f3d5938e3a4d5752723c355356f306cfdcac3daea472e523"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "ramp_30",
+      "world_sha256": "cd4c7a537aa440fdb2bed4235a20cb9a2dfcd827ba5d9a0a1fffa84cad248165"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "ramp_40",
+      "world_sha256": "a31d168d70b1c8e53448b7ef95aba813963d74d434523e88c74e0a0f8e8ef30c"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "trench",
+      "world_sha256": "0bf383661b51802e0f2328ceb357f4cf7471d3cd1c79ba00498fc9b07f3774ec"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "diagonal_wave",
+      "world_sha256": "5bba0392f96bd56beece16c5c1639f723115a7b7ff30ac8ed30a21c1273e0f66"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "side_slope",
+      "world_sha256": "226156a41afaaee253a4c8956ec630646d059db0f71c117746c320bb0d04dc65"
+    },
+    {
+      "variant": "tracked_bogie",
+      "case": "narrow_gate",
+      "world_sha256": "3e52be93788f1c114d9e7057e3c63a1f4bd6df5b84ae2781d20aca05dbb17a16"
     }
-  ]
+  ],
+  "merged_bogie_manifest": "results/chassis-bogie-main-20260912/manifest.json"
 }

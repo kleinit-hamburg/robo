@@ -160,6 +160,80 @@
         "sdf": "models/tracked_improved/model.sdf",
         "cad_file": null
       }
+    },
+    "tracked_bogie": {
+      "name": "Kette Bogie/Federrollen",
+      "description": "Mechanisches Raupen-Pruefmodell mit sechs gefederten Laufrollen pro Seite. Die Rollen werden gemeinsam ueber DiffDrive angetrieben; die Kettenhuelle bleibt Visual/CAD-Referenz.",
+      "drive_ready": true,
+      "mode": "Federndes Raupen-Pruefmodell",
+      "mass_kg": 65.0,
+      "body": {
+        "part_id": "TRK3-BASE-001",
+        "length_m": 0.92,
+        "width_m": 0.54,
+        "height_m": 0.22,
+        "collision_length_m": 0.78,
+        "collision_width_m": 0.46,
+        "collision_height_m": 0.18,
+        "collision_center_z_m": 0.36,
+        "visual_center_z_m": 0.36,
+        "inertial_mass_kg": 52.4,
+        "com_z_m": 0.35,
+        "material": "virtuell: 3D-Druck/Alu-Rahmen mit zentraler Batteriemasse"
+      },
+      "track": {
+        "part_id": "TRK3-BELT-VIS-001",
+        "gauge_m": 0.7,
+        "belt_width_m": 0.16,
+        "visual_length_m": 0.92,
+        "visual_height_m": 0.26,
+        "visual_center_z_m": 0.17,
+        "front_x_m": 0.42,
+        "rear_x_m": -0.42,
+        "visual_radius_m": 0.13,
+        "ground_contact_length_m": 0.82,
+        "approach_angle_deg": 45.0
+      },
+      "drive": {
+        "wheel_radius_m": 0.085,
+        "wheel_width_m": 0.12,
+        "wheel_mass_kg": 1.0,
+        "wheel_x_m": 0.0,
+        "wheel_z_m": 0.13,
+        "wheel_mu": 0.9,
+        "effort_limit_Nm": 55.0,
+        "velocity_limit_radps": 12.0,
+        "max_linear_velocity_mps": 0.22,
+        "max_angular_velocity_radps": 0.5
+      },
+      "supports": {
+        "type": "spring_bogie_rollers",
+        "part_id": "TRK3-ROLLER-SUSP-001",
+        "radius_m": 0.085,
+        "mass_kg": 1.0,
+        "carrier_mass_kg": 0.05,
+        "mu": 0.9,
+        "spring_stiffness_N_m": 6500,
+        "damping_N_s_m": 120,
+        "travel_m": 0.07,
+        "positions_x_m": [
+          -0.38,
+          -0.23,
+          -0.08,
+          0.07,
+          0.22,
+          0.37
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.27,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked_bogie.urdf.xacro",
+        "sdf": "models/tracked_bogie/model.sdf",
+        "cad_file": null
+      }
     }
   },
   "structural_parts": [
@@ -197,6 +271,24 @@
       "part_id": "TRK2-REAR-SKID-001",
       "role": "rear support contact placeholder before bogie rollers",
       "material": "virtual contact proxy",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK3-BASE-001",
+      "role": "raised chassis for spring roller track study",
+      "material": "virtual 3D-print/aluminium estimate",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK3-BELT-VIS-001",
+      "role": "track envelope and future belt CAD reference",
+      "material": "virtual rubber visual",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK3-ROLLER-SUSP-001",
+      "role": "spring guided bogie roller module",
+      "material": "virtual bearing/shaft/spring module",
       "cad_file": null
     }
   ]

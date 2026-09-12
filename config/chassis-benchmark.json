@@ -10,7 +10,8 @@
   "command_v_mps": 0.15,
   "variants": [
     "tracked",
-    "tracked_improved"
+    "tracked_improved",
+    "tracked_bogie"
   ],
   "cases": [
     "step_30",

@@ -4,7 +4,7 @@ Stand 2026-09-12. FreeCAD und Blender sind als lokale Modellierungswerkzeuge in 
 
 ## Werkzeuge
 
-- Blender 4.0.2 erzeugt GLB-Visuals fuer Bodenoberflaeche, Kartoffeldamm, Kartoffelkraut, Unkraut und eine erste Kettenroboter-Visualhuelle.
+- Blender 4.0.2 erzeugt GLB-Visuals fuer Bodenoberflaeche mit Krume/Furchen, Kartoffeldamm, mehrere Kartoffelkraut-Varianten, Unkraut und eine erste Kettenroboter-Visualhuelle.
 - FreeCAD 1.1.1 erzeugt parametrische CAD-Referenzen als STEP/STL.
 - FreeCAD-GUI ist auf dieser Maschine wegen Display/Qt nicht nutzbar; `freecad.cmd` funktioniert im Skriptmodus.
 
@@ -19,6 +19,8 @@ Das Skript erzeugt:
 - `assets/visual/soil_patch_6x4.glb`
 - `assets/visual/potato_ridge_340cm.glb`
 - `assets/visual/potato_haulm.glb`
+- `assets/visual/potato_haulm_b.glb`
+- `assets/visual/potato_haulm_c.glb`
 - `assets/visual/weed_broadleaf.glb`
 - `assets/visual/tracked_robot_shell.glb`
 - `assets/cad/TRK-BASE-001-visual-reference.step`

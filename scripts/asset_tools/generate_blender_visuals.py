@@ -77,36 +77,68 @@ def cyl_obj(name, loc, radius, depth, material, vertices=24, rot=(0, 0, 0)):
     return obj
 
 
-def leaf(name, loc, rot, scale, material):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=16, location=loc, rotation=rot)
-    obj = bpy.context.object
-    obj.name = name
-    obj.scale = scale
+def leaf(name, loc, rot, length, width, material, bend=0.015):
+    verts = [(0, 0, 0)]
+    outline = []
+    steps = 6
+    for i in range(steps + 1):
+        t = i / steps
+        x = length * t
+        w = width * math.sin(math.pi * t) * (0.85 + 0.15 * math.cos(2 * math.pi * t))
+        z = bend * math.sin(math.pi * t)
+        outline.append((x, w, z))
+    for i in range(steps - 1, -1, -1):
+        t = i / steps
+        x = length * t
+        w = -width * math.sin(math.pi * t) * (0.85 + 0.15 * math.cos(2 * math.pi * t))
+        z = bend * math.sin(math.pi * t)
+        outline.append((x, w, z))
+    verts.extend(outline)
+    faces = []
+    for i in range(1, len(verts)):
+        faces.append((0, i, 1 if i == len(verts) - 1 else i + 1))
+    mesh = bpy.data.meshes.new(name + '_mesh')
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    obj.rotation_euler = rot
     assign(obj, material)
     return obj
 
 
-def potato_haulm():
+def potato_haulm_variant(filename, phase, height_scale=1.0, spread=1.0):
     clear()
-    cyl_obj('main_stem', (0, 0, 0.18), .014, .36, stem_mat, 14)
-    branch_angles = [-.9, -.35, .2, .8, 1.35]
+    cyl_obj('main_stem', (0, 0, 0.18 * height_scale), .012, .34 * height_scale, stem_mat, 14)
+    branch_angles = [-1.25, -.72, -.25, .35, .92, 1.55]
     for i, a in enumerate(branch_angles):
-        x, y, z = .045 * math.cos(a), .045 * math.sin(a), .21 + .035 * i
-        cyl_obj(f'branch_{i}', (x / 2, y / 2, z), .006, .13, stem_mat, 10, rot=(1.12, .18, a + math.pi / 2))
-    for i, a in enumerate([-.95, -.55, -.15, .25, .65, 1.05, 1.45, 2.1, -1.55]):
-        r = .065 + .012 * (i % 3)
-        z = .22 + .026 * i
-        sx = .070 + .012 * (i % 2)
-        sy = .024 + .004 * (i % 3)
-        leaf(f'leaf_{i}', (r * math.cos(a), r * math.sin(a), z), (.45 + .08 * (i % 2), .12, a), (sx, sy, .007), leaf_light if i % 4 == 0 else leaf_mat)
-    export('potato_haulm.glb')
+        x, y, z = .050 * spread * math.cos(a + phase), .050 * spread * math.sin(a + phase), (.19 + .030 * i) * height_scale
+        cyl_obj(f'branch_{i}', (x / 2, y / 2, z), .0048, .14 * spread, stem_mat, 10, rot=(1.08, .22, a + phase + math.pi / 2))
+    angles = [-1.55, -1.10, -.70, -.32, .05, .42, .80, 1.18, 1.62, 2.10, 2.72]
+    for i, a in enumerate(angles):
+        aa = a + phase + .10 * math.sin(i)
+        r = (.045 + .012 * (i % 4)) * spread
+        z = (.20 + .021 * i + .006 * math.sin(i * 1.7)) * height_scale
+        length = (.105 + .018 * ((i + 1) % 3)) * spread
+        width = (.030 + .006 * (i % 3)) * spread
+        loc = (r * math.cos(aa), r * math.sin(aa), z)
+        rot = (.38 + .08 * (i % 2), .10 * math.sin(i), aa)
+        leaf(f'leaf_{i}', loc, rot, length, width, leaf_light if i % 5 == 0 else leaf_mat, bend=.010 + .004 * (i % 3))
+    export(filename)
+
+
+def potato_haulm():
+    potato_haulm_variant('potato_haulm.glb', 0.0, 1.00, 1.00)
+    potato_haulm_variant('potato_haulm_b.glb', 0.55, .88, 1.12)
+    potato_haulm_variant('potato_haulm_c.glb', -0.42, 1.10, .92)
 
 
 def weed():
     clear()
     cyl_obj('weed_stem', (0, 0, .08), .005, .16, stem_mat, 10)
     for i, a in enumerate([0, 1.4, 2.8, 4.2, 5.3]):
-        leaf(f'weed_leaf_{i}', (.030 * math.cos(a), .030 * math.sin(a), .10 + .018 * i), (.60, .08, a), (.045, .015, .006), weed_mat)
+        leaf(f'weed_leaf_{i}', (.020 * math.cos(a), .020 * math.sin(a), .10 + .018 * i), (.60, .08, a), .060 if i < 3 else .045, .018, weed_mat, bend=.006)
     export('weed_broadleaf.glb')
 
 
@@ -168,6 +200,20 @@ def soil_patch():
     obj = bpy.data.objects.new('visual_soil_surface', mesh)
     bpy.context.collection.objects.link(obj)
     assign(obj, soil)
+
+    for k, y in enumerate([-0.62, 0.0, 0.62]):
+        strip = cube_obj(f'darker_furrow_{k}', (0, y, .004), (5.8, .045, .006), soil, .004)
+        strip.rotation_euler.z = .015 * (k - 1)
+    for i in range(95):
+        x = random.uniform(-2.8, 2.8)
+        y = random.uniform(-1.85, 1.85)
+        if abs(y - .31) < .24 or abs(y + .31) < .24:
+            continue
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=4, radius=random.uniform(.006, .020), location=(x, y, random.uniform(.004, .016)))
+        crumb = bpy.context.object
+        crumb.name = f'field_crumb_{i}'
+        crumb.scale.y = random.uniform(.55, 1.6)
+        assign(crumb, soil_light if i % 5 == 0 else soil)
     export('soil_patch_6x4.glb')
 
 

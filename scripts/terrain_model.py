@@ -33,7 +33,8 @@ def terrain(world,profile):
     def potato_plant(name,x,y,yaw=0,scale=1):
         link=model_link(name,(x,y,0),(0,0,yaw))
         geom(link,'collision','cylinder',(.035,.32),(0,0,.16,0,0,0),mu='0.2')
-        geom(link,'visual_haulm_mesh','mesh',('assets/visual/potato_haulm.glb',(scale,scale,scale)),(0,0,0,0,0,0),'0.20 0.42 0.16 1')
+        variant='potato_haulm.glb' if int(abs(x*100)+abs(y*100))%3==0 else 'potato_haulm_b.glb' if int(abs(x*100)+abs(y*100))%3==1 else 'potato_haulm_c.glb'
+        geom(link,'visual_haulm_mesh','mesh',('assets/visual/'+variant,(scale,scale,scale)),(0,0,0,0,0,0),'0.20 0.42 0.16 1')
     def weed(name,x,y,yaw=0,scale=1,root_peak='75'):
         link=model_link(name,(x,y,0),(0,0,yaw))
         geom(link,'collision','cylinder',(.018,.18),(0,0,.09,0,0,0),mu='0.35')

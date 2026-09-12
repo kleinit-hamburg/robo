@@ -131,6 +131,8 @@ class VisualAssetPipelineTests(unittest.TestCase):
         for rel in (
             'assets/visual/potato_ridge_340cm.glb',
             'assets/visual/potato_haulm.glb',
+            'assets/visual/potato_haulm_b.glb',
+            'assets/visual/potato_haulm_c.glb',
             'assets/visual/weed_broadleaf.glb',
             'assets/visual/soil_patch_6x4.glb',
             'assets/visual/tracked_robot_shell.glb',

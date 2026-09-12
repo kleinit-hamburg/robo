@@ -5,8 +5,8 @@ const $=id=>document.getElementById(id);
 let renderer;
 try{renderer=new THREE.WebGLRenderer({antialias:true});}
 catch(error){$('error').hidden=false;$('error').textContent='Die 3D-Ansicht benötigt WebGL. Bitte Grafikbeschleunigung im Browser prüfen.';throw error;}
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.setClearColor(0xe6ece3);$('canvas').appendChild(renderer.domElement);
-const scene=new THREE.Scene();scene.up.set(0,0,1);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;renderer.setClearColor(0xe9efe4);$('canvas').appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.up.set(0,0,1);scene.fog=new THREE.Fog(0xe9efe4,5.5,13);
 const camera=new THREE.PerspectiveCamera(42,1,.01,100);camera.up.set(0,0,1);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=1.2;controls.maxDistance=20;controls.maxPolarAngle=Math.PI*.48;
 const robotCenter=new THREE.Vector3(-.6,-.7,.3);
@@ -53,10 +53,11 @@ async function loadScene(){
  try{
   const response=await fetch('/api/scene');if(!response.ok)throw Error('Szene nicht erreichbar');const data=await response.json();
   active=null;scene.remove(sceneGroup);sceneGroup.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});sceneGroup=new THREE.Group();scene.add(sceneGroup);frames.clear();
-  revision=data.revision;catalog=data.catalog;robotSpec=data.robot_spec||{};benchmark=data.benchmark||[];$('profile').value=data.world_profile||'garden';grid.visible=(data.world_profile||'garden')!=='potato_ridge';renderConceptOptions(data.concept);const info=catalog[data.concept];driveReady=info.drive_ready;
+  revision=data.revision;catalog=data.catalog;robotSpec=data.robot_spec||{};benchmark=data.benchmark||[];const profile=data.world_profile||'garden';$('profile').value=profile;grid.visible=profile!=='potato_ridge';renderConceptOptions(data.concept);const info=catalog[data.concept];driveReady=info.drive_ready;
   $('scene-title').textContent=(data.world_profile==='potato_ridge'?'KARTOFFELDAMM · 62 CM REIHEN · VISUAL-PROXY':'ROBOTER-TESTFELD · 6 × 4 M');$('mode').textContent=info.mode;$('mode').className='mode'+(driveReady?'':' preview');$('concept-note').textContent=info.description;renderEngineering(data.concept);
   for(const model of data.objects){
    const group=new THREE.Group();setPose(group,model.pose);sceneGroup.add(group);frames.set(model.name,group);
+   if(profile==='potato_ridge'&&model.name==='ground')continue;
    for(const link of model.links){
     const linkGroup=new THREE.Group();setPose(linkGroup,link.pose);group.add(linkGroup);frames.set(link.frame,linkGroup);
     for(const visual of link.visuals){

@@ -119,7 +119,11 @@ class Application:
         self.replace_world('tracked')
         self.spin_thread=threading.Thread(target=self.spin,daemon=True);self.spin_thread.start()
     def spin(self):
-        while not self.quit.is_set() and self.rclpy.ok():self.rclpy.spin_once(self.node,timeout_sec=.1)
+        while not self.quit.is_set() and self.rclpy.ok():
+            try:self.rclpy.spin_once(self.node,timeout_sec=.1)
+            except Exception:
+                if self.quit.is_set() or not self.rclpy.ok():break
+                raise
     def on_pose(self,msg):
         with self.lock:
             if self.switching:return

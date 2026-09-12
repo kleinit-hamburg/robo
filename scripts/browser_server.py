@@ -68,11 +68,13 @@ def build_world(concept, path, profile="garden"):
             ET.SubElement(mesh,'uri').text='file://'+str((ROOT/'assets/visual/tracked_robot_shell.glb').resolve())
             scale='1 1 1'
             if concept=='tracked_inrow_narrow':scale='.82 .55 .75'
+            elif concept=='tracked_overrow_belt06':scale='1 .68 1.20'
+            elif concept=='tracked_overrow_belt08':scale='1 .78 1.23'
             elif concept=='tracked_overrow_high_clearance':scale='1 .88 1.25'
             ET.SubElement(mesh,'scale').text=scale
     start_y=-0.8
     if profile=='potato_ridge':
-        if concept=='tracked_overrow_high_clearance':start_y=-0.62
+        if concept in ('tracked_overrow_high_clearance','tracked_overrow_belt08','tracked_overrow_belt06'):start_y=-0.62
         elif concept=='tracked_inrow_narrow':start_y=-0.31
         elif concept.startswith('tracked'):start_y=-0.31
     ET.SubElement(robot,'pose').text=f'0 {start_y} 0.005 0 0 0'
@@ -149,7 +151,7 @@ class Application:
                 except subprocess.TimeoutExpired:os.killpg(process.pid,signal.SIGKILL);process.wait()
             self.logs.pop(name).close()
     def launch(self):
-        initial='tracked_overrow_high_clearance' if self.profile=='potato_ridge' else 'tracked'
+        initial='tracked_overrow_belt08' if self.profile=='potato_ridge' else 'tracked'
         self.replace_world(initial)
         self.spin_thread=threading.Thread(target=self.spin,daemon=True);self.spin_thread.start()
     def spin(self):

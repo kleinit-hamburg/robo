@@ -1,0 +1,62 @@
+<?xml version='1.0'?>
+<robot xmlns:xacro='http://www.ros.org/wiki/xacro' name='garden_tracked_overrow_belt06'>
+  <xacro:property name='variant' value='tracked_overrow_belt06'/>
+  <xacro:property name='mass_kg' value='60.0'/>
+  <xacro:property name='track_gauge' value='0.62'/>
+  <xacro:property name='wheel_radius' value='0.12'/>
+  <xacro:property name='body_clearance' value='0.48'/>
+  <link name='base_link'>
+    <visual name='TRK8-BASE-001_visual'><origin xyz='0 0 0.58' rpy='0 0 0'/><geometry><box size='1.08 0.34 0.24'/></geometry></visual>
+    <collision name='TRK8-BASE-001_collision'><origin xyz='0 0 0.57' rpy='0 0 0'/><geometry><box size='0.86 0.26 0.18'/></geometry></collision>
+    <inertial><origin xyz='0 0 0.47' rpy='0 0 0'/><mass value='41.0'/><inertia ixx='0.5917666666666667' ixy='0' ixz='0' iyy='4.182000000000001' iyz='0' izz='4.380166666666667'/></inertial>
+  </link>
+  <link name='left_carrier_0'/>
+  <joint name='left_suspension_0' type='prismatic'><parent link='base_link'/><child link='left_carrier_0'/><origin xyz='-0.49 0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='left_wheel'><visual name='TRK8-SPRUNG-ROLLER-001_visual_left_0'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_left_0'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='left_joint' type='continuous'><parent link='left_carrier_0'/><child link='left_wheel'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='left_carrier_1'/>
+  <joint name='left_suspension_1' type='prismatic'><parent link='base_link'/><child link='left_carrier_1'/><origin xyz='-0.3 0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='left_wheel_1'><visual name='TRK8-SPRUNG-ROLLER-001_visual_left_1'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_left_1'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='left_joint_1' type='continuous'><parent link='left_carrier_1'/><child link='left_wheel_1'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='left_carrier_2'/>
+  <joint name='left_suspension_2' type='prismatic'><parent link='base_link'/><child link='left_carrier_2'/><origin xyz='-0.11 0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='left_wheel_2'><visual name='TRK8-SPRUNG-ROLLER-001_visual_left_2'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_left_2'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='left_joint_2' type='continuous'><parent link='left_carrier_2'/><child link='left_wheel_2'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='left_carrier_3'/>
+  <joint name='left_suspension_3' type='prismatic'><parent link='base_link'/><child link='left_carrier_3'/><origin xyz='0.11 0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='left_wheel_3'><visual name='TRK8-SPRUNG-ROLLER-001_visual_left_3'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_left_3'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='left_joint_3' type='continuous'><parent link='left_carrier_3'/><child link='left_wheel_3'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='left_carrier_4'/>
+  <joint name='left_suspension_4' type='prismatic'><parent link='base_link'/><child link='left_carrier_4'/><origin xyz='0.3 0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='left_wheel_4'><visual name='TRK8-SPRUNG-ROLLER-001_visual_left_4'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_left_4'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='left_joint_4' type='continuous'><parent link='left_carrier_4'/><child link='left_wheel_4'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='left_carrier_5'/>
+  <joint name='left_suspension_5' type='prismatic'><parent link='base_link'/><child link='left_carrier_5'/><origin xyz='0.49 0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='left_wheel_5'><visual name='TRK8-SPRUNG-ROLLER-001_visual_left_5'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_left_5'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='left_joint_5' type='continuous'><parent link='left_carrier_5'/><child link='left_wheel_5'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='right_carrier_0'/>
+  <joint name='right_suspension_0' type='prismatic'><parent link='base_link'/><child link='right_carrier_0'/><origin xyz='-0.49 -0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='right_wheel'><visual name='TRK8-SPRUNG-ROLLER-001_visual_right_0'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_right_0'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='right_joint' type='continuous'><parent link='right_carrier_0'/><child link='right_wheel'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='right_carrier_1'/>
+  <joint name='right_suspension_1' type='prismatic'><parent link='base_link'/><child link='right_carrier_1'/><origin xyz='-0.3 -0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='right_wheel_1'><visual name='TRK8-SPRUNG-ROLLER-001_visual_right_1'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_right_1'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='right_joint_1' type='continuous'><parent link='right_carrier_1'/><child link='right_wheel_1'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='right_carrier_2'/>
+  <joint name='right_suspension_2' type='prismatic'><parent link='base_link'/><child link='right_carrier_2'/><origin xyz='-0.11 -0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='right_wheel_2'><visual name='TRK8-SPRUNG-ROLLER-001_visual_right_2'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_right_2'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='right_joint_2' type='continuous'><parent link='right_carrier_2'/><child link='right_wheel_2'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='right_carrier_3'/>
+  <joint name='right_suspension_3' type='prismatic'><parent link='base_link'/><child link='right_carrier_3'/><origin xyz='0.11 -0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='right_wheel_3'><visual name='TRK8-SPRUNG-ROLLER-001_visual_right_3'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_right_3'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='right_joint_3' type='continuous'><parent link='right_carrier_3'/><child link='right_wheel_3'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='right_carrier_4'/>
+  <joint name='right_suspension_4' type='prismatic'><parent link='base_link'/><child link='right_carrier_4'/><origin xyz='0.3 -0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='right_wheel_4'><visual name='TRK8-SPRUNG-ROLLER-001_visual_right_4'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_right_4'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='right_joint_4' type='continuous'><parent link='right_carrier_4'/><child link='right_wheel_4'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <link name='right_carrier_5'/>
+  <joint name='right_suspension_5' type='prismatic'><parent link='base_link'/><child link='right_carrier_5'/><origin xyz='0.49 -0.31 0.12' rpy='0 0 0'/><axis xyz='0 0 1'/><limit lower='-0.1' upper='0.1' effort='2500' velocity='1.5'/></joint>
+  <link name='right_wheel_5'><visual name='TRK8-SPRUNG-ROLLER-001_visual_right_5'><geometry><cylinder radius='0.12' length='0.045'/></geometry></visual><collision name='TRK8-SPRUNG-ROLLER-001_collision_right_5'><geometry><cylinder radius='0.12' length='0.045'/></geometry></collision></link>
+  <joint name='right_joint_5' type='continuous'><parent link='right_carrier_5'/><child link='right_wheel_5'/><origin xyz='0 0 0' rpy='1.57079632679 0 0'/><axis xyz='0 0 -1'/></joint>
+  <!-- Future CAD references: TRK8-BASE-001, TRK8-BELT-06CM-001, TRK8-SPRUNG-ROLLER-001. Visual and collision geometry remain separate. -->
+</robot>

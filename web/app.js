@@ -37,7 +37,7 @@ function renderEngineering(concept){
  else{
   if(spec.track){
    const width=spec.track.gauge_m+spec.track.belt_width_m;
-   grid.append(specItem('Masse',fmt(spec.mass_kg,1)+' kg'),specItem('Spurweite',fmt(spec.track.gauge_m*100,0)+' cm'),specItem('Gesamtbreite',fmt(width*100,0)+' cm'),specItem('Rad/Umlenkrolle',fmt(spec.drive.wheel_radius_m*2*1000,0)+' mm'),specItem('Bodenfreiheit',fmt(spec.clearance.nominal_body_bottom_m*1000,0)+' mm'),specItem('Anfahrwinkel',fmt(spec.track.approach_angle_deg,1)+'°'),specItem('Momentlimit',fmt(spec.drive.effort_limit_Nm,0)+' Nm'),specItem('Bauteil-ID',spec.body.part_id));
+   grid.append(specItem('Masse',fmt(spec.mass_kg,1)+' kg'),specItem('Spurweite',fmt(spec.track.gauge_m*100,0)+' cm'),specItem('Kettenbreite',fmt(spec.track.belt_width_m*100,0)+' cm'),specItem('Gesamtbreite',fmt(width*100,0)+' cm'),specItem('Rad/Umlenkrolle',fmt(spec.drive.wheel_radius_m*2*1000,0)+' mm'),specItem('Bodenfreiheit',fmt(spec.clearance.nominal_body_bottom_m*1000,0)+' mm'),specItem('Anfahrwinkel',fmt(spec.track.approach_angle_deg,1)+'°'),specItem('Momentlimit',fmt(spec.drive.effort_limit_Nm,0)+' Nm'),specItem('Bauteil-ID',spec.body.part_id));
   }else if(spec.legs){
    const leg=spec.legs;const sp=spec.support_polygon||{};
    grid.append(specItem('Masse',fmt(spec.mass_kg,1)+' kg'),specItem('Standbreite',fmt((sp.width_m||0)*100,0)+' cm'),specItem('Standlänge',fmt((sp.length_m||0)*100,0)+' cm'),specItem('Beine/Gelenke','4 Beine · 8 Achsen'),specItem('Fußdurchmesser',fmt(leg.foot_radius_m*2*1000,0)+' mm'),specItem('Hüft-/Kniemoment',fmt(leg.hip_effort_Nm,0)+' / '+fmt(leg.knee_effort_Nm,0)+' Nm'),specItem('Arbeitsmodus',spec.mode),specItem('Bauteil-ID',spec.body.part_id));

@@ -383,6 +383,154 @@
         "cad_file": null
       }
     },
+    "tracked_overrow_belt08": {
+      "name": "Kette Überreihe: 8 cm Ketten",
+      "description": "Hochbeinige Kartoffeldamm-Variante mit 8 cm Kettenbreite. Kettenbreite ist als Vergleichsparameter getrennt, damit Breite, Bodendruck, Schlupf und Energiebedarf später objektiv bewertet werden.",
+      "drive_ready": true,
+      "mode": "Kartoffeldamm-Überreihe · Breitenvergleich",
+      "mass_kg": 64.0,
+      "body": {
+        "part_id": "TRK7-BASE-001",
+        "length_m": 1.08,
+        "width_m": 0.38,
+        "height_m": 0.24,
+        "collision_length_m": 0.86,
+        "collision_width_m": 0.3,
+        "collision_height_m": 0.18,
+        "collision_center_z_m": 0.57,
+        "visual_center_z_m": 0.58,
+        "inertial_mass_kg": 45.0,
+        "com_z_m": 0.47,
+        "material": "virtuell: hochbeiniger 3D-Druck/Alu-Rahmen mit einstellbarer Raupenbreite"
+      },
+      "track": {
+        "part_id": "TRK7-BELT-08CM-001",
+        "gauge_m": 0.62,
+        "belt_width_m": 0.08,
+        "visual_length_m": 1.08,
+        "visual_height_m": 0.34,
+        "visual_center_z_m": 0.21,
+        "front_x_m": 0.51,
+        "rear_x_m": -0.51,
+        "visual_radius_m": 0.17,
+        "ground_contact_length_m": 0.98,
+        "approach_angle_deg": 61.0
+      },
+      "drive": {
+        "wheel_radius_m": 0.12,
+        "wheel_width_m": 0.06,
+        "wheel_mass_kg": 1.05,
+        "wheel_x_m": 0.0,
+        "wheel_z_m": 0.12,
+        "wheel_mu": 0.9,
+        "effort_limit_Nm": 48.0,
+        "velocity_limit_radps": 9.0,
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
+      },
+      "supports": {
+        "type": "spring_bogie_rollers",
+        "part_id": "TRK7-SPRUNG-ROLLER-001",
+        "radius_m": 0.12,
+        "mass_kg": 1.05,
+        "carrier_mass_kg": 0.06,
+        "mu": 0.92,
+        "spring_stiffness_N_m": 7600,
+        "damping_N_s_m": 150,
+        "travel_m": 0.1,
+        "positions_x_m": [
+          -0.49,
+          -0.3,
+          -0.11,
+          0.11,
+          0.3,
+          0.49
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.48,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked_overrow_belt08.urdf.xacro",
+        "sdf": "models/tracked_overrow_belt08/model.sdf",
+        "cad_file": null
+      }
+    },
+    "tracked_overrow_belt06": {
+      "name": "Kette Überreihe: 6 cm Ketten",
+      "description": "Hochbeinige Kartoffeldamm-Variante mit 6 cm Kettenbreite. Kettenbreite ist als Vergleichsparameter getrennt, damit Breite, Bodendruck, Schlupf und Energiebedarf später objektiv bewertet werden.",
+      "drive_ready": true,
+      "mode": "Kartoffeldamm-Überreihe · Breitenvergleich",
+      "mass_kg": 60.0,
+      "body": {
+        "part_id": "TRK8-BASE-001",
+        "length_m": 1.08,
+        "width_m": 0.34,
+        "height_m": 0.24,
+        "collision_length_m": 0.86,
+        "collision_width_m": 0.26,
+        "collision_height_m": 0.18,
+        "collision_center_z_m": 0.57,
+        "visual_center_z_m": 0.58,
+        "inertial_mass_kg": 41.0,
+        "com_z_m": 0.47,
+        "material": "virtuell: hochbeiniger 3D-Druck/Alu-Rahmen mit einstellbarer Raupenbreite"
+      },
+      "track": {
+        "part_id": "TRK8-BELT-06CM-001",
+        "gauge_m": 0.62,
+        "belt_width_m": 0.06,
+        "visual_length_m": 1.08,
+        "visual_height_m": 0.32,
+        "visual_center_z_m": 0.21,
+        "front_x_m": 0.51,
+        "rear_x_m": -0.51,
+        "visual_radius_m": 0.16,
+        "ground_contact_length_m": 0.98,
+        "approach_angle_deg": 59.0
+      },
+      "drive": {
+        "wheel_radius_m": 0.12,
+        "wheel_width_m": 0.045,
+        "wheel_mass_kg": 0.92,
+        "wheel_x_m": 0.0,
+        "wheel_z_m": 0.12,
+        "wheel_mu": 0.9,
+        "effort_limit_Nm": 42.0,
+        "velocity_limit_radps": 9.0,
+        "max_linear_velocity_mps": 0.35,
+        "max_angular_velocity_radps": 0.9
+      },
+      "supports": {
+        "type": "spring_bogie_rollers",
+        "part_id": "TRK8-SPRUNG-ROLLER-001",
+        "radius_m": 0.12,
+        "mass_kg": 0.92,
+        "carrier_mass_kg": 0.06,
+        "mu": 0.92,
+        "spring_stiffness_N_m": 7100,
+        "damping_N_s_m": 140,
+        "travel_m": 0.1,
+        "positions_x_m": [
+          -0.49,
+          -0.3,
+          -0.11,
+          0.11,
+          0.3,
+          0.49
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.48,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked_overrow_belt06.urdf.xacro",
+        "sdf": "models/tracked_overrow_belt06/model.sdf",
+        "cad_file": null
+      }
+    },
     "tracked_inrow_narrow": {
       "name": "Kette Fahrgasse: schmal",
       "description": "Schmale Raupenvariante für die Fahrt zwischen 62-cm-Kartoffelreihen. Priorität ist geringe Gesamtbreite; Bodenfreiheit reicht für Furchen, aber nicht zum Überfahren von Kartoffelkraut.",
@@ -649,6 +797,48 @@
       "name": "Gefederte schmale Laufrollen",
       "material": "virtuell: Kugellager/Rollen",
       "mass_kg": 0.85,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK7-BASE-001",
+      "name": "Hochbeiniger Überreihen-Rahmen für 8 cm Ketten",
+      "material": "virtuell: 3D-Druck/Alu",
+      "mass_kg": 45.0,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK7-BELT-08CM-001",
+      "name": "8 cm schmale Überreihen-Raupenbänder",
+      "material": "virtuell: Gummi/gedruckte Führungen",
+      "mass_kg": null,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK7-SPRUNG-ROLLER-001",
+      "name": "Gefederte Laufrollen für 8 cm Ketten",
+      "material": "virtuell: Kugellager/Rollen",
+      "mass_kg": 1.05,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK8-BASE-001",
+      "name": "Hochbeiniger Überreihen-Rahmen für 6 cm Ketten",
+      "material": "virtuell: 3D-Druck/Alu",
+      "mass_kg": 41.0,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK8-BELT-06CM-001",
+      "name": "6 cm schmale Überreihen-Raupenbänder",
+      "material": "virtuell: Gummi/gedruckte Führungen",
+      "mass_kg": null,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK8-SPRUNG-ROLLER-001",
+      "name": "Gefederte Laufrollen für 6 cm Ketten",
+      "material": "virtuell: Kugellager/Rollen",
+      "mass_kg": 0.92,
       "cad_file": null
     }
   ],

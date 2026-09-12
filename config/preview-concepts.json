@@ -29,6 +29,18 @@
     "mode": "Kartoffeldamm-Überreihe",
     "description": "Raupenvariante für Kartoffeldämme: Ketten laufen in den Furchen, der Rumpf überfährt die Kulturreihe mit hoher Unterbodenfreiheit. Physik bleibt Gazebo-Proxy mit gefederten Rollen."
   },
+  "tracked_overrow_belt08": {
+    "name": "Kette Überreihe: 8 cm Ketten",
+    "drive_ready": true,
+    "mode": "Kartoffeldamm-Überreihe · Breitenvergleich",
+    "description": "Hochbeinige Kartoffeldamm-Variante mit 8 cm Kettenbreite. Kettenbreite ist als Vergleichsparameter getrennt, damit Breite, Bodendruck, Schlupf und Energiebedarf später objektiv bewertet werden."
+  },
+  "tracked_overrow_belt06": {
+    "name": "Kette Überreihe: 6 cm Ketten",
+    "drive_ready": true,
+    "mode": "Kartoffeldamm-Überreihe · Breitenvergleich",
+    "description": "Hochbeinige Kartoffeldamm-Variante mit 6 cm Kettenbreite. Kettenbreite ist als Vergleichsparameter getrennt, damit Breite, Bodendruck, Schlupf und Energiebedarf später objektiv bewertet werden."
+  },
   "tracked_inrow_narrow": {
     "name": "Kette Fahrgasse: schmal",
     "drive_ready": true,

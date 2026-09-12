@@ -60,6 +60,11 @@ class RobotSpecTests(unittest.TestCase):
         self.assertLessEqual(narrow['track']['gauge_m']+narrow['track']['belt_width_m'],0.45)
         self.assertLess(narrow['body']['collision_width_m'],0.30)
         self.assertGreater(narrow['clearance']['nominal_body_bottom_m'],0.18)
+        belt8=spec['variants']['tracked_overrow_belt08'];belt6=spec['variants']['tracked_overrow_belt06']
+        self.assertEqual(round(belt8['track']['belt_width_m'],2),0.08)
+        self.assertEqual(round(belt6['track']['belt_width_m'],2),0.06)
+        self.assertLess(belt8['track']['gauge_m']+belt8['track']['belt_width_m'],over['track']['gauge_m']+over['track']['belt_width_m'])
+        self.assertLess(belt6['drive']['effort_limit_Nm'],belt8['drive']['effort_limit_Nm'])
 
     def test_improved_variant_changes_mechanical_geometry(self):
         spec=load_spec();old=spec['variants']['tracked'];new=spec['variants']['tracked_improved']

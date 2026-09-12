@@ -15,6 +15,7 @@ Drei alternative Plattformen für autonome Unkrautbekämpfung: Kettenfahrzeug mi
 7. [Technische Primärquellen](docs/research/technische-grundlagen.md).
 8. [Installation und aktueller Status](docs/07-installation.md).
 9. [Live-Browseransicht](docs/08-browseransicht.md): http://10.10.10.50:8088.
+10. [Fahrwerks-Testsystem](docs/15-fahrwerk-testsystem.md): zentrale Spezifikation, Varianten und Gazebo-Hindernismatrix.
 10. [Roboterauswahl und Fahrbefehle](docs/09-roboterbedienung.md).
 11. [M1-Prüfung: Ergebnisse und offene Neustartfehler](docs/10-m1-abnahme.md).
 

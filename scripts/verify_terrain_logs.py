@@ -25,7 +25,7 @@ def verify(run):
                     assert len(contact.get('position',[]))==len(contact.get('normal',[]))==len(contact.get('wrench',[])),'Contact forces unavailable'
                     if 2<=data['sim_s']<22:
                         for n,w in zip(contact['normal'],contact['wrench']):
-                            mu=.015 if c['link'].startswith('caster_') else .6
+                            mu=.015 if c['link'].startswith(('caster_','support_')) else .6
                             N,T,excess,bad=friction_check(n,w.get('body1Wrench',{}).get('force',{}),mu)
                             points+=1;violations+=bad;max_excess=max(max_excess,excess)
                             if N<.01 and T>1:

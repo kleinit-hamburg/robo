@@ -1,7 +1,7 @@
 """Small deterministic terrain fixtures, not calibrated Kirchwerder soil."""
 import math
 import xml.etree.ElementTree as E
-PROFILES=('garden','flat','manipulation','plant','uneven','slope','slippery','obstacle')
+PROFILES=('garden','flat','engineering','manipulation','plant','uneven','slope','slippery','obstacle')
 def terrain(world,profile):
     def box(name,xyz,size,pitch=0):
         model=E.SubElement(world,'model',name=name);E.SubElement(model,'static').text='true';E.SubElement(model,'pose').text=' '.join(map(str,(*xyz,0,pitch,0)))
@@ -20,3 +20,7 @@ def terrain(world,profile):
         box('slope_5deg',(1.25,-.8,.75*math.sin(a)-.0125*math.cos(a)),(1.5,1.,.025),-a)
         box('slope_landing',(2.32,-.8,height/2),(.7,1.,height))
     elif profile=='obstacle':box('threshold_20mm',(.9,-.8,.01),(.08,1.,.02))
+    elif profile=='engineering':
+        for x,h,name in ((.65,.03,'stone_30mm'),(1.05,.05,'stone_50mm'),(1.55,.08,'stone_80mm')):box(name,(x,-.8,h/2),(.16,.9,h))
+        a=math.radians(20);box('ramp_20deg',(2.25,-.8,.35*math.sin(a)-.02*math.cos(a)),(.7,.9,.04),-a)
+        box('narrow_gate_left',(3.1,-.27,.18),(.45,.06,.36));box('narrow_gate_right',(3.1,-1.33,.18),(.45,.06,.36))

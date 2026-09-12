@@ -1,0 +1,203 @@
+{
+  "schema": 1,
+  "units": "m_kg_s_Nm",
+  "default_variant": "tracked",
+  "variants": {
+    "tracked": {
+      "name": "Kette Basisplatzhalter",
+      "description": "Historisches Zweirad-/Kugelstuetzmodell. Ketten sind nur Visuals; dient als Baseline fuer Ursachenvergleiche.",
+      "drive_ready": true,
+      "mode": "Baseline-Fahrwerk",
+      "mass_kg": 65.0,
+      "body": {
+        "part_id": "TRK-BASE-001",
+        "length_m": 0.7,
+        "width_m": 0.4,
+        "height_m": 0.22,
+        "collision_length_m": 0.68,
+        "collision_width_m": 0.37,
+        "collision_height_m": 0.2,
+        "collision_center_z_m": 0.27,
+        "visual_center_z_m": 0.28,
+        "inertial_mass_kg": 60.6,
+        "com_z_m": 0.3,
+        "material": "virtuell: vereinfachte Stahl/Alu-Masse"
+      },
+      "track": {
+        "part_id": "TRK-BELT-VIS-001",
+        "gauge_m": 0.52,
+        "belt_width_m": 0.13,
+        "visual_length_m": 0.54,
+        "visual_height_m": 0.21,
+        "visual_center_z_m": 0.125,
+        "front_x_m": 0.27,
+        "rear_x_m": -0.27,
+        "visual_radius_m": 0.105,
+        "ground_contact_length_m": 0.54,
+        "approach_angle_deg": 21.3
+      },
+      "drive": {
+        "wheel_radius_m": 0.12,
+        "wheel_width_m": 0.09,
+        "wheel_mass_kg": 2.0,
+        "wheel_x_m": 0.0,
+        "wheel_z_m": 0.12,
+        "wheel_mu": 0.6,
+        "effort_limit_Nm": 40.0,
+        "velocity_limit_radps": 8.0,
+        "max_linear_velocity_mps": 0.25,
+        "max_angular_velocity_radps": 0.6
+      },
+      "supports": {
+        "type": "fixed_low_friction_spheres",
+        "part_id": "TRK-SUPPORT-SPHERE-001",
+        "radius_m": 0.065,
+        "mass_kg": 0.1,
+        "mu": 0.015,
+        "positions": [
+          [
+            -0.28,
+            -0.19,
+            0.065
+          ],
+          [
+            -0.28,
+            0.19,
+            0.065
+          ],
+          [
+            0.28,
+            -0.19,
+            0.065
+          ],
+          [
+            0.28,
+            0.19,
+            0.065
+          ]
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.17,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked.urdf.xacro",
+        "sdf": "models/tracked/model.sdf",
+        "cad_file": null
+      }
+    },
+    "tracked_improved": {
+      "name": "Kette verbessert: grosse Frontrollen",
+      "description": "Verbesserter Platzhalter mit 0,70 m Spurweite, hoeherem Unterboden und grossen vorderen angetriebenen Umlenkrollen. Noch keine echte deformierbare Kette.",
+      "drive_ready": true,
+      "mode": "Engineering-Fahrwerk",
+      "mass_kg": 65.0,
+      "body": {
+        "part_id": "TRK2-BASE-001",
+        "length_m": 0.86,
+        "width_m": 0.56,
+        "height_m": 0.24,
+        "collision_length_m": 0.78,
+        "collision_width_m": 0.48,
+        "collision_height_m": 0.2,
+        "collision_center_z_m": 0.35,
+        "visual_center_z_m": 0.35,
+        "inertial_mass_kg": 52.6,
+        "com_z_m": 0.34,
+        "material": "virtuell: 3D-Druck/Alu-Rahmen-Massenreserve"
+      },
+      "track": {
+        "part_id": "TRK2-BELT-VIS-001",
+        "gauge_m": 0.7,
+        "belt_width_m": 0.16,
+        "visual_length_m": 0.86,
+        "visual_height_m": 0.3,
+        "visual_center_z_m": 0.18,
+        "front_x_m": 0.36,
+        "rear_x_m": -0.36,
+        "visual_radius_m": 0.16,
+        "ground_contact_length_m": 0.72,
+        "approach_angle_deg": 38.0
+      },
+      "drive": {
+        "wheel_radius_m": 0.18,
+        "wheel_width_m": 0.13,
+        "wheel_mass_kg": 6.0,
+        "wheel_x_m": 0.16,
+        "wheel_z_m": 0.18,
+        "wheel_mu": 0.85,
+        "effort_limit_Nm": 80.0,
+        "velocity_limit_radps": 8.0,
+        "max_linear_velocity_mps": 0.25,
+        "max_angular_velocity_radps": 0.55
+      },
+      "supports": {
+        "type": "rear_low_friction_rollers_placeholder",
+        "part_id": "TRK2-REAR-SKID-001",
+        "radius_m": 0.09,
+        "mass_kg": 0.2,
+        "mu": 0.03,
+        "positions": [
+          [
+            -0.36,
+            -0.25,
+            0.09
+          ],
+          [
+            -0.36,
+            0.25,
+            0.09
+          ]
+        ]
+      },
+      "clearance": {
+        "nominal_body_bottom_m": 0.25,
+        "lowest_support_m": 0.0
+      },
+      "cad_references": {
+        "xacro": "urdf/tracked_improved.urdf.xacro",
+        "sdf": "models/tracked_improved/model.sdf",
+        "cad_file": null
+      }
+    }
+  },
+  "structural_parts": [
+    {
+      "part_id": "TRK-BASE-001",
+      "role": "baseline chassis mass and body collision",
+      "material": "virtual mass proxy",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK-BELT-VIS-001",
+      "role": "baseline decorative belt visual",
+      "material": "virtual rubber visual",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK-SUPPORT-SPHERE-001",
+      "role": "baseline fixed low-friction support contact",
+      "material": "virtual contact proxy",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK2-BASE-001",
+      "role": "improved raised chassis",
+      "material": "virtual 3D-print/aluminium estimate",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK2-BELT-VIS-001",
+      "role": "improved track envelope and future CAD reference",
+      "material": "virtual rubber visual",
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK2-REAR-SKID-001",
+      "role": "rear support contact placeholder before bogie rollers",
+      "material": "virtual contact proxy",
+      "cad_file": null
+    }
+  ]
+}

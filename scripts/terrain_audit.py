@@ -52,7 +52,7 @@ def make_world(case,directory,config=CFG):
     add(robot,'pose',' '.join(map(str,robot_pose)))
     plugin=add(robot,'plugin',filename=str(ROOT/'build/terrain-audit/libgarden-terrain-audit.so'),name='garden::TerrainAudit')
     add(plugin,'csv',directory/'telemetry.csv');add(plugin,'contacts',directory/'contacts.jsonl');add(plugin,'stop_at',config['settle_s']+config['drive_s'])
-    add(plugin,'start_at',config['settle_s']);add(plugin,'speed',config['command_v_mps']);add(plugin,'command_period',1/config['command_hz']);add(plugin,'sample_period',1/config['sample_hz'])
+    add(plugin,'start_at',config['settle_s']);add(plugin,'speed',config['command_v_mps']);add(plugin,'command_period',1/config['command_hz']);add(plugin,'sample_period',1/config['sample_hz']);add(plugin,'wheel_radius',robot.findtext("plugin[@name='gz::sim::systems::DiffDrive']/wheel_radius",'.12'))
     world.append(robot);E.indent(root);path=directory/'world.sdf';E.ElementTree(root).write(path,encoding='utf-8',xml_declaration=True);return path
 
 def summarize(directory,config=CFG):

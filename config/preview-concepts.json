@@ -1,5 +1,26 @@
 {
-  "tracked": {"name": "Kette mit Manipulator", "drive_ready": true, "mode": "Fahrversuch", "description": "Fahrfähiges Ersatzmodell mit zwei Antriebsrädern und Stützrollen. Arm und Kettenband sind vorerst starre Platzhalter."},
-  "quadruped": {"name": "Quadruped mit Manipulator", "drive_ready": false, "mode": "Geometrievorschau", "description": "Vier Beine und ein Arm als starre Platzhalter. Gang- und Balanceregelung sind noch nicht implementiert."},
-  "humanoid": {"name": "Humanoid mit zwei Händen", "drive_ready": false, "mode": "Geometrievorschau", "description": "Zwei Beine und zwei Greifhände als starre Platzhalter. Gang- und Balanceregelung sind noch nicht implementiert."}
+  "tracked": {
+    "name": "Kette Basisplatzhalter",
+    "drive_ready": true,
+    "mode": "Baseline-Fahrwerk",
+    "description": "Historisches Zweirad-/Kugelstuetzmodell. Ketten sind nur Visuals; dient als Baseline fuer Ursachenvergleiche."
+  },
+  "tracked_improved": {
+    "name": "Kette verbessert: grosse Frontrollen",
+    "drive_ready": true,
+    "mode": "Engineering-Fahrwerk",
+    "description": "Verbesserter Platzhalter mit 0,70 m Spurweite, hoeherem Unterboden und grossen vorderen angetriebenen Umlenkrollen. Noch keine echte deformierbare Kette."
+  },
+  "quadruped": {
+    "name": "Quadruped mit Manipulator",
+    "drive_ready": false,
+    "mode": "Geometrievorschau",
+    "description": "Vier Beine und ein Arm als starre Platzhalter. Gang- und Balanceregelung sind noch nicht implementiert."
+  },
+  "humanoid": {
+    "name": "Humanoid mit zwei Händen",
+    "drive_ready": false,
+    "mode": "Geometrievorschau",
+    "description": "Zwei Beine und zwei Greifhände als starre Platzhalter. Gang- und Balanceregelung sind noch nicht implementiert."
+  }
 }

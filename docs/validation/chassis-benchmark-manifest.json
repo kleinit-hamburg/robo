@@ -1,0 +1,178 @@
+{
+  "config": {
+    "schema": 1,
+    "step_s": 0.001,
+    "sample_hz": 250,
+    "real_time_factor": 2.0,
+    "settle_s": 2.0,
+    "drive_s": 14.0,
+    "stop_s": 2.0,
+    "command_hz": 20,
+    "command_v_mps": 0.15,
+    "variants": [
+      "tracked",
+      "tracked_improved"
+    ],
+    "cases": [
+      "step_30",
+      "step_50",
+      "step_80",
+      "step_100",
+      "step_150",
+      "ramp_10",
+      "ramp_20",
+      "ramp_30",
+      "ramp_40",
+      "trench",
+      "diagonal_wave",
+      "side_slope",
+      "narrow_gate"
+    ],
+    "success_x_m": 1.25,
+    "max_body_contact_samples": 0,
+    "max_tilt_deg": 35
+  },
+  "git_revision": "bff5836fb074c9d43365729c886bafa0b876cfde",
+  "git_status": " M config/preview-concepts.json\n M models/tracked/model.sdf\n M scripts/build_preview_models.py\n M scripts/terrain_audit.py\n M simulation/terrain_audit/audit.cc\n?? config/chassis-benchmark.json\n?? config/robot-spec.json\n?? models/tracked_improved/\n?? scripts/chassis_benchmark.py\n?? scripts/robot_spec.py\n?? urdf/\n",
+  "source_sha256": {
+    "config/robot-spec.json": "4595b21e7c7450a4e41c9f75ee5b586d99746d7c11966abe861298614af806a6",
+    "config/chassis-benchmark.json": "7f5ade793a1ae43fe3e9566b8ad883acb6bc033bdee6228d2d286b278d3d30bb",
+    "scripts/chassis_benchmark.py": "65b0efe7eb4c58cdc7d67296e93154e5b1dce712cc11f3b39856884f88244ee3",
+    "scripts/robot_spec.py": "f39bd1fce74569cdbf93ac2d22781e0a9135e4e8a7325efaaf14bcb5e7b16c1c",
+    "scripts/build_preview_models.py": "e63e2c1f1c351dc407e342e35b51c1a9382b5281292eed4255df9c72fe5f4364",
+    "simulation/terrain_audit/audit.cc": "b883bf3c78da1aa90a6fd7fb5b5ef11e352fe368b621ff6624063d44086e3f99",
+    "simulation/terrain_audit/main.cc": "91fa362d3feaf4760d32d7dbf9665a7a7d5a5dc98e58f7e553225db3981b03c8"
+  },
+  "runs": [
+    {
+      "variant": "tracked",
+      "case": "step_30",
+      "world_sha256": "3304506d67ac48ba6d3475c2c040afab2e14c0971c75f7895a2cb55659e85bfb"
+    },
+    {
+      "variant": "tracked",
+      "case": "step_50",
+      "world_sha256": "a278b412d508c6b6b69f3b0f38f7fec42f254f4e9547588ecdc406e1b3980c56"
+    },
+    {
+      "variant": "tracked",
+      "case": "step_80",
+      "world_sha256": "b70d1543f695cfb2e4ee2db4bf9518354cd3c5359ff44c8ab70f75f7795b5804"
+    },
+    {
+      "variant": "tracked",
+      "case": "step_100",
+      "world_sha256": "eaa2575ffeae59ea2ba0bbeaecaa0841ab3b87c999c4400c5a9c7968c101b38e"
+    },
+    {
+      "variant": "tracked",
+      "case": "step_150",
+      "world_sha256": "7aa797b618692430705c738ce918718426b72e384ab51e6ce566607be5e46020"
+    },
+    {
+      "variant": "tracked",
+      "case": "ramp_10",
+      "world_sha256": "bc8d1e39e432e3a58546a94f26e02d49d1f3ae214c1438db4531befc8f2c5af5"
+    },
+    {
+      "variant": "tracked",
+      "case": "ramp_20",
+      "world_sha256": "507143fda36c483bed4e65a7467fa6c81f37c7b05c961b89df896c1957822cb7"
+    },
+    {
+      "variant": "tracked",
+      "case": "ramp_30",
+      "world_sha256": "61e7f1402221e7579490ec19de43a7f657f922f0752591280bd00dfa55daa4fd"
+    },
+    {
+      "variant": "tracked",
+      "case": "ramp_40",
+      "world_sha256": "ea899d4179b7e793aff049f998381156b9471f9946d643d52a6775fdce70e9c1"
+    },
+    {
+      "variant": "tracked",
+      "case": "trench",
+      "world_sha256": "7094f7cf73387f3e7b977f80419cb91800f450578399a8291700f16e20dc72b7"
+    },
+    {
+      "variant": "tracked",
+      "case": "diagonal_wave",
+      "world_sha256": "67aaf433f97f2256c26c254f68e743337d271270a51c030b1b1404d8c306c4af"
+    },
+    {
+      "variant": "tracked",
+      "case": "side_slope",
+      "world_sha256": "3c0346e91887fe23abfcace044cb779904ee895775e1ca858e0473a70a118ee2"
+    },
+    {
+      "variant": "tracked",
+      "case": "narrow_gate",
+      "world_sha256": "8eaee50eb4700ae47bc9baba0ad14bc886d8b10f3e6775d0644ed0960b05b066"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "step_30",
+      "world_sha256": "7a1c95f704a760dd01266b4a2429abb6a2bf439a8c6fe0528d3a83bb3eb30b2b"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "step_50",
+      "world_sha256": "b1abff4b4b0d5b5534532266f298d1c465e2cf279055c49bc6e199efff8ad60a"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "step_80",
+      "world_sha256": "77046b278ecb416bfb901bb0a1f0bf5812e2ee421b8ac84c096ffa0d40ba3f23"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "step_100",
+      "world_sha256": "60629433474f1a461247d73ab155f2eb5e2fb78ed687bfd8c171090c3f7c8358"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "step_150",
+      "world_sha256": "d36059a91b0e595826fa87b5257e1aa10829da079720fb7bbd80378fc752afa1"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "ramp_10",
+      "world_sha256": "de270c2e6f1ab8f67943166a5b31d4cb217fa794cc5f88dc4e5dc0d92f01c5c1"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "ramp_20",
+      "world_sha256": "d1dd29cdd773078e9835ff34bf7324e25cf1dd73eeab076f2baa87b5d6b247cd"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "ramp_30",
+      "world_sha256": "c1d8ec4b5f48fda6229c80e6feb4ed46b7c6ffe5fdd0bf17bf2434d9d331a35a"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "ramp_40",
+      "world_sha256": "5c21959153a49a35c36f2270dde904ddd21d7876d55d079c4de97d161399755e"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "trench",
+      "world_sha256": "a25f77fe9cc5212c0e6d438dc76af87a28ed0c56dcf65732d6fa42c4b1d08219"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "diagonal_wave",
+      "world_sha256": "b40f6598b00715061790779af0297b2fd7c7df1c9a95eac36ac970b54755da54"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "side_slope",
+      "world_sha256": "2e239f6c16ed109ae8facc6773f23f5b6d81c1ebd0bbc3de521b57a6b6e149a4"
+    },
+    {
+      "variant": "tracked_improved",
+      "case": "narrow_gate",
+      "world_sha256": "b2500bd85c59e76ea30db4735da4dccf51375614868b447f8be0c0d06e7e6ad8"
+    }
+  ]
+}

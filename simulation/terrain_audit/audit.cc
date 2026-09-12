@@ -30,14 +30,14 @@ class TerrainAudit:public gz::sim::System,public gz::sim::ISystemConfigure,
   gz::transport::Node node;
   gz::transport::Node::Publisher publisher;
   std::ofstream csv,contacts;
-  double requested=0,nextPublish=0,nextLog=0,stopAt=22,startAt=2,speed=.15,publishPeriod=.05,logPeriod=.01;
+  double requested=0,nextPublish=0,nextLog=0,stopAt=22,startAt=2,speed=.15,publishPeriod=.05,logPeriod=.01,wheelRadius=.12;
   std::array<double,2> jointCmd{0,0},forceCmd{NAN,NAN};
  public:
   gz::sim::System::PriorityType ConfigurePriority() override {return 100;}
   void Configure(const gz::sim::Entity &entity,const std::shared_ptr<const sdf::Element> &sdf,
     gz::sim::EntityComponentManager &ecm,gz::sim::EventManager &) override {
     model=gz::sim::Model(entity);base=model.LinkByName(ecm,"base_link");links=model.Links(ecm);
-    stopAt=sdf->Get<double>("stop_at");startAt=sdf->Get<double>("start_at");speed=sdf->Get<double>("speed");publishPeriod=sdf->Get<double>("command_period");logPeriod=sdf->Get<double>("sample_period");
+    stopAt=sdf->Get<double>("stop_at");startAt=sdf->Get<double>("start_at");speed=sdf->Get<double>("speed");publishPeriod=sdf->Get<double>("command_period");logPeriod=sdf->Get<double>("sample_period");if(sdf->HasElement("wheel_radius"))wheelRadius=sdf->Get<double>("wheel_radius");
     csv.open(sdf->Get<std::string>("csv"));contacts.open(sdf->Get<std::string>("contacts"));
     if(!csv||!contacts)throw std::runtime_error("Cannot open audit logs");
     csv<<std::setprecision(12);contacts<<std::setprecision(12);
@@ -90,7 +90,7 @@ class TerrainAudit:public gz::sim::System,public gz::sim::ISystemConfigure,
       // Joint axis is (0,0,-1), in the joint frame. No joint damping/friction.
       // This is the simulated transmitted wrench projection, NOT a force command.
       const double torque=w&&!w->empty()?-(*w)[0].torque().z():NAN;
-      const double rim=.12*omega;
+      const double rim=wheelRadius*omega;
       const double hub=gz::sim::Link(wheels[i]).WorldLinearVelocity(ecm).value_or(gz::math::Vector3d::Zero).Dot(forward);
       const double slip=rim-hub;const double ratio=slip/std::max({std::abs(rim),std::abs(hub),.01});
       csv<<','<<jointCmd[i]<<','<<omega<<','<<forceCmd[i]<<','<<torque<<','<<rim<<','<<hub<<','<<slip<<','<<ratio;

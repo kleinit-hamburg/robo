@@ -20,10 +20,12 @@ from plant_model import add_plant
 from terrain_model import terrain, PROFILES
 from arm_model import add_arm, JOINTS, LIMITS, PRESETS, fixture_waypoints
 from motion_core import Motion, COMMANDS, heading_from_sample, readiness_issues
+from robot_spec import load_spec
 
 ROOT=Path(__file__).resolve().parents[1]
 WEB=ROOT/'web'
 CATALOG=json.loads((ROOT/'config/preview-concepts.json').read_text())
+ROBOT_SPEC=load_spec()
 
 def pose(element):
     text=element.findtext('pose','0 0 0 0 0 0')
@@ -132,7 +134,7 @@ class Application:
         q=msg.orientation
         stamp=msg.header.stamp.sec+msg.header.stamp.nanosec*1e-9
         with self.lock:
-            if self.switching or self.concept!='tracked':return
+            if self.switching or not CATALOG[self.concept]['drive_ready']:return
             yaw=heading_from_sample((q.x,q.y,q.z,q.w),stamp,self.sim_time,msg.orientation_covariance[0]>=0)
             if yaw is None:self.rejected_imu+=1;return
             self.body_tilt=math.acos(max(-1.,min(1.,1-2*(q.x*q.x+q.y*q.y))))
@@ -215,7 +217,7 @@ class Application:
             if self.profile in ('manipulation','plant'):
                 catalog['tracked']['mode']='Manipulationsprüfstand'
                 catalog['tracked']['description']='Rad-/Stützmodell mit beweglichem 6-DOF-Arm und zwei Greiferbacken. Bekannter Zielprüfstand; keine autonome Erkennung.'
-            return dict(world_profile=self.profile,revision=self.revision,concept=self.concept,catalog=catalog,objects=self.objects)
+            return dict(world_profile=self.profile,revision=self.revision,concept=self.concept,catalog=catalog,objects=self.objects,robot_spec=ROBOT_SPEC,benchmark=latest_benchmark())
     def drive(self,payload,heartbeat=False):
         with self.lock:
             if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt. Bitte kurz warten.')
@@ -324,6 +326,15 @@ class Application:
         self.node.destroy_node()
         if self.rclpy.ok():self.rclpy.shutdown()
         self.temp.cleanup()
+
+
+def latest_benchmark():
+    paths=[ROOT/'docs/validation/chassis-benchmark-summary.json', ROOT/'results/chassis-benchmark-main-20260912/summary.json']
+    for path in paths:
+        if path.exists():
+            try:return json.loads(path.read_text())
+            except (ValueError,OSError):return []
+    return []
 
 def handler_for(app):
     class Handler(BaseHTTPRequestHandler):

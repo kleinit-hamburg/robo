@@ -14,17 +14,38 @@ resetCamera();$('camera').onclick=resetCamera;
 scene.add(new THREE.AmbientLight(0xffffff,2));const sun=new THREE.DirectionalLight(0xfff9e8,3);sun.position.set(-3,-4,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5});sun.shadow.normalBias=.02;scene.add(sun);
 const grid=new THREE.GridHelper(6,24,0x86977f,0xa2b09a);grid.rotation.x=Math.PI/2;grid.position.z=.003;grid.material.transparent=true;grid.material.opacity=.3;scene.add(grid);
 let sceneGroup=new THREE.Group();scene.add(sceneGroup);const frames=new Map();
-let revision=-1,catalog={},connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop',taskBusy=false;
+let revision=-1,catalog={},robotSpec={},benchmark=[],connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop',taskBusy=false;
 let sequence=0,active=null,heartbeatBusy=false;
 const clientId=globalThis.crypto?.randomUUID?.() ?? 'browser-'+Math.random().toString(36).slice(2)+Date.now();
 function setPose(object,pose){object.position.fromArray(pose.slice(0,3));object.rotation.set(...pose.slice(3),'ZYX');}
+
+function fmt(v,d=2){return Number.isFinite(v)?v.toLocaleString('de-DE',{maximumFractionDigits:d}):'—';}
+function renderConceptOptions(selected){
+ const select=$('concept');select.replaceChildren();
+ for(const [id,info] of Object.entries(catalog)){const option=document.createElement('option');option.value=id;option.textContent=info.name;select.appendChild(option);}
+ select.value=selected;
+}
+function specItem(label,value){const div=document.createElement('div');div.className='spec-item';div.innerHTML='<strong>'+label+'</strong><span>'+value+'</span>';return div;}
+function renderEngineering(concept){
+ const grid=$('spec-grid');const list=$('benchmark-list');grid.replaceChildren();list.replaceChildren();
+ const spec=robotSpec.variants?.[concept];
+ if(!spec){grid.appendChild(specItem('Status','Noch keine Fahrwerksspezifikation'));}
+ else{
+  const width=spec.track.gauge_m+spec.track.belt_width_m;
+  grid.append(specItem('Masse',fmt(spec.mass_kg,1)+' kg'),specItem('Spurweite',fmt(spec.track.gauge_m*100,0)+' cm'),specItem('Gesamtbreite',fmt(width*100,0)+' cm'),specItem('Rad/Umlenkrolle',fmt(spec.drive.wheel_radius_m*2*1000,0)+' mm'),specItem('Bodenfreiheit',fmt(spec.clearance.nominal_body_bottom_m*1000,0)+' mm'),specItem('Anfahrwinkel',fmt(spec.track.approach_angle_deg,1)+'°'),specItem('Momentlimit',fmt(spec.drive.effort_limit_Nm,0)+' Nm'),specItem('Bauteil-ID',spec.body.part_id));
+ }
+ const rows=benchmark.filter(r=>r.variant===concept);
+ if(!rows.length){const empty=document.createElement('p');empty.className='note';empty.textContent='Noch kein Benchmark für diese Variante im Dokuordner.';list.appendChild(empty);return;}
+ for(const row of rows){const item=document.createElement('div');item.className='benchmark '+(row.succeeded?'pass':'fail');item.innerHTML='<strong>'+row.case+'</strong><span>'+(row.succeeded?'geschafft':'nicht geschafft')+'</span><small>'+fmt(row.progress_m,2)+' m · Neigung '+fmt(row.max_tilt_deg,1)+'° · Schlupf '+fmt(row.mean_slip_ratio*100,1)+'%</small>';list.appendChild(item);}
+}
+
 async function loadScene(){
  if(loading)return;loading=true;controlReady=false;buttons();
  try{
   const response=await fetch('/api/scene');if(!response.ok)throw Error('Szene nicht erreichbar');const data=await response.json();
   active=null;scene.remove(sceneGroup);sceneGroup.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});sceneGroup=new THREE.Group();scene.add(sceneGroup);frames.clear();
-  revision=data.revision;catalog=data.catalog;$('profile').value=data.world_profile||'garden';$('concept').value=data.concept;const info=catalog[data.concept];driveReady=info.drive_ready;
-  $('mode').textContent=info.mode;$('mode').className='mode'+(driveReady?'':' preview');$('concept-note').textContent=info.description;
+  revision=data.revision;catalog=data.catalog;robotSpec=data.robot_spec||{};benchmark=data.benchmark||[];$('profile').value=data.world_profile||'garden';renderConceptOptions(data.concept);const info=catalog[data.concept];driveReady=info.drive_ready;
+  $('mode').textContent=info.mode;$('mode').className='mode'+(driveReady?'':' preview');$('concept-note').textContent=info.description;renderEngineering(data.concept);
   for(const model of data.objects){
    const group=new THREE.Group();setPose(group,model.pose);sceneGroup.add(group);frames.set(model.name,group);
    for(const link of model.links){

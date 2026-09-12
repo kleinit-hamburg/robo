@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "step_s": 0.001,
+  "sample_hz": 250,
+  "real_time_factor": 2.0,
+  "settle_s": 2.0,
+  "drive_s": 14.0,
+  "stop_s": 2.0,
+  "command_hz": 20,
+  "command_v_mps": 0.15,
+  "variants": [
+    "tracked",
+    "tracked_improved"
+  ],
+  "cases": [
+    "step_30",
+    "step_50",
+    "step_80",
+    "step_100",
+    "step_150",
+    "ramp_10",
+    "ramp_20",
+    "ramp_30",
+    "ramp_40",
+    "trench",
+    "diagonal_wave",
+    "side_slope",
+    "narrow_gate"
+  ],
+  "success_x_m": 1.25,
+  "max_body_contact_samples": 0,
+  "max_tilt_deg": 35
+}

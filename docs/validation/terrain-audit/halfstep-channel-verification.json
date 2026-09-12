@@ -1,0 +1,182 @@
+{
+  "grade_5_seed11": {
+    "load_bearing_contact_fraction": {
+      "caster_0.28_0.19": 0.8007647058823529,
+      "caster_-0.28_0.19": 0.7576470588235295,
+      "caster_-0.28_-0.19": 0.7303529411764705,
+      "left_wheel": 0.12694117647058822,
+      "base_link": 0.0,
+      "right_wheel": 0.1491764705882353,
+      "caster_0.28_-0.19": 0.8222352941176471
+    },
+    "friction_consistent": false,
+    "friction_points_checked": 206695,
+    "friction_violation_points": 41860,
+    "friction_violation_fraction": 0.20252062217276665,
+    "zero_normal_tangent_gt1_points": 9050,
+    "max_friction_outer_bound_excess_N": 184.81663272543176,
+    "first_zero_normal_friction_example": {
+      "sim_s": 5.457,
+      "link": "left_wheel",
+      "normal_N": 0.0,
+      "tangent_N": 52.49551011406164,
+      "normal": {
+        "z": 1
+      },
+      "force": {
+        "x": 52.49551011406164,
+        "y": 1.473886338408085e-08
+      }
+    },
+    "channels_valid": true,
+    "samples": 48000,
+    "first_obstacle_contact": {
+      "sim_s": 3.5735,
+      "link": "caster_0.28_-0.19",
+      "other": "grade_5::link::collision",
+      "x_m": 0.217240490646
+    },
+    "contact_pairs": [
+      [
+        "robot::caster_-0.28_-0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_-0.28_0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_0.28_-0.19::contact_collision",
+        "grade_5::link::collision"
+      ],
+      [
+        "robot::caster_0.28_-0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_0.28_0.19::contact_collision",
+        "grade_5::link::collision"
+      ],
+      [
+        "robot::caster_0.28_0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::left_wheel::wheel_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::right_wheel::wheel_collision",
+        "ground::link::collision"
+      ]
+    ],
+    "mean_wheel_normal_N": 20.624258328813838,
+    "mean_total_normal_N": 638.4105832176273,
+    "wheel_normal_fraction": 0.032305633507618794,
+    "mean_omega_cmd_radps": {
+      "left": 1.25,
+      "right": 1.25
+    },
+    "mean_omega_actual_radps": {
+      "left": 1.2485373667973065,
+      "right": 1.2488019159114938
+    },
+    "fraction_axis_torque_ge_39_5_Nm": {
+      "left": 0.0,
+      "right": 0.0
+    },
+    "max_abs_wheel_speed_radps": 1.25033496671,
+    "mean_wheel_flat_ground_gap_m": 7.150307495898731e-07,
+    "max_wheel_flat_ground_gap_m": 7.17005311474811e-05
+  },
+  "uneven_seed11": {
+    "load_bearing_contact_fraction": {
+      "caster_0.28_0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_-0.28_-0.19": 1.0,
+      "left_wheel": 0.11544117647058824,
+      "base_link": 0.0,
+      "right_wheel": 0.11544117647058824,
+      "caster_0.28_-0.19": 1.0
+    },
+    "friction_consistent": false,
+    "friction_points_checked": 364152,
+    "friction_violation_points": 174880,
+    "friction_violation_fraction": 0.4802390210681254,
+    "zero_normal_tangent_gt1_points": 121407,
+    "max_friction_outer_bound_excess_N": 132.87297625440885,
+    "first_zero_normal_friction_example": {
+      "sim_s": 3.816,
+      "link": "left_wheel",
+      "normal_N": 0.0,
+      "tangent_N": 64.08927031966543,
+      "normal": {
+        "z": 1
+      },
+      "force": {
+        "x": 64.08927030416525,
+        "y": -0.0014095352421909584
+      }
+    },
+    "channels_valid": true,
+    "samples": 48000,
+    "first_obstacle_contact": {
+      "sim_s": 3.495,
+      "link": "caster_0.28_-0.19",
+      "other": "undulation_0::link::collision",
+      "x_m": 0.205464388556
+    },
+    "contact_pairs": [
+      [
+        "robot::caster_-0.28_-0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_-0.28_0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_0.28_-0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_0.28_-0.19::contact_collision",
+        "undulation_0::link::collision"
+      ],
+      [
+        "robot::caster_0.28_0.19::contact_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::caster_0.28_0.19::contact_collision",
+        "undulation_0::link::collision"
+      ],
+      [
+        "robot::left_wheel::wheel_collision",
+        "ground::link::collision"
+      ],
+      [
+        "robot::right_wheel::wheel_collision",
+        "ground::link::collision"
+      ]
+    ],
+    "mean_wheel_normal_N": 39.28814279067679,
+    "mean_total_normal_N": 687.5919148371122,
+    "wheel_normal_fraction": 0.057138750387988484,
+    "mean_omega_cmd_radps": {
+      "left": 1.25,
+      "right": 1.25
+    },
+    "mean_omega_actual_radps": {
+      "left": 1.2499999997371767,
+      "right": 1.2499999997234732
+    },
+    "fraction_axis_torque_ge_39_5_Nm": {
+      "left": 0.0,
+      "right": 0.0
+    },
+    "max_abs_wheel_speed_radps": 1.25000046584,
+    "mean_wheel_flat_ground_gap_m": -3.2190896105513683e-08,
+    "max_wheel_flat_ground_gap_m": 3.031553607035775e-07
+  }
+}

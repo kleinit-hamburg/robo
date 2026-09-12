@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "physics_engine": "gz-physics-dartsim-plugin",
+  "step_s": 0.001,
+  "real_time_factor": 2,
+  "sample_hz": 1000,
+  "command_hz": 20,
+  "settle_s": 2,
+  "drive_s": 20,
+  "stop_s": 2,
+  "command_v_mps": 0.15,
+  "seeds": [
+    11,
+    22,
+    33
+  ],
+  "primary_cases": [
+    "grade_0",
+    "grade_5",
+    "grade_10",
+    "grade_15",
+    "uneven"
+  ],
+  "diagnostic_cases": [
+    "legacy_5",
+    "plane_5",
+    "plane_15"
+  ],
+  "ramp": {
+    "entry_x_m": 0.5,
+    "length_m": 1.5,
+    "width_m": 1,
+    "thickness_m": 0.025,
+    "landing_end_x_m": 4.5
+  },
+  "uneven": {
+    "first_center_x_m": 0.55,
+    "cell_length_m": 0.06,
+    "cells": 24,
+    "mean_height_m": 0.01,
+    "amplitude_m": 0.01,
+    "phase_increment_rad": 0.7853981633974483
+  },
+  "traversal_criteria": {
+    "min_forward_progress_m": 2.7,
+    "max_abs_roll_deg": 15,
+    "max_abs_pitch_deg": 25,
+    "max_stop_speed_mps": 0.01
+  },
+  "notes": "Frozen drive proxy; no motor/geometry tuning. Traversal result is separate from measurement completeness. Uneven is the exact existing stair-step profile, not deformable soil. Default recording covers every physics step; --sample-hz 100 reproduces the initial survey."
+}

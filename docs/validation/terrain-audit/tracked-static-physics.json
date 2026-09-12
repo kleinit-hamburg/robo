@@ -1,0 +1,458 @@
+{
+  "mass_kg": 65.0,
+  "com_model_m": [
+    0.0,
+    0.0,
+    0.28747692307692296
+  ],
+  "inertia_about_com_kgm2": [
+    [
+      2.065362882051283,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      3.494882882051281,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      3.621726666666665
+    ]
+  ],
+  "links": [
+    {
+      "name": "base_link",
+      "mass_kg": 60.6,
+      "com_model_m": [
+        0.0,
+        0.0,
+        0.3
+      ],
+      "inertia_local_kgm2": [
+        [
+          1.6160000000000003,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          3.2824999999999993,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3.2824999999999993
+        ]
+      ],
+      "inertia_eigenvalues": [
+        1.6160000000000003,
+        3.2824999999999993,
+        3.2824999999999993
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "body_collision",
+          "shape": "box",
+          "dimensions": {
+            "size": "0.68 0.37 0.2"
+          },
+          "pose": "0 0 0.27 0 0 0",
+          "mu": 0.6,
+          "mu2": 0.6
+        }
+      ]
+    },
+    {
+      "name": "left_wheel",
+      "mass_kg": 2.0,
+      "com_model_m": [
+        0.0,
+        0.26,
+        0.12
+      ],
+      "inertia_local_kgm2": [
+        [
+          0.01095,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.01095,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0192
+        ]
+      ],
+      "inertia_eigenvalues": [
+        0.01095,
+        0.01095,
+        0.0192
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "wheel_collision",
+          "shape": "cylinder",
+          "dimensions": {
+            "radius": "0.12",
+            "length": "0.09"
+          },
+          "pose": "0 0 0 0 0 0",
+          "mu": 0.6,
+          "mu2": 0.6
+        }
+      ]
+    },
+    {
+      "name": "right_wheel",
+      "mass_kg": 2.0,
+      "com_model_m": [
+        0.0,
+        -0.26,
+        0.12
+      ],
+      "inertia_local_kgm2": [
+        [
+          0.01095,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.01095,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0192
+        ]
+      ],
+      "inertia_eigenvalues": [
+        0.01095,
+        0.01095,
+        0.0192
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "wheel_collision",
+          "shape": "cylinder",
+          "dimensions": {
+            "radius": "0.12",
+            "length": "0.09"
+          },
+          "pose": "0 0 0 0 0 0",
+          "mu": 0.6,
+          "mu2": 0.6
+        }
+      ]
+    },
+    {
+      "name": "caster_-0.28_-0.19",
+      "mass_kg": 0.1,
+      "com_model_m": [
+        -0.28,
+        -0.19,
+        0.065
+      ],
+      "inertia_local_kgm2": [
+        [
+          0.0002816666666666667,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0002816666666666667,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0002816666666666667
+        ]
+      ],
+      "inertia_eigenvalues": [
+        0.0002816666666666667,
+        0.0002816666666666667,
+        0.0002816666666666667
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "contact_collision",
+          "shape": "sphere",
+          "dimensions": {
+            "radius": "0.065"
+          },
+          "pose": "0 0 0 0 0 0",
+          "mu": 0.015,
+          "mu2": 0.015
+        }
+      ]
+    },
+    {
+      "name": "caster_-0.28_0.19",
+      "mass_kg": 0.1,
+      "com_model_m": [
+        -0.28,
+        0.19,
+        0.065
+      ],
+      "inertia_local_kgm2": [
+        [
+          0.0002816666666666667,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0002816666666666667,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0002816666666666667
+        ]
+      ],
+      "inertia_eigenvalues": [
+        0.0002816666666666667,
+        0.0002816666666666667,
+        0.0002816666666666667
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "contact_collision",
+          "shape": "sphere",
+          "dimensions": {
+            "radius": "0.065"
+          },
+          "pose": "0 0 0 0 0 0",
+          "mu": 0.015,
+          "mu2": 0.015
+        }
+      ]
+    },
+    {
+      "name": "caster_0.28_-0.19",
+      "mass_kg": 0.1,
+      "com_model_m": [
+        0.28,
+        -0.19,
+        0.065
+      ],
+      "inertia_local_kgm2": [
+        [
+          0.0002816666666666667,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0002816666666666667,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0002816666666666667
+        ]
+      ],
+      "inertia_eigenvalues": [
+        0.0002816666666666667,
+        0.0002816666666666667,
+        0.0002816666666666667
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "contact_collision",
+          "shape": "sphere",
+          "dimensions": {
+            "radius": "0.065"
+          },
+          "pose": "0 0 0 0 0 0",
+          "mu": 0.015,
+          "mu2": 0.015
+        }
+      ]
+    },
+    {
+      "name": "caster_0.28_0.19",
+      "mass_kg": 0.1,
+      "com_model_m": [
+        0.28,
+        0.19,
+        0.065
+      ],
+      "inertia_local_kgm2": [
+        [
+          0.0002816666666666667,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0002816666666666667,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0002816666666666667
+        ]
+      ],
+      "inertia_eigenvalues": [
+        0.0002816666666666667,
+        0.0002816666666666667,
+        0.0002816666666666667
+      ],
+      "positive_definite": true,
+      "triangle_inequality": true,
+      "collisions": [
+        {
+          "name": "contact_collision",
+          "shape": "sphere",
+          "dimensions": {
+            "radius": "0.065"
+          },
+          "pose": "0 0 0 0 0 0",
+          "mu": 0.015,
+          "mu2": 0.015
+        }
+      ]
+    }
+  ],
+  "joints": [
+    {
+      "name": "left_joint",
+      "type": "revolute",
+      "parent": "base_link",
+      "child": "left_wheel",
+      "axis_joint": "0 0 -1",
+      "effort_limit_Nm": 40.0,
+      "velocity_limit_radps": 8.0,
+      "position_limits_explicit": false
+    },
+    {
+      "name": "right_joint",
+      "type": "revolute",
+      "parent": "base_link",
+      "child": "right_wheel",
+      "axis_joint": "0 0 -1",
+      "effort_limit_Nm": 40.0,
+      "velocity_limit_radps": 8.0,
+      "position_limits_explicit": false
+    },
+    {
+      "name": "caster_-0.28_-0.19_fixed",
+      "type": "fixed",
+      "parent": "base_link",
+      "child": "caster_-0.28_-0.19",
+      "axis_joint": null,
+      "effort_limit_Nm": null,
+      "velocity_limit_radps": null,
+      "position_limits_explicit": false
+    },
+    {
+      "name": "caster_-0.28_0.19_fixed",
+      "type": "fixed",
+      "parent": "base_link",
+      "child": "caster_-0.28_0.19",
+      "axis_joint": null,
+      "effort_limit_Nm": null,
+      "velocity_limit_radps": null,
+      "position_limits_explicit": false
+    },
+    {
+      "name": "caster_0.28_-0.19_fixed",
+      "type": "fixed",
+      "parent": "base_link",
+      "child": "caster_0.28_-0.19",
+      "axis_joint": null,
+      "effort_limit_Nm": null,
+      "velocity_limit_radps": null,
+      "position_limits_explicit": false
+    },
+    {
+      "name": "caster_0.28_0.19_fixed",
+      "type": "fixed",
+      "parent": "base_link",
+      "child": "caster_0.28_0.19",
+      "axis_joint": null,
+      "effort_limit_Nm": null,
+      "velocity_limit_radps": null,
+      "position_limits_explicit": false
+    }
+  ],
+  "drive_controller": {
+    "left_joint": "left_joint",
+    "right_joint": "right_joint",
+    "wheel_separation": "0.52",
+    "wheel_radius": "0.12",
+    "topic": "/garden/cmd_vel",
+    "odom_topic": "/garden/odom",
+    "frame_id": "odom",
+    "child_frame_id": "base_link",
+    "odom_publish_frequency": "30",
+    "min_linear_velocity": "-0.25",
+    "max_linear_velocity": "0.25",
+    "min_angular_velocity": "-0.6",
+    "max_angular_velocity": "0.6",
+    "min_linear_acceleration": "-0.6",
+    "max_linear_acceleration": "0.6",
+    "min_angular_acceleration": "-1.5",
+    "max_angular_acceleration": "1.5"
+  },
+  "reference_calculations": {
+    "body_collision_bottom_m": 0.17,
+    "static_tip_angle_longitudinal_deg": 44.24512992269037,
+    "static_tip_angle_lateral_deg": 33.461617796716006,
+    "uniform_grade": [
+      {
+        "angle_deg": 0,
+        "gravity_downslope_N": 0.0,
+        "ideal_torque_per_wheel_Nm": 0.0
+      },
+      {
+        "angle_deg": 5,
+        "gravity_downslope_N": 55.574859363044226,
+        "ideal_torque_per_wheel_Nm": 3.3344915617826536
+      },
+      {
+        "angle_deg": 10,
+        "gravity_downslope_N": 110.72676048931812,
+        "ideal_torque_per_wheel_Nm": 6.6436056293590875
+      },
+      {
+        "angle_deg": 15,
+        "gravity_downslope_N": 165.03596410962234,
+        "ideal_torque_per_wheel_Nm": 9.90215784657734
+      }
+    ],
+    "homogeneous_wheel_inertia_local_kgm2": [
+      0.00855,
+      0.00855,
+      0.0144
+    ],
+    "homogeneous_caster_inertia_kgm2": 0.00016900000000000004
+  }
+}

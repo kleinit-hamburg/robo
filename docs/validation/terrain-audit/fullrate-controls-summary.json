@@ -1,0 +1,86 @@
+[
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 2.9811724609467003,
+    "mean_v_body_x_mps": 0.149999881244,
+    "max_abs_pitch_deg": 5.00000026845,
+    "max_abs_roll_deg": 1.68899440754e-05,
+    "final_speed_mps": 0.00119995854442,
+    "mean_wheel_slip_ratio": {
+      "left": 7.915581424268794e-07,
+      "right": 7.915579954467889e-07
+    },
+    "peak_axis_torque_Nm": {
+      "left": 6.03159347176,
+      "right": 6.03030005409
+    },
+    "mean_axis_torque_Nm": {
+      "left": 3.594946868176244,
+      "right": 3.5949462014433835
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 1.0,
+      "right_wheel": 1.0,
+      "caster_-0.28_-0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_0.28_-0.19": 1.0,
+      "caster_0.28_0.19": 1.0
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 172.9151264451519,
+      "right_wheel": 172.91498334153914,
+      "caster_-0.28_-0.19": 86.61306060931352,
+      "caster_-0.28_0.19": 86.61310542637423,
+      "caster_0.28_-0.19": 58.08361429457409,
+      "caster_0.28_0.19": 58.083659121245574
+    },
+    "traversal_pass": true,
+    "case": "plane_5",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 2.9770289834966817,
+    "mean_v_body_x_mps": 0.149999638794,
+    "max_abs_pitch_deg": 15.0000005713,
+    "max_abs_roll_deg": 5.60015415015e-05,
+    "final_speed_mps": 0.00119974184797,
+    "mean_wheel_slip_ratio": {
+      "left": 2.407614238822457e-06,
+      "right": 2.4076129584466754e-06
+    },
+    "peak_axis_torque_Nm": {
+      "left": 12.1676015054,
+      "right": 12.1676014907
+    },
+    "mean_axis_torque_Nm": {
+      "left": 10.154700326807763,
+      "right": 10.154697873849445
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 1.0,
+      "right_wheel": 1.0,
+      "caster_-0.28_-0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_0.28_-0.19": 1.0,
+      "caster_0.28_0.19": 1.0
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 167.6613455285794,
+      "right_wheel": 167.66088766574887,
+      "caster_-0.28_-0.19": 112.51076283674095,
+      "caster_-0.28_0.19": 112.510908153914,
+      "caster_0.28_-0.19": 27.789276806323546,
+      "caster_0.28_0.19": 27.789422141920088
+    },
+    "traversal_pass": true,
+    "case": "plane_15",
+    "seed": 11
+  }
+]

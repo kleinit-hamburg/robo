@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.22)
+project(garden_terrain_audit LANGUAGES CXX)
+find_package(gz-sim8 REQUIRED)
+add_executable(garden-audit-server main.cc)
+target_link_libraries(garden-audit-server PRIVATE gz-sim8::gz-sim8)
+add_library(garden-terrain-audit SHARED audit.cc)
+target_link_libraries(garden-terrain-audit PRIVATE gz-sim8::gz-sim8)
+target_compile_features(garden-terrain-audit PRIVATE cxx_std_17)

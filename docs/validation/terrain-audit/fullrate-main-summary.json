@@ -1,0 +1,632 @@
+[
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 2.98117474607,
+    "mean_v_body_x_mps": 0.14999998772354048,
+    "max_abs_pitch_deg": 2.52413296614e-07,
+    "max_abs_roll_deg": 2.33451046432e-07,
+    "final_speed_mps": 0.00120006866396,
+    "mean_wheel_slip_ratio": {
+      "left": 8.445200778539283e-08,
+      "right": 7.933334090425353e-08
+    },
+    "peak_axis_torque_Nm": {
+      "left": 2.69744921546,
+      "right": 2.69744921527
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.26144927039670607,
+      "right": 0.2614812013449316
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 1.0,
+      "right_wheel": 1.0,
+      "caster_-0.28_-0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_0.28_-0.19": 1.0,
+      "caster_0.28_0.19": 1.0
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 173.56535076937533,
+      "right_wheel": 173.567727598094,
+      "caster_-0.28_-0.19": 72.62884412980972,
+      "caster_-0.28_0.19": 72.62961672353143,
+      "caster_0.28_-0.19": 72.62774848592626,
+      "caster_0.28_0.19": 72.63071229326731
+    },
+    "traversal_pass": true,
+    "case": "grade_0",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 2.98117474607,
+    "mean_v_body_x_mps": 0.14999998772354048,
+    "max_abs_pitch_deg": 2.52413296614e-07,
+    "max_abs_roll_deg": 2.33451046432e-07,
+    "final_speed_mps": 0.00120006866396,
+    "mean_wheel_slip_ratio": {
+      "left": 8.445200778539283e-08,
+      "right": 7.933334090425353e-08
+    },
+    "peak_axis_torque_Nm": {
+      "left": 2.69744921546,
+      "right": 2.69744921527
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.26144927039670607,
+      "right": 0.2614812013449316
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 1.0,
+      "right_wheel": 1.0,
+      "caster_-0.28_-0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_0.28_-0.19": 1.0,
+      "caster_0.28_0.19": 1.0
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 173.56535076937533,
+      "right_wheel": 173.567727598094,
+      "caster_-0.28_-0.19": 72.62884412980972,
+      "caster_-0.28_0.19": 72.62961672353143,
+      "caster_0.28_-0.19": 72.62774848592626,
+      "caster_0.28_0.19": 72.63071229326731
+    },
+    "traversal_pass": true,
+    "case": "grade_0",
+    "seed": 22
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 2.98117474607,
+    "mean_v_body_x_mps": 0.14999998772354048,
+    "max_abs_pitch_deg": 2.52413296614e-07,
+    "max_abs_roll_deg": 2.33451046432e-07,
+    "final_speed_mps": 0.00120006866396,
+    "mean_wheel_slip_ratio": {
+      "left": 8.445200778539283e-08,
+      "right": 7.933334090425353e-08
+    },
+    "peak_axis_torque_Nm": {
+      "left": 2.69744921546,
+      "right": 2.69744921527
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.26144927039670607,
+      "right": 0.2614812013449316
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 1.0,
+      "right_wheel": 1.0,
+      "caster_-0.28_-0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_0.28_-0.19": 1.0,
+      "caster_0.28_0.19": 1.0
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 173.56535076937533,
+      "right_wheel": 173.567727598094,
+      "caster_-0.28_-0.19": 72.62884412980972,
+      "caster_-0.28_0.19": 72.62961672353143,
+      "caster_0.28_-0.19": 72.62774848592626,
+      "caster_0.28_0.19": 72.63071229326731
+    },
+    "traversal_pass": true,
+    "case": "grade_0",
+    "seed": 33
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.217170629773,
+    "mean_v_body_x_mps": 2.0533648709246403e-05,
+    "max_abs_pitch_deg": 0.173773955502,
+    "max_abs_roll_deg": 0.0001891747129,
+    "final_speed_mps": 0.00120007119636,
+    "mean_wheel_slip_ratio": {
+      "left": 0.999748716263048,
+      "right": 0.999676341897289
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1494722627,
+      "right": 37.1291539872
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.9524984072055679,
+      "right": 0.9614881465311352
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.3619787071348744,
+      "right_wheel": 0.29910005293806247,
+      "caster_-0.28_-0.19": 0.8914769719428269,
+      "caster_-0.28_0.19": 0.8973589788835951,
+      "caster_0.28_-0.19": 0.8412446326686666,
+      "caster_0.28_0.19": 0.8866537262513969
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 13.666252571812537,
+      "right_wheel": 11.868397054328907,
+      "caster_-0.28_-0.19": 158.85654705363007,
+      "caster_-0.28_0.19": 149.41648349571727,
+      "caster_0.28_-0.19": 148.70712132549284,
+      "caster_0.28_0.19": 155.90610654562798
+    },
+    "traversal_pass": false,
+    "case": "grade_5",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.217170629773,
+    "mean_v_body_x_mps": 2.0533648709246403e-05,
+    "max_abs_pitch_deg": 0.173773955502,
+    "max_abs_roll_deg": 0.0001891747129,
+    "final_speed_mps": 0.00120007119636,
+    "mean_wheel_slip_ratio": {
+      "left": 0.999748716263048,
+      "right": 0.999676341897289
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1494722627,
+      "right": 37.1291539872
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.9524984072055679,
+      "right": 0.9614881465311352
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.3619787071348744,
+      "right_wheel": 0.29910005293806247,
+      "caster_-0.28_-0.19": 0.8914769719428269,
+      "caster_-0.28_0.19": 0.8973589788835951,
+      "caster_0.28_-0.19": 0.8412446326686666,
+      "caster_0.28_0.19": 0.8866537262513969
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 13.666252571812537,
+      "right_wheel": 11.868397054328907,
+      "caster_-0.28_-0.19": 158.85654705363007,
+      "caster_-0.28_0.19": 149.41648349571727,
+      "caster_0.28_-0.19": 148.70712132549284,
+      "caster_0.28_0.19": 155.90610654562798
+    },
+    "traversal_pass": false,
+    "case": "grade_5",
+    "seed": 22
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.217170629773,
+    "mean_v_body_x_mps": 2.0533648709246403e-05,
+    "max_abs_pitch_deg": 0.173773955502,
+    "max_abs_roll_deg": 0.0001891747129,
+    "final_speed_mps": 0.00120007119636,
+    "mean_wheel_slip_ratio": {
+      "left": 0.999748716263048,
+      "right": 0.999676341897289
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1494722627,
+      "right": 37.1291539872
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.9524984072055679,
+      "right": 0.9614881465311352
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.3619787071348744,
+      "right_wheel": 0.29910005293806247,
+      "caster_-0.28_-0.19": 0.8914769719428269,
+      "caster_-0.28_0.19": 0.8973589788835951,
+      "caster_0.28_-0.19": 0.8412446326686666,
+      "caster_0.28_0.19": 0.8866537262513969
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 13.666252571812537,
+      "right_wheel": 11.868397054328907,
+      "caster_-0.28_-0.19": 158.85654705363007,
+      "caster_-0.28_0.19": 149.41648349571727,
+      "caster_0.28_-0.19": 148.70712132549284,
+      "caster_0.28_0.19": 155.90610654562798
+    },
+    "traversal_pass": false,
+    "case": "grade_5",
+    "seed": 33
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.214313588827,
+    "mean_v_body_x_mps": 0.00013131380250736921,
+    "max_abs_pitch_deg": 0.196503563511,
+    "max_abs_roll_deg": 0.000382117692652,
+    "final_speed_mps": -0.000306263573445,
+    "mean_wheel_slip_ratio": {
+      "left": 0.999812389679952,
+      "right": 0.9998223000008231
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1676843959,
+      "right": 36.6969646542
+    },
+    "mean_axis_torque_Nm": {
+      "left": 1.4224210798661088,
+      "right": 1.4135640411804098
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.4412681606964296,
+      "right_wheel": 0.39627080759955297,
+      "caster_-0.28_-0.19": 0.9628845362037527,
+      "caster_-0.28_0.19": 0.9617669548850067,
+      "caster_0.28_-0.19": 0.9020057643668019,
+      "caster_0.28_0.19": 0.8881830480559967
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 24.08844371343454,
+      "right_wheel": 18.263289823610126,
+      "caster_-0.28_-0.19": 158.74812432169662,
+      "caster_-0.28_0.19": 142.1406851704171,
+      "caster_0.28_-0.19": 143.3506180033782,
+      "caster_0.28_0.19": 153.43286497481557
+    },
+    "traversal_pass": false,
+    "case": "grade_10",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.214313588827,
+    "mean_v_body_x_mps": 0.00013131380250736921,
+    "max_abs_pitch_deg": 0.196503563511,
+    "max_abs_roll_deg": 0.000382117692652,
+    "final_speed_mps": -0.000306263573445,
+    "mean_wheel_slip_ratio": {
+      "left": 0.999812389679952,
+      "right": 0.9998223000008231
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1676843959,
+      "right": 36.6969646542
+    },
+    "mean_axis_torque_Nm": {
+      "left": 1.4224210798661088,
+      "right": 1.4135640411804098
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.4412681606964296,
+      "right_wheel": 0.39627080759955297,
+      "caster_-0.28_-0.19": 0.9628845362037527,
+      "caster_-0.28_0.19": 0.9617669548850067,
+      "caster_0.28_-0.19": 0.9020057643668019,
+      "caster_0.28_0.19": 0.8881830480559967
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 24.08844371343454,
+      "right_wheel": 18.263289823610126,
+      "caster_-0.28_-0.19": 158.74812432169662,
+      "caster_-0.28_0.19": 142.1406851704171,
+      "caster_0.28_-0.19": 143.3506180033782,
+      "caster_0.28_0.19": 153.43286497481557
+    },
+    "traversal_pass": false,
+    "case": "grade_10",
+    "seed": 22
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.214313588827,
+    "mean_v_body_x_mps": 0.00013131380250736921,
+    "max_abs_pitch_deg": 0.196503563511,
+    "max_abs_roll_deg": 0.000382117692652,
+    "final_speed_mps": -0.000306263573445,
+    "mean_wheel_slip_ratio": {
+      "left": 0.999812389679952,
+      "right": 0.9998223000008231
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1676843959,
+      "right": 36.6969646542
+    },
+    "mean_axis_torque_Nm": {
+      "left": 1.4224210798661088,
+      "right": 1.4135640411804098
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.4412681606964296,
+      "right_wheel": 0.39627080759955297,
+      "caster_-0.28_-0.19": 0.9628845362037527,
+      "caster_-0.28_0.19": 0.9617669548850067,
+      "caster_0.28_-0.19": 0.9020057643668019,
+      "caster_0.28_0.19": 0.8881830480559967
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 24.08844371343454,
+      "right_wheel": 18.263289823610126,
+      "caster_-0.28_-0.19": 158.74812432169662,
+      "caster_-0.28_0.19": 142.1406851704171,
+      "caster_0.28_-0.19": 143.3506180033782,
+      "caster_0.28_0.19": 153.43286497481557
+    },
+    "traversal_pass": false,
+    "case": "grade_10",
+    "seed": 33
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.211441298225,
+    "mean_v_body_x_mps": 0.0002801022301533238,
+    "max_abs_pitch_deg": 0.20162618685,
+    "max_abs_roll_deg": 0.000376652385611,
+    "final_speed_mps": -0.00054642015367,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9998309595420735,
+      "right": 0.9998924987669441
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.0459103499,
+      "right": 37.1176402771
+    },
+    "mean_axis_torque_Nm": {
+      "left": 2.7352266775643246,
+      "right": 2.799839304118851
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.43215104993823894,
+      "right_wheel": 0.4635021469325334,
+      "caster_-0.28_-0.19": 0.9822951591082878,
+      "caster_-0.28_0.19": 0.9877654255632021,
+      "caster_0.28_-0.19": 0.9080054114463855,
+      "caster_0.28_0.19": 0.8608905358508323
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 10.035902716536988,
+      "right_wheel": 8.793689455626293,
+      "caster_-0.28_-0.19": 146.97314700302874,
+      "caster_-0.28_0.19": 168.13581518033658,
+      "caster_0.28_-0.19": 166.48508685762118,
+      "caster_0.28_0.19": 143.5003665892594
+    },
+    "traversal_pass": false,
+    "case": "grade_15",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.211441298225,
+    "mean_v_body_x_mps": 0.0002801022301533238,
+    "max_abs_pitch_deg": 0.20162618685,
+    "max_abs_roll_deg": 0.000376652385611,
+    "final_speed_mps": -0.00054642015367,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9998309595420735,
+      "right": 0.9998924987669441
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.0459103499,
+      "right": 37.1176402771
+    },
+    "mean_axis_torque_Nm": {
+      "left": 2.7352266775643246,
+      "right": 2.799839304118851
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.43215104993823894,
+      "right_wheel": 0.4635021469325334,
+      "caster_-0.28_-0.19": 0.9822951591082878,
+      "caster_-0.28_0.19": 0.9877654255632021,
+      "caster_0.28_-0.19": 0.9080054114463855,
+      "caster_0.28_0.19": 0.8608905358508323
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 10.035902716536988,
+      "right_wheel": 8.793689455626293,
+      "caster_-0.28_-0.19": 146.97314700302874,
+      "caster_-0.28_0.19": 168.13581518033658,
+      "caster_0.28_-0.19": 166.48508685762118,
+      "caster_0.28_0.19": 143.5003665892594
+    },
+    "traversal_pass": false,
+    "case": "grade_15",
+    "seed": 22
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.211441298225,
+    "mean_v_body_x_mps": 0.0002801022301533238,
+    "max_abs_pitch_deg": 0.20162618685,
+    "max_abs_roll_deg": 0.000376652385611,
+    "final_speed_mps": -0.00054642015367,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9998309595420735,
+      "right": 0.9998924987669441
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.0459103499,
+      "right": 37.1176402771
+    },
+    "mean_axis_torque_Nm": {
+      "left": 2.7352266775643246,
+      "right": 2.799839304118851
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.43215104993823894,
+      "right_wheel": 0.4635021469325334,
+      "caster_-0.28_-0.19": 0.9822951591082878,
+      "caster_-0.28_0.19": 0.9877654255632021,
+      "caster_0.28_-0.19": 0.9080054114463855,
+      "caster_0.28_0.19": 0.8608905358508323
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 10.035902716536988,
+      "right_wheel": 8.793689455626293,
+      "caster_-0.28_-0.19": 146.97314700302874,
+      "caster_-0.28_0.19": 168.13581518033658,
+      "caster_0.28_-0.19": 166.48508685762118,
+      "caster_0.28_0.19": 143.5003665892594
+    },
+    "traversal_pass": false,
+    "case": "grade_15",
+    "seed": 33
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.205359520506,
+    "mean_v_body_x_mps": -0.0008805502210633284,
+    "max_abs_pitch_deg": 0.165035929601,
+    "max_abs_roll_deg": 0.0015439146775,
+    "final_speed_mps": -5.20918892628e-13,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9999999098420926,
+      "right": 0.9999998580786768
+    },
+    "peak_axis_torque_Nm": {
+      "left": 40.0,
+      "right": 40.0
+    },
+    "mean_axis_torque_Nm": {
+      "left": 10.50654941408927,
+      "right": 9.918956577438927
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.8685371448738309,
+      "right_wheel": 0.8309511205223222,
+      "caster_-0.28_-0.19": 0.9992353390977001,
+      "caster_-0.28_0.19": 0.98300099994118,
+      "caster_0.28_-0.19": 0.9999411799305923,
+      "caster_0.28_0.19": 0.9938827127816011
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 22.112086004550786,
+      "right_wheel": 18.73118484993837,
+      "caster_-0.28_-0.19": 166.54308597845585,
+      "caster_-0.28_0.19": 151.35702846683446,
+      "caster_0.28_-0.19": 157.61488774425797,
+      "caster_0.28_0.19": 169.54249482986896
+    },
+    "traversal_pass": false,
+    "case": "uneven",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.205359520506,
+    "mean_v_body_x_mps": -0.0008805502210633284,
+    "max_abs_pitch_deg": 0.165035929601,
+    "max_abs_roll_deg": 0.0015439146775,
+    "final_speed_mps": -5.20918892628e-13,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9999999098420926,
+      "right": 0.9999998580786768
+    },
+    "peak_axis_torque_Nm": {
+      "left": 40.0,
+      "right": 40.0
+    },
+    "mean_axis_torque_Nm": {
+      "left": 10.50654941408927,
+      "right": 9.918956577438927
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.8685371448738309,
+      "right_wheel": 0.8309511205223222,
+      "caster_-0.28_-0.19": 0.9992353390977001,
+      "caster_-0.28_0.19": 0.98300099994118,
+      "caster_0.28_-0.19": 0.9999411799305923,
+      "caster_0.28_0.19": 0.9938827127816011
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 22.112086004550786,
+      "right_wheel": 18.73118484993837,
+      "caster_-0.28_-0.19": 166.54308597845585,
+      "caster_-0.28_0.19": 151.35702846683446,
+      "caster_0.28_-0.19": 157.61488774425797,
+      "caster_0.28_0.19": 169.54249482986896
+    },
+    "traversal_pass": false,
+    "case": "uneven",
+    "seed": 22
+  },
+  {
+    "data_complete": true,
+    "samples": 24000,
+    "progress_m": 0.205359520506,
+    "mean_v_body_x_mps": -0.0008805502210633284,
+    "max_abs_pitch_deg": 0.165035929601,
+    "max_abs_roll_deg": 0.0015439146775,
+    "final_speed_mps": -5.20918892628e-13,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9999999098420926,
+      "right": 0.9999998580786768
+    },
+    "peak_axis_torque_Nm": {
+      "left": 40.0,
+      "right": 40.0
+    },
+    "mean_axis_torque_Nm": {
+      "left": 10.50654941408927,
+      "right": 9.918956577438927
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.8685371448738309,
+      "right_wheel": 0.8309511205223222,
+      "caster_-0.28_-0.19": 0.9992353390977001,
+      "caster_-0.28_0.19": 0.98300099994118,
+      "caster_0.28_-0.19": 0.9999411799305923,
+      "caster_0.28_0.19": 0.9938827127816011
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 22.112086004550786,
+      "right_wheel": 18.73118484993837,
+      "caster_-0.28_-0.19": 166.54308597845585,
+      "caster_-0.28_0.19": 151.35702846683446,
+      "caster_0.28_-0.19": 157.61488774425797,
+      "caster_0.28_0.19": 169.54249482986896
+    },
+    "traversal_pass": false,
+    "case": "uneven",
+    "seed": 33
+  }
+]

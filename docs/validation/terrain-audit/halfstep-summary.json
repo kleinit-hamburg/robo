@@ -1,0 +1,86 @@
+[
+  {
+    "data_complete": true,
+    "samples": 48000,
+    "progress_m": 0.217168863519,
+    "mean_v_body_x_mps": -0.00010002469296694724,
+    "max_abs_pitch_deg": 0.173164389582,
+    "max_abs_roll_deg": 0.000109188612547,
+    "final_speed_mps": -0.000639019050446,
+    "mean_wheel_slip_ratio": {
+      "left": 1.0002048526162972,
+      "right": 1.0002102161328497
+    },
+    "peak_axis_torque_Nm": {
+      "left": 37.1661024854,
+      "right": 37.1634126198
+    },
+    "mean_axis_torque_Nm": {
+      "left": 0.9468068321246332,
+      "right": 0.9681797870659451
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.3139025322784624,
+      "right_wheel": 0.33896061880532924,
+      "caster_-0.28_-0.19": 0.8881797594188406,
+      "caster_-0.28_0.19": 0.8971206729213846,
+      "caster_0.28_-0.19": 0.8611217317137732,
+      "caster_0.28_0.19": 0.840857621834652
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 9.665343179587236,
+      "right_wheel": 10.958308571233928,
+      "caster_-0.28_-0.19": 153.58279998907992,
+      "caster_-0.28_0.19": 157.05286607346974,
+      "caster_0.28_-0.19": 154.49088312193658,
+      "caster_0.28_0.19": 152.66035853310785
+    },
+    "traversal_pass": false,
+    "case": "grade_5",
+    "seed": 11
+  },
+  {
+    "data_complete": true,
+    "samples": 48000,
+    "progress_m": 0.205358867296,
+    "mean_v_body_x_mps": -0.0021746025461672532,
+    "max_abs_pitch_deg": 0.166818677899,
+    "max_abs_roll_deg": 3.85918704551e-06,
+    "final_speed_mps": -0.00222883058942,
+    "mean_wheel_slip_ratio": {
+      "left": 0.9999999440105941,
+      "right": 0.9999999440945361
+    },
+    "peak_axis_torque_Nm": {
+      "left": 40.0,
+      "right": 40.0
+    },
+    "mean_axis_torque_Nm": {
+      "left": 10.591169232662196,
+      "right": 10.591251601155504
+    },
+    "contact_fraction": {
+      "base_link": 0.0,
+      "left_wheel": 0.8782094644275168,
+      "right_wheel": 0.8782094644275168,
+      "caster_-0.28_-0.19": 1.0,
+      "caster_-0.28_0.19": 1.0,
+      "caster_0.28_-0.19": 1.0,
+      "caster_0.28_0.19": 1.0
+    },
+    "mean_contact_normal_N": {
+      "base_link": 0.0,
+      "left_wheel": 19.676742366797697,
+      "right_wheel": 19.61024492425289,
+      "caster_-0.28_-0.19": 159.31351605552567,
+      "caster_-0.28_0.19": 160.01243280185392,
+      "caster_0.28_-0.19": 164.9557930235092,
+      "caster_0.28_0.19": 164.02332927498003
+    },
+    "traversal_pass": false,
+    "case": "uneven",
+    "seed": 11
+  }
+]

@@ -41,7 +41,7 @@ function renderEngineering(concept){
  }
  const rows=benchmark.filter(r=>r.variant===concept);
  if(!rows.length){const empty=document.createElement('p');empty.className='note';empty.textContent='Noch kein Benchmark für diese Variante im Dokuordner.';list.appendChild(empty);return;}
- for(const row of rows){const item=document.createElement('div');item.className='benchmark '+(row.succeeded?'pass':'fail');const mass=row.mass_class?' · '+row.mass_class.replace('light','leicht ').replace('medium','mittel ').replace('heavy','schwer '):'';const energy=row.mechanical_drive_energy_per_m_Wh_m!=null?' · '+fmt(row.mechanical_drive_energy_per_m_Wh_m,3)+' Wh/m':'';item.innerHTML='<strong>'+row.case+mass+'</strong><span>'+(row.succeeded?'geschafft':'nicht geschafft')+'</span><small>'+fmt(row.progress_m,2)+' m · Neigung '+fmt(row.max_tilt_deg,1)+'° · Schlupf '+row.mean_slip_ratio==null?'—':fmt(row.mean_slip_ratio*100,1)+'%'+energy+'</small>';list.appendChild(item);}
+ for(const row of rows){const item=document.createElement('div');item.className='benchmark '+(row.succeeded?'pass':'fail');const mass=row.mass_class?' · '+row.mass_class.replace('light','leicht ').replace('medium','mittel ').replace('heavy','schwer '):'';const energy=row.mechanical_drive_energy_per_m_Wh_m!=null?' · '+fmt(row.mechanical_drive_energy_per_m_Wh_m,3)+' Wh/m':'';const slip=row.mean_slip_ratio==null?'—':fmt(row.mean_slip_ratio*100,1)+'%';item.innerHTML='<strong>'+row.case+mass+'</strong><span>'+(row.succeeded?'geschafft':'nicht geschafft')+'</span><small>'+fmt(row.progress_m,2)+' m · Neigung '+fmt(row.max_tilt_deg,1)+'° · Schlupf '+slip+energy+'</small>';list.appendChild(item);}
 }
 
 async function loadScene(){
@@ -49,18 +49,20 @@ async function loadScene(){
  try{
   const response=await fetch('/api/scene');if(!response.ok)throw Error('Szene nicht erreichbar');const data=await response.json();
   active=null;scene.remove(sceneGroup);sceneGroup.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});sceneGroup=new THREE.Group();scene.add(sceneGroup);frames.clear();
-  revision=data.revision;catalog=data.catalog;robotSpec=data.robot_spec||{};benchmark=data.benchmark||[];$('profile').value=data.world_profile||'garden';renderConceptOptions(data.concept);const info=catalog[data.concept];driveReady=info.drive_ready;
-  $('mode').textContent=info.mode;$('mode').className='mode'+(driveReady?'':' preview');$('concept-note').textContent=info.description;renderEngineering(data.concept);
+  revision=data.revision;catalog=data.catalog;robotSpec=data.robot_spec||{};benchmark=data.benchmark||[];$('profile').value=data.world_profile||'garden';grid.visible=(data.world_profile||'garden')!=='potato_ridge';renderConceptOptions(data.concept);const info=catalog[data.concept];driveReady=info.drive_ready;
+  $('scene-title').textContent=(data.world_profile==='potato_ridge'?'KARTOFFELDAMM · 62 CM REIHEN · VISUAL-PROXY':'ROBOTER-TESTFELD · 6 × 4 M');$('mode').textContent=info.mode;$('mode').className='mode'+(driveReady?'':' preview');$('concept-note').textContent=info.description;renderEngineering(data.concept);
   for(const model of data.objects){
    const group=new THREE.Group();setPose(group,model.pose);sceneGroup.add(group);frames.set(model.name,group);
    for(const link of model.links){
     const linkGroup=new THREE.Group();setPose(linkGroup,link.pose);group.add(linkGroup);frames.set(link.frame,linkGroup);
     for(const visual of link.visuals){
      let geom;if(visual.shape==='box')geom=new THREE.BoxGeometry(...visual.dimensions);
-     else if(visual.shape==='sphere')geom=new THREE.SphereGeometry(visual.dimensions[0],24,16);
-     else{geom=new THREE.CylinderGeometry(visual.dimensions[0],visual.dimensions[0],visual.dimensions[1],20);geom.rotateX(Math.PI/2);}
+     else if(visual.shape==='sphere'){geom=new THREE.SphereGeometry(visual.dimensions[0],32,18);if((visual.name||'').includes('leaf'))geom.scale(1.7,.55,.22);}
+     else{geom=new THREE.CylinderGeometry(visual.dimensions[0],visual.dimensions[0],visual.dimensions[1],28);geom.rotateX(Math.PI/2);}
      const color=new THREE.Color().setRGB(...visual.color,THREE.SRGBColorSpace);
-     const mesh=new THREE.Mesh(geom,new THREE.MeshStandardMaterial({color,roughness:.85}));setPose(mesh,visual.pose);mesh.castShadow=model.name!=='ground';mesh.receiveShadow=true;linkGroup.add(mesh);
+     const isSoil=model.name==='ground'||model.name.includes('ridge')||model.name.includes('clod');
+     const material=new THREE.MeshStandardMaterial({color,roughness:isSoil?.97:.82,metalness:0});
+     const mesh=new THREE.Mesh(geom,material);setPose(mesh,visual.pose);mesh.castShadow=model.name!=='ground';mesh.receiveShadow=true;linkGroup.add(mesh);
     }
    }
   }

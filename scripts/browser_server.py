@@ -36,7 +36,18 @@ def build_world(concept, path, profile="garden"):
     world=tree.getroot().find('world')
     for model in list(world.findall('model')):
         if model.get('name') in ('test_cube','test_ball') or (profile not in ('garden','manipulation') and model.get('name')!='ground'):world.remove(model)
-    ground_collision=world.find("model[@name='ground']/link/collision")
+    ground=world.find("model[@name='ground']/link")
+    ground_collision=ground.find('collision')
+    if profile=='potato_ridge':
+        for ground_visual in ground.findall('visual'):
+            material=ground_visual.find('material')
+            if material is None:material=ET.SubElement(ground_visual,'material')
+            diffuse=material.find('diffuse')
+            if diffuse is None:diffuse=ET.SubElement(material,'diffuse')
+            diffuse.text='0.34 0.25 0.16 1'
+            ambient=material.find('ambient')
+            if ambient is None:ambient=ET.SubElement(material,'ambient')
+            ambient.text='0.28 0.20 0.13 1'
     friction=ET.SubElement(ET.SubElement(ET.SubElement(ground_collision,'surface'),'friction'),'ode')
     ET.SubElement(friction,'mu').text='0.25' if profile=='slippery' else '0.6';ET.SubElement(friction,'mu2').text='0.25' if profile=='slippery' else '0.6'
     terrain(world,profile)
@@ -60,7 +71,7 @@ def build_world(concept, path, profile="garden"):
                 elif geometry.tag=='sphere':dimensions=[float(geometry.findtext('radius'))]
                 elif geometry.tag=='cylinder':dimensions=[float(geometry.findtext('radius')),float(geometry.findtext('length'))]
                 else:raise ValueError(f'Unsupported preview geometry: {geometry.tag}')
-                visuals.append(dict(shape=geometry.tag,dimensions=dimensions,pose=pose(visual),
+                visuals.append(dict(name=visual.get('name'),shape=geometry.tag,dimensions=dimensions,pose=pose(visual),
                                     color=list(map(float,visual.findtext('material/diffuse','0.4 0.5 0.4 1').split()))[:3]))
             links.append(dict(name=link.get('name'),frame=f"{model.get('name')}::{link.get('name')}",pose=pose(link),visuals=visuals))
         objects.append(dict(name=model.get('name'),pose=pose(model),links=links))

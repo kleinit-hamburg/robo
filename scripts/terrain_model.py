@@ -18,7 +18,7 @@ def terrain(world,profile):
         elif shape=='cylinder':
             c=E.SubElement(g,'cylinder');E.SubElement(c,'radius').text=str(dims[0]);E.SubElement(c,'length').text=str(dims[1])
         else:raise ValueError(shape)
-        if kind=='visual':material(node,color)
+        if tag=='visual':material(node,color)
         else:friction(node,mu)
     def box(name,xyz,size,pitch=0):
         model=E.SubElement(world,'model',name=name);E.SubElement(model,'static').text='true';E.SubElement(model,'pose').text=' '.join(map(str,(*xyz,0,pitch,0)))

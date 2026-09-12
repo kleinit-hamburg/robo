@@ -33,6 +33,17 @@ class RobotSpecTests(unittest.TestCase):
         self.assertEqual(len(right_joints),6)
         self.assertEqual(len(model.findall("joint[@type='prismatic']")),12)
 
+
+    def test_guided_variant_targets_120mm_obstacle_study(self):
+        spec=load_spec();guided=spec['variants']['tracked_guided']
+        self.assertEqual(guided['supports']['type'],'spring_bogie_rollers')
+        self.assertGreaterEqual(guided['drive']['wheel_radius_m'],0.12)
+        self.assertGreaterEqual(guided['track']['approach_angle_deg'],55)
+        self.assertEqual(guided['drive']['effort_limit_Nm'],spec['variants']['tracked_bogie']['drive']['effort_limit_Nm'])
+        self.assertIn('light45',spec['weight_classes'])
+        self.assertIn('medium65',spec['weight_classes'])
+        self.assertIn('heavy85',spec['weight_classes'])
+
     def test_improved_variant_changes_mechanical_geometry(self):
         spec=load_spec();old=spec['variants']['tracked'];new=spec['variants']['tracked_improved']
         self.assertGreater(new['drive']['wheel_radius_m'],old['drive']['wheel_radius_m'])
@@ -55,4 +66,27 @@ class ChassisBenchmarkArtifactTests(unittest.TestCase):
         self.assertTrue(by[('tracked_bogie','ramp_30')]['succeeded'])
         self.assertFalse(by[('tracked_bogie','ramp_40')]['succeeded'])
         self.assertTrue(by[('tracked_bogie','diagonal_wave')]['succeeded'])
+
+
+class WeightClassBenchmarkArtifactTests(unittest.TestCase):
+    def test_weight_class_results_capture_current_limit(self):
+        rows=json.loads((ROOT/'docs/validation/weight-class-chassis-summary.json').read_text())
+        by={(r['variant'],r['mass_class'],r['case']):r for r in rows}
+        for variant in ('tracked_bogie','tracked_guided'):
+            for mass_class in ('light45','medium65','heavy85'):
+                self.assertTrue(by[(variant,mass_class,'step_80')]['succeeded'])
+                self.assertFalse(by[(variant,mass_class,'step_120')]['succeeded'])
+        for mass_class in ('light45','medium65','heavy85'):
+            self.assertTrue(by[('tracked_guided',mass_class,'step_100')]['succeeded'])
+            self.assertFalse(by[('tracked_bogie',mass_class,'step_100')]['succeeded'])
+            self.assertIsNotNone(by[('tracked_guided',mass_class,'ramp_30')]['mechanical_drive_energy_per_m_Wh_m'])
+
+    def test_mechanical_comparison_marks_legged_locomotion_unready(self):
+        report=json.loads((ROOT/'docs/validation/mechanical-comparison-summary.json').read_text())
+        static=report['static_tool_pull_limits']
+        for platform in ('quadruped','humanoid'):
+            rows=[r for r in static if r['platform']==platform]
+            self.assertEqual(len(rows),3)
+            self.assertFalse(any(r['locomotion_ready_in_gazebo'] for r in rows))
+
 if __name__=='__main__':unittest.main()

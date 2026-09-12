@@ -1,0 +1,316 @@
+{
+  "schema": 1,
+  "scope": "mechanical comparison; Gazebo truth for drive_ready tracked variants, static estimates for not-yet-actuated legged concepts",
+  "weight_classes": {
+    "light45": {
+      "name": "leicht",
+      "mass_kg": 45.0,
+      "description": "45 kg Gesamtmasse bei gleicher Antriebsleistung; prüft Schlupf und Standfestigkeitsverlust."
+    },
+    "medium65": {
+      "name": "mittel",
+      "mass_kg": 65.0,
+      "description": "aktueller Referenzstand."
+    },
+    "heavy85": {
+      "name": "schwer",
+      "mass_kg": 85.0,
+      "description": "85 kg Gesamtmasse bei gleicher Antriebsleistung; prüft Traktion, Energie und Bodendruckreserve."
+    }
+  },
+  "benchmark_source": "docs/validation/weight-class-chassis-summary.json",
+  "gazebo_rollup": [
+    {
+      "variant": "tracked_bogie",
+      "mass_class": "heavy85",
+      "mass_kg": 85.0,
+      "max_passed_step_mm": 80,
+      "max_passed_ramp_deg": 30,
+      "passed_cases": [
+        "step_80",
+        "ramp_30"
+      ],
+      "mean_energy_per_m_Wh_m": 0.1135005055218998,
+      "runs": 4
+    },
+    {
+      "variant": "tracked_bogie",
+      "mass_class": "light45",
+      "mass_kg": 45.0,
+      "max_passed_step_mm": 80,
+      "max_passed_ramp_deg": 30,
+      "passed_cases": [
+        "step_80",
+        "ramp_30"
+      ],
+      "mean_energy_per_m_Wh_m": 0.05381962377120034,
+      "runs": 4
+    },
+    {
+      "variant": "tracked_bogie",
+      "mass_class": "medium65",
+      "mass_kg": 65.0,
+      "max_passed_step_mm": 80,
+      "max_passed_ramp_deg": 30,
+      "passed_cases": [
+        "step_80",
+        "ramp_30"
+      ],
+      "mean_energy_per_m_Wh_m": 0.08332325188236255,
+      "runs": 4
+    },
+    {
+      "variant": "tracked_guided",
+      "mass_class": "heavy85",
+      "mass_kg": 85.0,
+      "max_passed_step_mm": 100,
+      "max_passed_ramp_deg": 30,
+      "passed_cases": [
+        "step_80",
+        "step_100",
+        "ramp_30"
+      ],
+      "mean_energy_per_m_Wh_m": 0.11192820179340832,
+      "runs": 4
+    },
+    {
+      "variant": "tracked_guided",
+      "mass_class": "light45",
+      "mass_kg": 45.0,
+      "max_passed_step_mm": 100,
+      "max_passed_ramp_deg": 30,
+      "passed_cases": [
+        "step_80",
+        "step_100",
+        "ramp_30"
+      ],
+      "mean_energy_per_m_Wh_m": 0.052915728879944154,
+      "runs": 4
+    },
+    {
+      "variant": "tracked_guided",
+      "mass_class": "medium65",
+      "mass_kg": 65.0,
+      "max_passed_step_mm": 100,
+      "max_passed_ramp_deg": 30,
+      "passed_cases": [
+        "step_80",
+        "step_100",
+        "ramp_30"
+      ],
+      "mean_energy_per_m_Wh_m": 0.08245273760872524,
+      "runs": 4
+    }
+  ],
+  "static_tool_pull_limits": [
+    {
+      "platform": "tracked_bogie",
+      "mass_kg": 45.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.82,
+      "support_width_m": 0.86,
+      "com_height_m": 0.35,
+      "tool_height_m": 0.44999999999999996,
+      "friction_mu_assumed": 0.9,
+      "forward_pull_tip_limit_N": 402.2100000000001,
+      "side_pull_tip_limit_N": 421.8300000000001,
+      "friction_limited_side_force_N": 397.30500000000006,
+      "conservative_horizontal_tool_force_limit_N": 397.30500000000006,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "light45",
+      "mass_class_name": "leicht"
+    },
+    {
+      "platform": "tracked_bogie",
+      "mass_kg": 65.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.82,
+      "support_width_m": 0.86,
+      "com_height_m": 0.35,
+      "tool_height_m": 0.44999999999999996,
+      "friction_mu_assumed": 0.9,
+      "forward_pull_tip_limit_N": 580.97,
+      "side_pull_tip_limit_N": 609.3100000000001,
+      "friction_limited_side_force_N": 573.885,
+      "conservative_horizontal_tool_force_limit_N": 573.885,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "medium65",
+      "mass_class_name": "mittel"
+    },
+    {
+      "platform": "tracked_bogie",
+      "mass_kg": 85.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.82,
+      "support_width_m": 0.86,
+      "com_height_m": 0.35,
+      "tool_height_m": 0.44999999999999996,
+      "friction_mu_assumed": 0.9,
+      "forward_pull_tip_limit_N": 759.73,
+      "side_pull_tip_limit_N": 796.7900000000001,
+      "friction_limited_side_force_N": 750.465,
+      "conservative_horizontal_tool_force_limit_N": 750.465,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "heavy85",
+      "mass_class_name": "schwer"
+    },
+    {
+      "platform": "tracked_guided",
+      "mass_kg": 45.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.92,
+      "support_width_m": 0.86,
+      "com_height_m": 0.37,
+      "tool_height_m": 0.47,
+      "friction_mu_assumed": 0.92,
+      "forward_pull_tip_limit_N": 432.05744680851075,
+      "side_pull_tip_limit_N": 403.8797872340426,
+      "friction_limited_side_force_N": 406.13400000000007,
+      "conservative_horizontal_tool_force_limit_N": 403.8797872340426,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "light45",
+      "mass_class_name": "leicht"
+    },
+    {
+      "platform": "tracked_guided",
+      "mass_kg": 65.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.92,
+      "support_width_m": 0.86,
+      "com_height_m": 0.37,
+      "tool_height_m": 0.47,
+      "friction_mu_assumed": 0.92,
+      "forward_pull_tip_limit_N": 624.0829787234044,
+      "side_pull_tip_limit_N": 583.381914893617,
+      "friction_limited_side_force_N": 586.638,
+      "conservative_horizontal_tool_force_limit_N": 583.381914893617,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "medium65",
+      "mass_class_name": "mittel"
+    },
+    {
+      "platform": "tracked_guided",
+      "mass_kg": 85.0,
+      "locomotion_ready_in_gazebo": true,
+      "support_length_m": 0.92,
+      "support_width_m": 0.86,
+      "com_height_m": 0.37,
+      "tool_height_m": 0.47,
+      "friction_mu_assumed": 0.92,
+      "forward_pull_tip_limit_N": 816.108510638298,
+      "side_pull_tip_limit_N": 762.8840425531915,
+      "friction_limited_side_force_N": 767.142,
+      "conservative_horizontal_tool_force_limit_N": 762.8840425531915,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "heavy85",
+      "mass_class_name": "schwer"
+    },
+    {
+      "platform": "quadruped",
+      "mass_kg": 45.0,
+      "locomotion_ready_in_gazebo": false,
+      "support_length_m": 0.738,
+      "support_width_m": 0.507,
+      "com_height_m": 0.4,
+      "tool_height_m": 0.4,
+      "friction_mu_assumed": 0.75,
+      "forward_pull_tip_limit_N": 407.23762500000004,
+      "side_pull_tip_limit_N": 279.7689375,
+      "friction_limited_side_force_N": 331.08750000000003,
+      "conservative_horizontal_tool_force_limit_N": 279.7689375,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "light45",
+      "mass_class_name": "leicht"
+    },
+    {
+      "platform": "quadruped",
+      "mass_kg": 65.0,
+      "locomotion_ready_in_gazebo": false,
+      "support_length_m": 0.738,
+      "support_width_m": 0.507,
+      "com_height_m": 0.4,
+      "tool_height_m": 0.4,
+      "friction_mu_assumed": 0.75,
+      "forward_pull_tip_limit_N": 588.2321249999999,
+      "side_pull_tip_limit_N": 404.1106875,
+      "friction_limited_side_force_N": 478.23749999999995,
+      "conservative_horizontal_tool_force_limit_N": 404.1106875,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "medium65",
+      "mass_class_name": "mittel"
+    },
+    {
+      "platform": "quadruped",
+      "mass_kg": 85.0,
+      "locomotion_ready_in_gazebo": false,
+      "support_length_m": 0.738,
+      "support_width_m": 0.507,
+      "com_height_m": 0.4,
+      "tool_height_m": 0.4,
+      "friction_mu_assumed": 0.75,
+      "forward_pull_tip_limit_N": 769.226625,
+      "side_pull_tip_limit_N": 528.4524375,
+      "friction_limited_side_force_N": 625.3875,
+      "conservative_horizontal_tool_force_limit_N": 528.4524375,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "heavy85",
+      "mass_class_name": "schwer"
+    },
+    {
+      "platform": "humanoid",
+      "mass_kg": 45.0,
+      "locomotion_ready_in_gazebo": false,
+      "support_length_m": 0.24750000000000003,
+      "support_width_m": 0.264,
+      "com_height_m": 0.55,
+      "tool_height_m": 0.55,
+      "friction_mu_assumed": 0.65,
+      "forward_pull_tip_limit_N": 99.32625,
+      "side_pull_tip_limit_N": 105.94800000000001,
+      "friction_limited_side_force_N": 286.94250000000005,
+      "conservative_horizontal_tool_force_limit_N": 99.32625,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "light45",
+      "mass_class_name": "leicht"
+    },
+    {
+      "platform": "humanoid",
+      "mass_kg": 65.0,
+      "locomotion_ready_in_gazebo": false,
+      "support_length_m": 0.24750000000000003,
+      "support_width_m": 0.264,
+      "com_height_m": 0.55,
+      "tool_height_m": 0.55,
+      "friction_mu_assumed": 0.65,
+      "forward_pull_tip_limit_N": 143.47125,
+      "side_pull_tip_limit_N": 153.03599999999997,
+      "friction_limited_side_force_N": 414.4725,
+      "conservative_horizontal_tool_force_limit_N": 143.47125,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "medium65",
+      "mass_class_name": "mittel"
+    },
+    {
+      "platform": "humanoid",
+      "mass_kg": 85.0,
+      "locomotion_ready_in_gazebo": false,
+      "support_length_m": 0.24750000000000003,
+      "support_width_m": 0.264,
+      "com_height_m": 0.55,
+      "tool_height_m": 0.55,
+      "friction_mu_assumed": 0.65,
+      "forward_pull_tip_limit_N": 187.61625,
+      "side_pull_tip_limit_N": 200.124,
+      "friction_limited_side_force_N": 542.0025,
+      "conservative_horizontal_tool_force_limit_N": 187.61625,
+      "vertical_extraction_note": "Vertikale Auszugskraft drückt das Fahrzeug in diesem vereinfachten Modell eher in den Boden; kritisch bleiben Armstruktur, Greifer und Querkräfte.",
+      "mass_class": "heavy85",
+      "mass_class_name": "schwer"
+    }
+  ],
+  "limitations": [
+    "Quadruped und Humanoid haben noch keinen echten Gang-/Balanceregler; Hinderniswerte sind deshalb nicht gemessen.",
+    "Energie ist mechanische Gelenk-/Radleistung aus Gazebo, noch ohne Motorwirkungsgrad, Elektronik und Akkuverluste.",
+    "Boden ist noch starr mit Reibwerten; schwerer Marschboden braucht ein eigenes Tragfähigkeits-/Schlupfmodell."
+  ]
+}

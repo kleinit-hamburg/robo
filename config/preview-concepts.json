@@ -17,6 +17,12 @@
     "mode": "Federndes Raupen-Pruefmodell",
     "description": "Mechanisches Raupen-Pruefmodell mit sechs gefederten Laufrollen pro Seite. Die Rollen werden gemeinsam ueber DiffDrive angetrieben; die Kettenhuelle bleibt Visual/CAD-Referenz."
   },
+  "tracked_guided": {
+    "name": "Kette geführt: große Umlenk-/Kontaktrollen",
+    "drive_ready": true,
+    "mode": "Geführtes Raupen-Pruefmodell",
+    "description": "Raupen-Pruefmodell mit groesseren physikalischen Front-/Heckrollen, sechs gefederten Laufrollen pro Seite und sichtbarer Kettenfuehrung. Ziel: Hindernisse bis 120 mm pruefen, ohne Browserphysik."
+  },
   "quadruped": {
     "name": "Quadruped mit Manipulator",
     "drive_ready": false,

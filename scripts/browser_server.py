@@ -329,7 +329,7 @@ class Application:
 
 
 def latest_benchmark():
-    paths=[ROOT/'docs/validation/chassis-benchmark-summary.json', ROOT/'results/chassis-benchmark-main-20260912/summary.json']
+    paths=[ROOT/'docs/validation/weight-class-chassis-summary.json', ROOT/'docs/validation/chassis-benchmark-summary.json', ROOT/'results/chassis-benchmark-main-20260912/summary.json']
     for path in paths:
         if path.exists():
             try:return json.loads(path.read_text())

@@ -11,13 +11,15 @@
   "variants": [
     "tracked",
     "tracked_improved",
-    "tracked_bogie"
+    "tracked_bogie",
+    "tracked_guided"
   ],
   "cases": [
     "step_30",
     "step_50",
     "step_80",
     "step_100",
+    "step_120",
     "step_150",
     "ramp_10",
     "ramp_20",
@@ -30,5 +32,15 @@
   ],
   "success_x_m": 1.25,
   "max_body_contact_samples": 0,
-  "max_tilt_deg": 35
+  "max_tilt_deg": 35,
+  "weight_classes": [
+    "light45",
+    "medium65",
+    "heavy85"
+  ],
+  "evaluation_goals": {
+    "max_required_step_mm": 120,
+    "energy_metric": "mechanical_wheel_energy_Wh from Gazebo transmitted wrench * joint velocity",
+    "stability_metric": "static pull margin before support polygon tipping or friction slip estimate"
+  }
 }

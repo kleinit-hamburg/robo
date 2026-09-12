@@ -9,6 +9,7 @@ Die verstreuten Fahrwerkskonstanten sind in `config/robot-spec.json` gebuendelt.
 - `models/tracked/model.sdf`: Baseline des bisherigen starren Platzhalter-Fahrwerks.
 - `models/tracked_improved/model.sdf`: Uebergangsvariante mit hoeherem Unterboden und groesseren vorderen angetriebenen Umlenkrollen. Diese Variante ist noch kein gutes Raupenmodell.
 - `models/tracked_bogie/model.sdf`: erstes federndes Raupen-Pruefmodell mit sechs angetriebenen, vertikal gefuehrten Laufrollen pro Seite.
+- `models/tracked_guided/model.sdf`: naechster Raupenpruefstand mit groesseren physikalischen Kontaktrollen und laengerer Auflage fuer die 120-mm-Zieluntersuchung.
 - `urdf/tracked*.urdf.xacro`: zentrale Robotikbeschreibung fuer den spaeteren URDF/Xacro-Pfad.
 
 Jedes strukturelle Bauteil hat jetzt eine `part_id`, Materialnotiz, Masse-/Massreferenz und einen Platzhalter fuer spaetere CAD-Dateien. Visual- und Collision-Geometrien sind getrennt. Es gibt keine monolithische Gesamt-STL.
@@ -21,18 +22,18 @@ Wichtig: In den Stufenlaeufen setzt der Unterboden nicht auf. Der Fehler ist des
 
 ## Geometrieaenderung
 
-| Parameter | Baseline `tracked` | Uebergang `tracked_improved` | Federrollen `tracked_bogie` |
-| --- | ---: | ---: | ---: |
-| Spurweite | 0,52 m | 0,70 m | 0,70 m |
-| grobe Gesamtbreite | 0,65 m | 0,86 m | 0,86 m |
-| Laenge Kettenhuelle | 0,54 m | 0,86 m | 0,92 m |
-| wirksamer Rollendurchmesser | 0,24 m | 0,36 m | 0,17 m, sechs Rollen je Seite |
-| nominelle Chassisfreiheit | 0,17 m | 0,25 m | 0,27 m |
-| Federweg | keiner | keiner | ±70 mm je Laufrolle |
-| Gelenkmomentlimit | 40 Nm | 80 Nm | 55 Nm je Rolle |
-| Stuetzkonzept | vier starre Kugelstuetzen | zwei hintere Stuetzrollen-Platzhalter | 12 gefederte Laufrollen |
+| Parameter | Baseline `tracked` | Uebergang `tracked_improved` | Federrollen `tracked_bogie` | Gefuehrt `tracked_guided` |
+| --- | ---: | ---: | ---: | ---: |
+| Spurweite | 0,52 m | 0,70 m | 0,70 m | 0,70 m |
+| grobe Gesamtbreite | 0,65 m | 0,86 m | 0,86 m | 0,86 m |
+| Laenge Kettenhuelle | 0,54 m | 0,86 m | 0,92 m | 1,02 m |
+| wirksamer Rollendurchmesser | 0,24 m | 0,36 m | 0,17 m, sechs Rollen je Seite | 0,24 m, sechs Rollen je Seite |
+| nominelle Chassisfreiheit | 0,17 m | 0,25 m | 0,27 m | 0,32 m |
+| Federweg | keiner | keiner | ±70 mm je Laufrolle | ±80 mm je Laufrolle |
+| Gelenkmomentlimit | 40 Nm | 80 Nm | 55 Nm je Rolle | 55 Nm je Rolle |
+| Stuetzkonzept | vier starre Kugelstuetzen | zwei hintere Stuetzrollen-Platzhalter | 12 gefederte Laufrollen | 12 groessere gefederte Kontakt-/Fuehrungsrollen |
 
-`tracked_improved` bleibt nur eine Uebergangsvariante. Das erste brauchbare Raupen-Pruefmodell ist `tracked_bogie`: Mehrpunktauflage, drehende Laufrollen und Feder-/Daempferfuehrung bilden das erwartete Kriechen ueber kleinere Hindernisse erstmals physikalisch ab.
+`tracked_improved` bleibt nur eine Uebergangsvariante. Das erste brauchbare Raupen-Pruefmodell ist `tracked_bogie`: Mehrpunktauflage, drehende Laufrollen und Feder-/Daempferfuehrung bilden das erwartete Kriechen ueber kleinere Hindernisse erstmals physikalisch ab. `tracked_guided` geht einen Schritt weiter und macht die vordere Kontaktgeometrie selbst physikalisch wirksam, statt nur eine sichtbare Umlenkrolle zu zeichnen.
 
 ## Gazebo-Testgelaende
 
@@ -91,3 +92,7 @@ Die Weboberflaeche zeigt jetzt je Variante zentrale Fahrwerksparameter und die l
 - Bauteilmaterialien und Wandstaerken fuer 3D-Druck-Prototypen mit Metallachsen/Motoren.
 
 Die Richtung ist damit klar: Die reine Blockade an kleinen Steinen ist erst mit der gefederten Mehrrollenauflage fachlich geloest. Fuer echte Gartenrobustheit brauchen wir als naechstes eine bessere Kettenfuehrung, ein validiertes Bodenmodell und eine Entscheidung, ob die reale Mechanik mit Bogies, Pendelrollen oder einem Gazebo-Track-System weitergefuehrt wird.
+
+## Gewichtsklassen-Ergaenzung
+
+Die Datei `docs/16-gewichtsklassen-mechanikvergleich.md` dokumentiert die aktuellen 45/65/85-kg-Laeufe. Ergebnis: `tracked_guided` schafft in Gazebo 100 mm Stufen in allen drei Gewichtsklassen, aber noch nicht das Ziel 120 mm. Mehr Masse allein behebt die 120-mm-Kante nicht; sie erhoeht vor allem Moment- und Energiebedarf.

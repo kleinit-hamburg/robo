@@ -36,7 +36,7 @@ function renderEngineering(concept){
  }
  const rows=benchmark.filter(r=>r.variant===concept);
  if(!rows.length){const empty=document.createElement('p');empty.className='note';empty.textContent='Noch kein Benchmark für diese Variante im Dokuordner.';list.appendChild(empty);return;}
- for(const row of rows){const item=document.createElement('div');item.className='benchmark '+(row.succeeded?'pass':'fail');item.innerHTML='<strong>'+row.case+'</strong><span>'+(row.succeeded?'geschafft':'nicht geschafft')+'</span><small>'+fmt(row.progress_m,2)+' m · Neigung '+fmt(row.max_tilt_deg,1)+'° · Schlupf '+fmt(row.mean_slip_ratio*100,1)+'%</small>';list.appendChild(item);}
+ for(const row of rows){const item=document.createElement('div');item.className='benchmark '+(row.succeeded?'pass':'fail');const mass=row.mass_class?' · '+row.mass_class.replace('light','leicht ').replace('medium','mittel ').replace('heavy','schwer '):'';const energy=row.mechanical_drive_energy_per_m_Wh_m!=null?' · '+fmt(row.mechanical_drive_energy_per_m_Wh_m,3)+' Wh/m':'';item.innerHTML='<strong>'+row.case+mass+'</strong><span>'+(row.succeeded?'geschafft':'nicht geschafft')+'</span><small>'+fmt(row.progress_m,2)+' m · Neigung '+fmt(row.max_tilt_deg,1)+'° · Schlupf '+fmt(row.mean_slip_ratio*100,1)+'%'+energy+'</small>';list.appendChild(item);}
 }
 
 async function loadScene(){

@@ -28,6 +28,7 @@ Danach im Browser `http://10.10.10.50:8088` öffnen. Das Startskript erstellt de
 - [Vorbemessung von Schwerpunkt, Antrieb, Werkzeug und Akku](docs/20-raupe-antrieb-werkzeug-energie.md)
 - [Mechanische Spurverstellung und Werkzeuganordnung](docs/23-spur-und-werkzeuganordnung.md)
 - [3D-Druck-Prototyp und vorläufige Festigkeitsrechnung](docs/24-3d-druck-prototyp-festigkeit.md)
+- [Marktcheck für schmale Gummiraupen](docs/25-gummiketten-marktcheck.md)
 - [ROS-Architektur](docs/02-architektur.md) und [Physikmodell](docs/03-physikmodell.md)
 
 Frühere Raupenvarianten und deren Messwerte bleiben als technische Offline-Vergleichsdaten erhalten; die aktive Anwendung verwendet eine einzige Raupe. Keine Hardwarebeschaffung und kein vollständiges CAD-Modell in diesem Schritt.

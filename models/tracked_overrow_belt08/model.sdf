@@ -351,67 +351,77 @@
           <diffuse>0.26 0.3 0.26 1</diffuse>
         </material>
       </visual>
-      <visual name="arm_base_0">
-        <pose>0.12 0 0.6799999999999999 0 0 0</pose>
-        <geometry>
-          <cylinder>
-            <radius>0.07</radius>
-            <length>0.1</length>
-          </cylinder>
-        </geometry>
-        <material>
-          <diffuse>0.18 0.23 0.19 1</diffuse>
-        </material>
-      </visual>
-      <visual name="upper_arm_0">
-        <pose>0.13 0 0.83 0 -0.25 0</pose>
+      <visual name="field_tool_crossbeam">
+        <pose>0.46 0 0.45 0 0 0</pose>
         <geometry>
           <box>
-            <size>0.075 0.075 0.23</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0.38 0.52 0.34 1</diffuse>
-        </material>
-      </visual>
-      <visual name="forearm_0">
-        <pose>0.27 0 0.94 0 0.18 0</pose>
-        <geometry>
-          <box>
-            <size>0.25 0.06 0.06</size>
-          </box>
-        </geometry>
-        <material>
-          <diffuse>0.38 0.52 0.34 1</diffuse>
-        </material>
-      </visual>
-      <visual name="wrist_0">
-        <pose>0.42 0 0.9199999999999999 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.08 0.1 0.055</size>
+            <size>0.055 0.69 0.045</size>
           </box>
         </geometry>
         <material>
           <diffuse>0.18 0.23 0.19 1</diffuse>
         </material>
       </visual>
-      <visual name="jaw_0_-0.055">
-        <pose>0.48 -0.055 0.8999999999999999 0 0 0</pose>
+      <visual name="field_tool_left_guide">
+        <pose>0.48 0.31 0.31 0 0 0</pose>
         <geometry>
           <box>
-            <size>0.1 0.02 0.045</size>
+            <size>0.04 0.045 0.3</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="field_tool_left_reach">
+        <pose>0.64 0.31 0.18 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.24 0.05 0.045</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="field_tool_left_head">
+        <pose>0.78 0.31 0.1 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.085 0.065 0.055</size>
           </box>
         </geometry>
         <material>
           <diffuse>0.94 0.58 0.24 1</diffuse>
         </material>
       </visual>
-      <visual name="jaw_0_0.055">
-        <pose>0.48 0.055 0.8999999999999999 0 0 0</pose>
+      <visual name="field_tool_right_guide">
+        <pose>0.48 -0.31 0.31 0 0 0</pose>
         <geometry>
           <box>
-            <size>0.1 0.02 0.045</size>
+            <size>0.04 0.045 0.3</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="field_tool_right_reach">
+        <pose>0.64 -0.31 0.18 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.24 0.05 0.045</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.38 0.52 0.34 1</diffuse>
+        </material>
+      </visual>
+      <visual name="field_tool_right_head">
+        <pose>0.78 -0.31 0.1 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.085 0.065 0.055</size>
           </box>
         </geometry>
         <material>

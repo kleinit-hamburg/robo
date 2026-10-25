@@ -456,6 +456,17 @@
         "xacro": "urdf/tracked_overrow_belt08.urdf.xacro",
         "sdf": "models/tracked_overrow_belt08/model.sdf",
         "cad_file": null
+      },
+      "tool_layout": {
+        "part_id": "TRK7-FRONT-TOOL-STATIONS-001",
+        "station_count": 2,
+        "mount": "front_low_left_and_right",
+        "tip_x_m": 0.78,
+        "tip_z_m": 0.1,
+        "lateral_station_y_m": "plus_minus_half_track_gauge",
+        "visual_only": true,
+        "actuator_model": null,
+        "tool_force_rating_N": null
       }
     },
     "tracked_overrow_belt06": {
@@ -762,6 +773,13 @@
       "name": "Gefederte Laufrollen für 6 cm Ketten",
       "material": "virtuell: Kugellager/Rollen",
       "mass_kg": 0.92,
+      "cad_file": null
+    },
+    {
+      "part_id": "TRK7-FRONT-TOOL-STATIONS-001",
+      "name": "Bodennahe Werkzeugträger links und rechts vor den Ketten",
+      "material": null,
+      "mass_kg": null,
       "cad_file": null
     }
   ],

@@ -33,7 +33,7 @@ def element(parent,tag,text=None,**attrs):
 def add_arm(model):
     base=model.find("link[@name='base_link']")
     for v in list(base.findall('visual')):
-        if v.get('name','').startswith(('arm_base','upper_arm','forearm','wrist','jaw')):base.remove(v)
+        if v.get('name','').startswith(('arm_base','upper_arm','forearm','wrist','jaw','field_tool_')):base.remove(v)
     masses=[.6,2.,1.5,.3,.3,2.9,.2,.2]
     # Move mass from the chassis proxy into explicit arm links; total stays fixed.
     original_mass=float(base.find('inertial/mass').text)

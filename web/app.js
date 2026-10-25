@@ -25,9 +25,9 @@ async function loadMeshAsset(uri){const url=assetUrl(uri);if(!url)throw Error('M
 
 function fmt(v,d=2){return Number.isFinite(v)?v.toLocaleString('de-DE',{maximumFractionDigits:d}):'—';}
 const profileText={
- potato_ridge:['Kartoffelreihe · 62 cm','62 cm Reihenabstand. Pflanzen und Erdkrümel sind in dieser Fahrprüfung nur sichtbar.'],
+ potato_ridge:['Kartoffelreihe · 62 cm','Pflanzen und Erdkrümel sind nur sichtbar. Die zwei bodennahen Werkzeugplätze zeigen noch keine bewegliche Mechanik.'],
  engineering:['Hindernisprüfung','Feste Stufen und Rampen für die Fahrwerksprüfung.'],
- plant:['Werkzeugprüfung','Bekanntes Testziel für Arm, Greifer und Werkzeuglast.']
+ plant:['Isolierter Armprüfstand','Der hohe Versuchsarm prüft bekannte Pflanzenkräfte. Er ist nicht die geplante Feldwerkzeug-Anordnung.']
 };
 function showProfile(profile){
  currentProfile=profile;

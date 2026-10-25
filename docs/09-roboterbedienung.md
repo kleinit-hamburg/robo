@@ -6,7 +6,7 @@ Die Browserseite steuert **eine** Raupe. Die große 3D-Ansicht zeigt die Gazebo-
 
 - **Feldfahrt:** fünf Kartoffelreihen mit 62 cm Abstand. Kleine Erdkrümel, Unkraut und Kartoffelkraut sind sichtbar, aber nicht als starre Fahrhindernisse wirksam. Die Dämme sind feste Kollisionskörper.
 - **Hindernisse:** technische Stufen und Rampen mit festen Kollisionskörpern. Diese Ansicht prüft das Fahrwerk unabhängig von Pflanzenvisuals.
-- **Werkzeug:** bekannter Pflanzenprüfstand für Arm, Greifer, 100-N-Lastprobe und Prüfzyklus. Dies ist noch keine autonome Erkennung.
+- **Werkzeug:** isolierter Pflanzenprüfstand mit dem bisherigen Versuchsarm, Greifer, 100-N-Lastprobe und Prüfzyklus. Der hohe Arm ist nicht die geplante Feldanordnung.
 
 ## Fahren
 
@@ -21,3 +21,5 @@ Die Statusanzeige meldet die Gazebo-Verbindung. Simulationszeit, Richtung und Ne
 ## Grenzen
 
 Die Raupe ist noch ein Mehrrollen-Ersatzmodell. Die Kettenhülle ist visuell. Die Kartoffelpflanzen haben in der Feldfahrt noch kein Biege- oder Schadensmodell. Der separate Werkzeugprüfstand besitzt ein definiertes Pflanzen-/Widerstandsmodell. Für reale Hardware bleiben Motortreiber, Sensoradapter, Watchdog und Kalibrierung offen.
+
+In Feldfahrt und Hindernisprüfung zeigen zwei bodennahe, fest gezeichnete Werkzeugplätze vor den Ketten lediglich den vorgesehenen Arbeitsraum. Diese Teile besitzen noch keine Gelenke, Kollisionen oder Kräfte. [Mechanischer Entwurf](23-spur-und-werkzeuganordnung.md).

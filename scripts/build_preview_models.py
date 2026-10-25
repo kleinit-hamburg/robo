@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate preview SDF and URDF/Xacro from the central robot specification."""
 import json,math,xml.etree.ElementTree as E
-from robot_spec import ROOT,load_spec
+from robot_spec import ROOT,load_spec,ACTIVE_CONCEPT
 
 def add(parent,tag,text=None,**attrs):
     out=E.SubElement(parent,tag,attrs)
@@ -37,13 +37,16 @@ def sphere_inertia(link,mass,radius):
     i=add(link,'inertial');add(i,'mass',mass);t=add(i,'inertia');value=2/5*mass*radius*radius
     for name in ('ixx','iyy','izz'):add(t,name,value)
 
-def arm(link,side=0,z=.38):
+def field_tool_layout(link,data):
+    """Visual placement only: two low tool stations ahead of the track contact path."""
+    layout=data['tool_layout'];gauge=data['track']['gauge_m']
     green=(.38,.52,.34);dark=(.18,.23,.19);orange=(.94,.58,.24)
-    visual(link,f'arm_base_{side}','cylinder',(.07,.10),(.12,side,z,0,0,0),dark)
-    visual(link,f'upper_arm_{side}','box',(.075,.075,.23),(.13,side,z+.15,0,-.25,0),green)
-    visual(link,f'forearm_{side}','box',(.25,.06,.06),(.27,side,z+.26,0,.18,0),green)
-    visual(link,f'wrist_{side}','box',(.08,.10,.055),(.42,side,z+.24,0,0,0),dark)
-    for y in (-.055,.055):visual(link,f'jaw_{side}_{y}','box',(.10,.02,.045),(.48,side+y,z+.22,0,0,0),orange)
+    visual(link,'field_tool_crossbeam','box',(.055,gauge+.07,.045),(.46,0,.45,0,0,0),dark)
+    for side,sign in (('left',1),('right',-1)):
+        y=sign*gauge/2
+        visual(link,f'field_tool_{side}_guide','box',(.04,.045,.30),(.48,y,.31,0,0,0),green)
+        visual(link,f'field_tool_{side}_reach','box',(.24,.05,.045),(.64,y,.18,0,0,0),green)
+        visual(link,f'field_tool_{side}_head','box',(.085,.065,.055),(layout['tip_x_m'],y,layout['tip_z_m'],0,0,0),orange)
 
 def publisher(m):
     p=add(m,'plugin',filename='gz-sim-pose-publisher-system',name='gz::sim::systems::PosePublisher')
@@ -106,7 +109,7 @@ def make_tracked_variant(kind,data):
             link=add(m,'link',name=name);pose(link,(x,y,z,0,0,0));sphere_inertia(link,supports['mass_kg'],radius)
             collision(link,'contact','sphere',(radius,),mu=supports['mu']);visual(link,'contact','sphere',(radius,),(0,0,0,0,0,0),(.22,.24,.22))
             joint=add(m,'joint',name=name+'_fixed',type='fixed');add(joint,'parent','base_link');add(joint,'child',name)
-    arm(base,z=body['visual_center_z_m']+.10)
+    if kind==ACTIVE_CONCEPT:field_tool_layout(base,data)
     add_diffdrive(m,data,left_drive_joints,right_drive_joints)
     sensor=add(base,'sensor',name='imu',type='imu');add(sensor,'always_on','true');add(sensor,'update_rate',50);add(sensor,'topic','/garden/imu');add(sensor,'imu')
     jp=add(m,'plugin',filename='gz-sim-joint-state-publisher-system',name='gz::sim::systems::JointStatePublisher')

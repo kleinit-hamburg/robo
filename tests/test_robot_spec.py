@@ -104,6 +104,15 @@ class WeightClassBenchmarkArtifactTests(unittest.TestCase):
         self.assertTrue(all(name.startswith('tracked') for name in cfg['variants']))
 
 class VisualAssetPipelineTests(unittest.TestCase):
+    def test_field_layout_has_two_low_visual_tool_stations_without_fake_arm_collisions(self):
+        model=E.parse(ROOT/'models'/ACTIVE_CONCEPT/'model.sdf').getroot().find('model')
+        base=model.find("link[@name='base_link']")
+        heads=[v for v in base.findall('visual') if v.get('name','').startswith('field_tool_') and v.get('name','').endswith('_head')]
+        self.assertEqual({v.get('name') for v in heads},{'field_tool_left_head','field_tool_right_head'})
+        self.assertTrue(all(abs(float(v.findtext('pose').split()[2])-.10)<1e-9 for v in heads))
+        self.assertFalse(any(v.get('name','').startswith(('arm_base','upper_arm','forearm')) for v in base.findall('visual')))
+        self.assertFalse(any(c.get('name','').startswith('field_tool_') for c in base.findall('collision')))
+
     def test_potato_ridge_uses_generated_mesh_visuals_and_keeps_collision_primitives(self):
         import sys
         sys.path.insert(0,str(ROOT/'scripts'))

@@ -29,3 +29,5 @@ Offen sind Reichweite bis zum Unkraut am Damm, Kollisionsfreiheit zum Kartoffelk
 3. Werkzeugspitzen in beiden Furchen unter identischen Gazebo-Kräften positionieren; Rumpfkontakt, Roll/Pitch, Schlupf und Stabilitätsreserve erfassen.
 4. Griff/Zug, Schnitt und flaches Lockern getrennt prüfen. Das bestehende Pflanzenprüfmodell darf nur als synthetischer Lastfall dienen, nicht als Nachweis für Kartoffelkraut-Schonung.
 5. Erst danach elektrischen Linearaktuator und bedarfsgeregelte Hydraulik für denselben Kraft-/Hubzyklus vergleichen.
+
+Für einen späteren gedruckten Prototypen sind Rahmen, Lagerstellen, Rastung und Werkzeugträger gesondert nachzuweisen. Die [vorläufige Druckteil-Festigkeitsrechnung](24-3d-druck-prototyp-festigkeit.md) zeigt, warum die Visuals noch keine Kunststoffkonstruktion freigeben.

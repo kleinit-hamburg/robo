@@ -46,6 +46,6 @@ Die Installation verändert die Systempakete und ROS-Paketquellen. Es erfolgt ke
 
 Die temporäre Prüfung verwendete eine eigene Gazebo-Partition und ROS-Domain 173 mit lokaler Discovery. Alle gestarteten Testprozesse wurden danach beendet. Temporäre Welt, Prüfskript und Logs liegen unter `/tmp/garden-sim-check/` und sind keine dauerhaft versionierten Benchmark-Artefakte.
 
-Noch offen: grafische Oberfläche, Kamera-/GPU-Rendering, tatsächlicher Controllerbetrieb an einem Robotermodell und alle Garten-Benchmarks. Die virtuelle Bochs-Grafik garantiert keine Hardwarebeschleunigung. Der erfolgreiche Installations-Smoke-Test validiert weder Pflanzenkräfte noch die drei Roboterkonzepte.
+Noch offen: grafische Oberfläche, Kamera-/GPU-Rendering, tatsächlicher Controllerbetrieb an einem Robotermodell und alle Garten-Benchmarks. Die virtuelle Bochs-Grafik garantiert keine Hardwarebeschleunigung. Der erfolgreiche Installations-Smoke-Test validiert weder Pflanzenkräfte noch die Feldraupe als reales Fahrwerk.
 
 Quellen: [offizielle ROS-Jazzy-Installationsanleitung im Quellrepository](https://github.com/ros2/ros2_documentation/blob/jazzy/source/Installation/Ubuntu-Install-Debs.rst), [ROS-Paketquellen-Release](https://github.com/ros-infrastructure/ros-apt-source/releases/tag/1.2.0), [Gazebo mit ROS installieren](https://gazebosim.org/docs/harmonic/ros_installation/).

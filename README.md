@@ -1,43 +1,29 @@
-# Garten-Arbeitsroboter: virtuelles Konzeptprojekt
+# Gartenlabor: virtueller Raupenroboter
 
-Drei alternative Plattformen für autonome Unkrautbekämpfung: Kettenfahrzeug mit Arm, Quadruped mit Arm und humanoider Zweibeiner mit zwei Greifhänden. Zielplattform ist **Ubuntu 24.04, ROS 2 Jazzy und Gazebo Harmonic**. Andere Gartenarbeiten werden über wechselbare Werkzeuge und zusätzliche Aufgabenprogramme vorbereitet.
+Dieses Repository entwickelt **eine** Raupe für die spätere Unkrautpflege in Kartoffelreihen. Entwicklungsplattform sind Ubuntu 24.04, ROS 2 Jazzy und Gazebo Harmonic. Gazebo berechnet die Bewegung und Kontakte; die Browserseite zeigt den Zustand und sendet manuelle Befehle. Es gibt noch keine autonome Pflanzenerkennung, Navigation oder reale Hardware.
 
-**Status: virtueller Fahr- und Manipulationsprüfstand.** Am Ketten-Ersatzmodell sind Fahrbefehle, ein beweglicher 6-DOF-Arm, Greifer, Werkzeuglastversuche und ein automatischer Prüfzyklus an einer bekannten virtuellen Pflanze implementiert. Die ebene M1-Fahrserie bestand 10/10 Durchläufe. Gefederte und geführte Raupenvarianten wurden in Gazebo auf Hindernissen geprüft; der dynamische Quadruped hat einen ersten, noch instabilen Gangregler. Der Humanoid bleibt eine Geometrievorschau. M3–M6 sind noch nicht vollständig abgenommen. Keine autonome Pflanzenerkennung, detaillierte CAD-Ausarbeitung oder Hardwarebeschaffung. Zahlen sind prüfbare Entwurfsannahmen, keine bestätigten Pflanzenkennwerte oder Leistungsversprechen. [Aktueller Funktions- und Prüfstand](docs/13-grundfunktionen.md).
+## Aktueller Stand
 
-## Lesen
+- Aktive Browserkonfiguration: `tracked_overrow_belt08`, 62 cm Spurweite zwischen den Kettenmitten, 8 cm Kettenbreite und 48 cm nominelle Unterbodenfreiheit. Das Fahrwerk ist ein gefedertes Mehrrollen-Ersatzmodell; die sichtbare Kettenhülle hat noch keine eigenen physikalischen Kontakte.
+- Die Kartoffelwelt zeigt fünf Reihen mit 62 cm Abstand und etwa 15 cm hohen Dämmen. Pflanzen und kleine Erdkrümel sind dort **nur Visuals**, bis ein nachgiebiges Kraft-/Schadensmodell existiert. Die Dämme behalten Kollisionsgeometrie. Feste Stufen und Rampen liegen ausschließlich in der separaten Hindernisprüfung.
+- Die Bedienseite bietet Feldfahrt, Hindernisprüfung und Werkzeugprüfung. Arm und Greifer stehen im getrennten Werkzeugprofil zur Verfügung. Der Nutzer kann weder Roboter noch mechanische Parameter in der Browserseite wechseln.
+- Die Modelle und Berechnungen bleiben vorläufig. Die realen Kennwerte des schweren Marschbodens in Kirchwerder sind nicht kalibriert. Historische Raupenversuche sind keine Freigabe der aktuellen Feldraupe.
 
-1. [Drei Roboterkonzepte](docs/01-konzepte.md): Abmessungen, Kräfte, Antriebe, Sensoren, Energie, Bau- und Prototyprisiken.
-2. [ROS-Architektur und Hardwareübergang](docs/02-architektur.md).
-3. [Physik, Pflanzen und Werkzeuglasten](docs/03-physikmodell.md).
-4. [Gemeinsame Testwelt und Testplan](docs/04-testplan.md).
-5. [Messgrößen und Entscheidungsverfahren](docs/05-messgroessen.md).
-6. [Repository-Struktur und Umsetzungsschritte](docs/06-umsetzung.md).
-7. [Technische Primärquellen](docs/research/technische-grundlagen.md).
-8. [Installation und aktueller Status](docs/07-installation.md).
-9. [Live-Browseransicht](docs/08-browseransicht.md): http://10.10.10.50:8088.
-10. [Fahrwerks-Testsystem](docs/15-fahrwerk-testsystem.md): zentrale Spezifikation, Varianten und Gazebo-Hindernismatrix.
-10. [Roboterauswahl und Fahrbefehle](docs/09-roboterbedienung.md).
-11. [M1-Prüfung: Ergebnisse und offene Neustartfehler](docs/10-m1-abnahme.md).
-12. [Vorbemessung Raupe, Werkzeug und Energie](docs/20-raupe-antrieb-werkzeug-energie.md): Schwerpunkt, Antrieb, Hydraulikvergleich, Sensorik und offene Messungen.
+## Starten
 
-Die maschinenlesbaren [Konzeptparameter](config/concepts.json) und [Versuchsparameter](config/benchmark.json) sind Eingaben für die spätere Implementierung, noch keine direkt von Gazebo ladbaren Dateien. Alle numerischen Größen verwenden SI-Einheiten; Gradwerte sind ausdrücklich mit `_deg` benannt.
+```bash
+scripts/start-browser.sh --host 10.10.10.50 --port 8088 --world-profile potato_ridge --ros-domain-id 174 --log-dir /tmp
+```
 
-## Meilensteine
+Danach im Browser `http://10.10.10.50:8088` öffnen. Das Startskript erstellt den Gazebo-Adapter und startet genau eine lokale Web-/Gazebo-Instanz. Mit `Ctrl+C` stoppen. Die drei Ansichten wechseln die Gazebo-Testwelt, nicht die Roboterkonstruktion.
 
-**M1:** Bewegen → **M2:** Gelände bewältigen → **M3:** Arm bewegen → **M4:** 100/250/500/1000 N Werkzeuglast → **M5:** virtuelle Pflanze greifen → **M6:** identische Unkraut-Teststrecke für alle drei.
+## Technische Unterlagen
 
-M1 ist für das Ketten-Ersatzmodell auf der Ebene nachgewiesen. Die weiteren Funktionen werden in getrennten Gelände-, Arm-, Last- und Pflanzenprofilen geprüft. Insbesondere dürfen abgeschlossene Lastsequenzen nicht als Tragfähigkeitsnachweis gelten. Gangregler, autonome Wahrnehmung/Navigation, Schneiden/Abstechen, Energiemodell und vollständiger Vergleich aller drei Konstruktionen bleiben offen. Status je Konzept: [milestones.json](config/milestones.json).
+- [Bedienung](docs/09-roboterbedienung.md)
+- [Ursache des Hängenbleibens und Gegenversuch](docs/21-kartoffelreihe-kontaktkorrektur.md)
+- [Zentrale Roboterspezifikation](config/robot-spec.json) und [Modellgenerator](scripts/build_preview_models.py)
+- [Fahrwerks- und Hindernistests](docs/15-fahrwerk-testsystem.md)
+- [Vorbemessung von Schwerpunkt, Antrieb, Werkzeug und Akku](docs/20-raupe-antrieb-werkzeug-energie.md)
+- [ROS-Architektur](docs/02-architektur.md) und [Physikmodell](docs/03-physikmodell.md)
 
-## Entwicklungsreihenfolge
-
-Zuerst virtuelle Funktionen M1–M6, danach Referenzgröße und mechanische Auslegung, anschließend ein möglicher Druckprototyp mit Motoren, optionaler Hydraulik, LiDAR und Kamera. Vorläufige Simulationsmaße bleiben parametrierbar; Materialstärken und reale Lastgrenzen sind noch nicht festgelegt. [Funktionsumfang und Prototypplanung](docs/11-funktionen-und-prototyp.md).
-
-## Vorläufige Entscheidung
-
-Mit dem Kettenkonzept als Referenz beginnen: Es vereinfacht das frühe Prüfen von Pflanzeninteraktion und gemeinsamen ROS-Nodes. Quadruped und Humanoid bleiben vollwertige Vergleichskandidaten. Ihre zusätzlichen Bewegungsmöglichkeiten müssen den Aufwand für Balance, Regelung und Energie im gemeinsamen Test rechtfertigen. Das ist eine Entwicklungshypothese, kein bereits gemessenes Ranking.
-
-Zuerst Modellannahmen einfrieren, dann einfache Kollisionskörper und Kraftprüfstände implementieren. Erst nach numerisch belastbaren Vergleichsläufen eine Plattform vertiefen. Ein verkleinerter Druckprototyp ist eine spätere Option und kein Beschaffungsauftrag.
-
-## Konkretes Einsatzgebiet
-
-Kirchwerder, schwerer Marschboden, ca. 4.000 m² Grundstück mit gut 2.000 m² Ackerland; davon jährlich etwa ein Drittel in Kultur. Der Roboter pflegt diese Kulturflächen; die Brache übernimmt der Nutzer mit Traktor oder anderer Landmaschine. Kartoffelreihen 62 cm, Erdbeerreihen üblicherweise 75 cm. Gewünschte verstellbare Spurweite zwischen den Kettenmitten: 65–75 cm; Kettenbreite und Fahranordnung bleiben offen. [Standortanforderungen](docs/12-einsatzgebiet-kirchwerder.md).
+Frühere Raupenvarianten und deren Messwerte bleiben als technische Offline-Vergleichsdaten erhalten; die aktive Anwendung verwendet eine einzige Raupe. Keine Hardwarebeschaffung und kein vollständiges CAD-Modell in diesem Schritt.

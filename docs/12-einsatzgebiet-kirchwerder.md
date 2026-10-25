@@ -24,7 +24,7 @@ Die Mindestspurweite von 65 cm liegt 3 cm über dem genannten Kartoffelreihenabs
 
 Vor der Geometriefestlegung klären: Fährt der Roboter über einer Kulturreihe mit Ketten in benachbarten Gassen, über mehreren Reihen oder vollständig in einer Gasse? Dazu Pflanzen-/Dammkontur, Wuchshöhe, seitliche Abstände, Kettenbreite, Unterbodenfreiheit, Wendefläche und Zufahrt aufnehmen. Die Verstellung kann zunächst als konfigurierbare mechanische Einstellung geplant werden; ein motorisch während der Fahrt verstellbares Fahrwerk ist noch nicht gefordert.
 
-Das heutige Kettenkonzept mit angenommener Gesamtbreite 0,60 m ist **keine nachgewiesene Lösung dieser neuen Anforderung**. Seine Maße und das Browsermodell bleiben vorläufig. Mit bestätigter Spurweite müssen nun Kettenbreite, Fahranordnung, Geometrie, Trägheit, Schwerpunkt, Stützfläche und Armreichweite gemeinsam bestimmt beziehungsweise neu geprüft werden. Die Reihen-/Nutzpflanzenkonturen gelten später für alle drei Roboterkonzepte gleichermaßen.
+Das heutige Kettenkonzept mit angenommener Gesamtbreite 0,60 m ist **keine nachgewiesene Lösung dieser neuen Anforderung**. Seine Maße und das Browsermodell bleiben vorläufig. Mit bestätigter Spurweite müssen nun Kettenbreite, Fahranordnung, Geometrie, Trägheit, Schwerpunkt, Stützfläche und Armreichweite gemeinsam bestimmt beziehungsweise neu geprüft werden. Die Reihen-/Nutzpflanzenkonturen bleiben für die aktive Feldraupe als Prüfumgebung maßgeblich.
 
 ## Schwerer Marschboden als Testanforderung
 

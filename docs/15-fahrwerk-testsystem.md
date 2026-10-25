@@ -80,7 +80,7 @@ Die neue Hindernisgrenze liegt mit dem federnden Bogie-Modell bei 80 mm Stufenho
 
 ## Dashboard
 
-Die Weboberflaeche zeigt jetzt je Variante zentrale Fahrwerksparameter und die letzte Benchmarkserie an. Das Dashboard liest `config/robot-spec.json` und `docs/validation/chassis-benchmark-summary.json`. Es simuliert keine eigene Physik und berechnet keine eigenen Erfolgskriterien im Browser.
+Die Weboberflaeche zeigt nur die aktuelle Feldraupe und Gazebo-Telemetrie. Varianten, Rohparameter und Benchmarklisten stehen in den technischen Dateien und werden nicht mehr als Bedienelemente angeboten. Der Browser simuliert keine eigene Physik.
 
 ## Offene mechanische Entscheidungen
 
@@ -95,4 +95,4 @@ Die Richtung ist damit klar: Die reine Blockade an kleinen Steinen ist erst mit 
 
 ## Gewichtsklassen-Ergaenzung
 
-Die Datei `docs/16-gewichtsklassen-mechanikvergleich.md` dokumentiert die aktuellen 45/65/85-kg-Laeufe. Ergebnis: `tracked_guided` schafft in Gazebo 100 mm Stufen in allen drei Gewichtsklassen, aber noch nicht das Ziel 120 mm. Mehr Masse allein behebt die 120-mm-Kante nicht; sie erhoeht vor allem Moment- und Energiebedarf.
+Die historischen Raupenlaeufe der 45/65/85-kg-Klassen stehen in `docs/validation/tracked-weight-class-summary.json`. `tracked_guided` schaffte darin 100 mm Stufen in allen drei Gewichtsklassen, aber nicht 120 mm. Diese alten Hindernisläufe sind kein Nachweis für die jetzige Kartoffel-Feldraupe.

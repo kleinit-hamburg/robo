@@ -10,34 +10,16 @@ DEFAULT_MU=0.75
 def load_json(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
-def concept_map():
-    data=load_json(ROOT/'config/concepts.json')
-    return {c['id']:c for c in data['concepts']}
+def support_geometry(platform,spec):
+    v=spec['variants'][platform]
+    length=v['track'].get('ground_contact_length_m',v['track']['visual_length_m'])
+    width=v['track']['gauge_m']+v['track']['belt_width_m']
+    height=v['body']['com_z_m']
+    tool_height=max(0.25,height+0.10)
+    return length,width,height,tool_height,v['drive'].get('wheel_mu',DEFAULT_MU),True
 
-def support_geometry(platform,spec,concepts):
-    if platform in spec['variants']:
-        v=spec['variants'][platform]
-        if 'track' in v:
-            length=v['track'].get('ground_contact_length_m',v['track']['visual_length_m'])
-            width=v['track']['gauge_m']+v['track']['belt_width_m']
-            height=v['body']['com_z_m']
-            tool_height=max(0.25,height+0.10)
-            return length,width,height,tool_height,v['drive'].get('wheel_mu',DEFAULT_MU),True
-        if 'support_polygon' in v:
-            sp=v['support_polygon']
-            return sp['length_m'],sp['width_m'],sp['nominal_com_height_m'],sp['tool_height_m'],sp.get('mu',DEFAULT_MU),True
-    c=concepts[platform]
-    length,width,_=c['dimensions_m']
-    height=c['work_com_height_m']
-    tool_height=max(height,c.get('arm_reach_m',0.55)*0.65)
-    if platform=='quadruped':
-        return length*0.82,width*0.78,height,tool_height,DEFAULT_MU,False
-    if platform=='humanoid':
-        return length*0.55,width*0.48,height,tool_height,0.65,False
-    return length,width,height,tool_height,DEFAULT_MU,False
-
-def static_limits(platform,mass_kg,spec,concepts):
-    length,width,com_h,tool_h,mu,locomotion_ready=support_geometry(platform,spec,concepts)
+def static_limits(platform,mass_kg,spec):
+    length,width,com_h,tool_h,mu,locomotion_ready=support_geometry(platform,spec)
     weight=mass_kg*G
     forward_tip=weight*(length/2)/tool_h
     side_tip=weight*(width/2)/tool_h
@@ -91,24 +73,23 @@ def main():
     ap.add_argument('--benchmark-summary',type=Path)
     ap.add_argument('--output',type=Path,required=True)
     args=ap.parse_args()
-    spec=load_spec();concepts=concept_map()
+    spec=load_spec()
     rows=load_json(args.benchmark_summary) if args.benchmark_summary and args.benchmark_summary.exists() else []
     mass_classes=spec.get('weight_classes',{})
-    platforms=['tracked_bogie','tracked_guided','tracked_overrow_high_clearance','tracked_inrow_narrow','quadruped_trot','quadruped','humanoid']
+    platforms=['tracked_bogie','tracked_guided','tracked_overrow_high_clearance','tracked_inrow_narrow','tracked_overrow_belt08','tracked_overrow_belt06']
     stability=[]
     for platform in platforms:
         for key,klass in mass_classes.items():
-            row=static_limits(platform,klass['mass_kg'],spec,concepts)
+            row=static_limits(platform,klass['mass_kg'],spec)
             row['mass_class']=key;row['mass_class_name']=klass['name'];stability.append(row)
     report={
         'schema':1,
-        'scope':'mechanical comparison; Gazebo truth for drive_ready tracked and quadruped_trot variants; static estimates for conceptual legged models without controllers',
+        'scope':'Mechanical comparison among tracked research variants; Gazebo results and static estimates remain separate.',
         'weight_classes':mass_classes,
         'benchmark_source':str(args.benchmark_summary) if args.benchmark_summary else None,
         'gazebo_rollup':benchmark_rollup(rows),
         'static_tool_pull_limits':stability,
         'limitations':[
-            'quadruped_trot hat einen ersten echten Gazebo-Trot-Regler und ist gemessen, faellt aber in der aktuellen Auslegung in allen Hindernisfaellen durch; quadruped und humanoid bleiben statische Konzepte ohne Gang-/Balanceregler.',
             'Energie ist mechanische Gelenk-/Radleistung aus Gazebo, noch ohne Motorwirkungsgrad, Elektronik und Akkuverluste.',
             'Boden ist noch starr mit Reibwerten; schwerer Marschboden braucht ein eigenes Tragfähigkeits-/Schlupfmodell.'
         ]

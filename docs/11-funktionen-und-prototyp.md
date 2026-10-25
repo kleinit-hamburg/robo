@@ -5,7 +5,7 @@ Stand 2026-09-07. Nutzerentscheidung: Zuerst alle benötigten Roboterfunktionen 
 ## Reihenfolge und Abgrenzung
 
 1. **Virtuelle Funktionsentwicklung:** M1–M6 mit parametrierbaren Abmessungen, Massen und Antriebsgrenzen umsetzen. Die bisherigen Werte in `config/concepts.json` bleiben vorläufige Simulationsannahmen. Ohne solche Werte können Bewegungen und Kräfte nicht sinnvoll geprüft werden. Kein kosmetischer CAD-Ausbau als Ersatz für fehlende Mechanik.
-2. **Referenzgröße festlegen:** Nach den Funktionstests Bauraum, Reichweite, Bodenfreiheit, Spur-/Stützbreite, Zielmasse, Werkzeug und Sensoranordnung des ersten Testprototyps festlegen. Alle drei Konzepte bleiben virtuelle Vergleichskandidaten; zunächst dient das Kettenkonzept als Entwicklungsreferenz. Ein physischer Prototyp aller drei ist nicht vorausgesetzt.
+2. **Referenzgröße festlegen:** Nach den Funktionstests Bauraum, Reichweite, Bodenfreiheit, Spur-/Stützbreite, Zielmasse, Werkzeug und Sensoranordnung des ersten Testprototyps festlegen. Die Feldraupe ist die einzige aktuelle Entwicklungsplattform.
 3. **Mechanisch auslegen und rückprüfen:** Gemessene Lastfälle auf den gewählten Aufbau übertragen; Material, Querschnitte, Lagerungen, Getriebe und Energieversorgung auslegen. Geänderte Masse, Trägheit, Schwerpunkt und Antriebsgrenzen in die Simulation zurückführen und die betroffenen Tests wiederholen.
 4. **Späterer Funktionsprototyp:** Gedruckte Strukturteile nach ihrer nachgewiesenen Eignung mit Motoren, Lagern, Achsen, Verbindungselementen und Sensoren kombinieren. Zuerst einzelne Baugruppen prüfen, dann das Gesamtsystem. Teilefreigabe und Beschaffung folgen erst in dieser späteren Phase.
 
@@ -15,11 +15,11 @@ Die M1–M6-Nummerierung bleibt erhalten. Die aktuellen Neustartfehler aus [M1](
 
 | Bereich | Virtuell zu implementieren und nachzuweisen | Zuordnung |
 |---|---|---|
-| Basis und Bedienung | Roboter einzeln wechseln; vorwärts/rückwärts, links/rechts, wenden, halten; Befehlsabbruch, Daten- und Verbindungs-Watchdogs | M1 |
-| Fortbewegungsmechanik | Ketten-/Bodenkontakt, Laufrollen, Federung und Anschläge; für Quadruped/Humanoid Gelenke, Stand, Gang und Balance | M1–M2 |
+| Basis und Bedienung | vorwärts/rückwärts, links/rechts, wenden, halten; Befehlsabbruch, Daten- und Verbindungs-Watchdogs | M1 |
+| Fortbewegungsmechanik | Ketten-/Bodenkontakt, Laufrollen, Federung und Anschläge | M1–M2 |
 | Gelände | Unebenheiten, Steigung, Reibungsproxy und Hindernisse; Schlupf, Bodenfreiheit und Kontaktverlust erfassen | M2 |
 | Sensorik und Zustand | simulierte LiDAR- und Kameradaten, IMU und Gelenkzustände; gemeinsame Zeitbasis, Koordinatensysteme, Zustandsschätzung und Ausfallbehandlung | schrittweise ab M1/M2, integriert bis M6 |
-| Arm und Hände | Ausgangs-/Arbeitspose, Werkzeugpositionierung, Gelenkgrenzen, Selbstkollision, Rückzug; Humanoid mit beiden Armen/Händen | M3 |
+| Arm und Hände | Ausgangs-/Arbeitspose, Werkzeugpositionierung, Gelenkgrenzen, Selbstkollision, Rückzug | M3 |
 | Werkzeugkräfte | 100/250/500/1000 N als angeforderte Lasten; Kraftübertragung, seitliche Kräfte, Grenzen und kontrollierte Abbrüche | M4 |
 | Pflanzeninteraktion | Kontakt, greifen, halten, lösen, Schlupf, Stängelbruch, Wurzelwiderstand; herausziehen, schneiden und abstechen | Greifen M5; vollständige Methoden bis M6 |
 | Autonomie | Pflanze erkennen, Nutzpflanze unterscheiden, Ziel anfahren, Arbeitsmethode wählen, stabilisieren, Werkzeug einsetzen und Ergebnis kontrollieren | M6 |

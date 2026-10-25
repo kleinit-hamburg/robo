@@ -9,9 +9,7 @@
       "title": "Bewegen",
       "status": "in_progress",
       "per_concept": {
-        "tracked": "accepted_drive_proxy",
-        "quadruped": "planned",
-        "humanoid": "planned"
+        "tracked": "accepted_drive_proxy"
       },
       "depends_on": [],
       "tests": [
@@ -26,9 +24,7 @@
       "title": "Gelände bewältigen",
       "status": "in_progress",
       "per_concept": {
-        "tracked": "test_fixture_in_development",
-        "quadruped": "planned",
-        "humanoid": "planned"
+        "tracked": "test_fixture_in_development"
       },
       "depends_on": [
         "M1"
@@ -47,9 +43,7 @@
       "title": "Arm bewegen",
       "status": "in_progress",
       "per_concept": {
-        "tracked": "test_fixture_in_development",
-        "quadruped": "planned",
-        "humanoid": "planned"
+        "tracked": "test_fixture_in_development"
       },
       "depends_on": [
         "M2"
@@ -64,9 +58,7 @@
       "title": "100/250/500/1000 N Werkzeuglast",
       "status": "in_progress",
       "per_concept": {
-        "tracked": "test_fixture_in_development",
-        "quadruped": "planned",
-        "humanoid": "planned"
+        "tracked": "test_fixture_in_development"
       },
       "depends_on": [
         "M3"
@@ -81,9 +73,7 @@
       "title": "Virtuelle Pflanze greifen",
       "status": "in_progress",
       "per_concept": {
-        "tracked": "test_fixture_in_development",
-        "quadruped": "planned",
-        "humanoid": "planned"
+        "tracked": "test_fixture_in_development"
       },
       "depends_on": [
         "M4"
@@ -98,9 +88,7 @@
       "title": "Identische Unkraut-Teststrecke für alle drei",
       "status": "planned",
       "per_concept": {
-        "tracked": "planned",
-        "quadruped": "planned",
-        "humanoid": "planned"
+        "tracked": "planned"
       },
       "depends_on": [
         "M1",

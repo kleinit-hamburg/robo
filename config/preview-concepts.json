@@ -1,68 +1,8 @@
 {
-  "tracked": {
-    "name": "Kette Basisplatzhalter",
-    "drive_ready": true,
-    "mode": "Baseline-Fahrwerk",
-    "description": "Historisches Zweirad-/Kugelstuetzmodell. Ketten sind nur Visuals; dient als Baseline fuer Ursachenvergleiche."
-  },
-  "tracked_improved": {
-    "name": "Kette verbessert: grosse Frontrollen",
-    "drive_ready": true,
-    "mode": "Engineering-Fahrwerk",
-    "description": "Verbesserter Platzhalter mit 0,70 m Spurweite, hoeherem Unterboden und grossen vorderen angetriebenen Umlenkrollen. Noch keine echte deformierbare Kette."
-  },
-  "tracked_bogie": {
-    "name": "Kette Bogie/Federrollen",
-    "drive_ready": true,
-    "mode": "Federndes Raupen-Pruefmodell",
-    "description": "Mechanisches Raupen-Pruefmodell mit sechs gefederten Laufrollen pro Seite. Die Rollen werden gemeinsam ueber DiffDrive angetrieben; die Kettenhuelle bleibt Visual/CAD-Referenz."
-  },
-  "tracked_guided": {
-    "name": "Kette geführt: große Umlenk-/Kontaktrollen",
-    "drive_ready": true,
-    "mode": "Geführtes Raupen-Pruefmodell",
-    "description": "Raupen-Pruefmodell mit groesseren physikalischen Front-/Heckrollen, sechs gefederten Laufrollen pro Seite und sichtbarer Kettenfuehrung. Ziel: Hindernisse bis 120 mm pruefen, ohne Browserphysik."
-  },
-  "tracked_overrow_high_clearance": {
-    "name": "Kette Überreihe: hohe Bodenfreiheit",
-    "drive_ready": true,
-    "mode": "Kartoffeldamm-Überreihe",
-    "description": "Raupenvariante für Kartoffeldämme: Ketten laufen in den Furchen, der Rumpf überfährt die Kulturreihe mit hoher Unterbodenfreiheit. Physik bleibt Gazebo-Proxy mit gefederten Rollen."
-  },
   "tracked_overrow_belt08": {
-    "name": "Kette Überreihe: 8 cm Ketten",
+    "name": "Feldraupe",
     "drive_ready": true,
-    "mode": "Kartoffeldamm-Überreihe · Breitenvergleich",
-    "description": "Hochbeinige Kartoffeldamm-Variante mit 8 cm Kettenbreite. Kettenbreite ist als Vergleichsparameter getrennt, damit Breite, Bodendruck, Schlupf und Energiebedarf später objektiv bewertet werden."
-  },
-  "tracked_overrow_belt06": {
-    "name": "Kette Überreihe: 6 cm Ketten",
-    "drive_ready": true,
-    "mode": "Kartoffeldamm-Überreihe · Breitenvergleich",
-    "description": "Hochbeinige Kartoffeldamm-Variante mit 6 cm Kettenbreite. Kettenbreite ist als Vergleichsparameter getrennt, damit Breite, Bodendruck, Schlupf und Energiebedarf später objektiv bewertet werden."
-  },
-  "tracked_inrow_narrow": {
-    "name": "Kette Fahrgasse: schmal",
-    "drive_ready": true,
-    "mode": "Schmale Fahrgassen-Kette",
-    "description": "Schmale Raupenvariante für die Fahrt zwischen 62-cm-Kartoffelreihen. Priorität ist geringe Gesamtbreite; Bodenfreiheit reicht für Furchen, aber nicht zum Überfahren von Kartoffelkraut."
-  },
-  "quadruped_trot": {
-    "name": "Quadruped Trot-Pruefmodell",
-    "drive_ready": true,
-    "mode": "Beinsteuerung Trot-Pruefmodell",
-    "description": "Dynamisches Hund-/Quadruped-Pruefmodell mit vier zweigelenkigen Beinen, Fusskontakten und einfachem Gazebo-Trot-Regler auf /garden/cmd_vel. Noch kein ausgereifter Balanceregler."
-  },
-  "quadruped": {
-    "name": "Quadruped mit Manipulator",
-    "drive_ready": false,
-    "mode": "Geometrievorschau",
-    "description": "Vier Beine und ein Arm als starre Platzhalter. Gang- und Balanceregelung sind noch nicht implementiert."
-  },
-  "humanoid": {
-    "name": "Humanoid mit zwei Händen",
-    "drive_ready": false,
-    "mode": "Geometrievorschau",
-    "description": "Zwei Beine und zwei Greifhände als starre Platzhalter. Gang- und Balanceregelung sind noch nicht implementiert."
+    "mode": "Kartoffelreihe",
+    "description": "Ein Raupenfahrwerk mit 62 cm Spurweite und 8 cm breiten Ketten für die virtuelle Kartoffelreihe."
   }
 }

@@ -16,8 +16,7 @@
     "tracked_overrow_high_clearance",
     "tracked_overrow_belt08",
     "tracked_overrow_belt06",
-    "tracked_inrow_narrow",
-    "quadruped_trot"
+    "tracked_inrow_narrow"
   ],
   "cases": [
     "step_30",

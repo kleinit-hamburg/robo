@@ -1,6 +1,6 @@
 import json,time,math,urllib.request
 import argparse
-parser=argparse.ArgumentParser(description='Integrationstest: wechselt zum Kettenmodell und setzt die laufende Demo zurück.')
+parser=argparse.ArgumentParser(description='Integrationstest der Fahrbefehle auf ebenem Gazebo-Boden.')
 parser.add_argument('--url',default='http://127.0.0.1:8088')
 BASE=parser.parse_args().url.rstrip('/');seq=0;revision=0
 
@@ -24,10 +24,12 @@ def yaw(s):
     x,y,z,w=s['poses']['robot']['quaternion'];return math.atan2(2*(w*z+x*y),1-2*(y*y+z*z))
 def angle(a,b):return math.atan2(math.sin(a-b),math.cos(a-b))
 def run(name,duration):
-    command(name);end=time.monotonic()+duration
-    while time.monotonic()<end:heartbeat();time.sleep(.15)
+    command(name);start=get()['sim_time'];deadline=time.monotonic()+60
+    while get()['sim_time']-start<duration:
+        if time.monotonic()>deadline:raise RuntimeError('Simulation time stalled during '+name)
+        heartbeat();time.sleep(.15)
     command('stop');time.sleep(.5);return get()
-post('select',{'concept':'tracked'});revision=get()['revision'];s0=wait_ready();print('START',s0['poses']['robot'],flush=True)
+post('profile',{'profile':'flat'});revision=get()['revision'];s0=wait_ready();print('START',s0['poses']['robot'],flush=True)
 s1=run('forward',2.5);print('FORWARD',s1['poses']['robot'],flush=True)
 assert s1['poses']['robot']['position'][0]-s0['poses']['robot']['position'][0]>.15
 s2=run('backward',2.5);print('BACKWARD',s2['poses']['robot'],flush=True)
@@ -36,7 +38,7 @@ s3=run('left',2);print('LEFT yaw=',yaw(s3),'IMU=',s3['yaw'],flush=True)
 assert angle(yaw(s3),yaw(s2))>.4
 s4=run('right',2);print('RIGHT yaw=',yaw(s4),'IMU=',s4['yaw'],flush=True)
 assert angle(yaw(s4),yaw(s3))<-.4
-command('turn_around');end=time.monotonic()+22
+command('turn_around');end=time.monotonic()+60
 while time.monotonic()<end:
     heartbeat();time.sleep(.15);s5=get()
     if s5['motion']=='stop':break

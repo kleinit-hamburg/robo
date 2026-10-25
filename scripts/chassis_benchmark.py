@@ -74,7 +74,7 @@ def make_world(variant,case,directory,config,mass_kg=None):
     robot=copy.deepcopy(E.parse(ROOT/'models'/variant/'model.sdf').getroot().find('model'))
     actual_mass_kg=scale_robot_mass(robot,mass_kg)
     for plug in list(robot.findall('plugin')):
-        if plug.get('name') not in ('gz::sim::systems::DiffDrive','garden::QuadrupedTrot'):robot.remove(plug)
+        if plug.get('name')!='gz::sim::systems::DiffDrive':robot.remove(plug)
     for link in robot.findall('link'):
         for sensor in list(link.findall('sensor')):link.remove(sensor)
         for collision in link.findall('collision'):

@@ -2,26 +2,18 @@ import json,sys,unittest,xml.etree.ElementTree as E
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
-from robot_spec import load_spec
+from robot_spec import ACTIVE_CONCEPT,load_spec
 
 class RobotSpecTests(unittest.TestCase):
     def test_dynamic_variants_have_generated_sdf_xacro_and_catalog_entry(self):
         spec=load_spec();catalog=json.loads((ROOT/'config/preview-concepts.json').read_text())
+        self.assertEqual(set(catalog),{ACTIVE_CONCEPT})
         for name,data in spec['variants'].items():
-            self.assertIn(name,catalog)
             self.assertTrue((ROOT/data['cad_references']['sdf']).exists())
             self.assertTrue((ROOT/data['cad_references']['xacro']).exists())
             model=E.parse(ROOT/data['cad_references']['sdf']).getroot().find('model')
-            if 'track' in data:
-                self.assertIsNotNone(model.find("plugin[@name='gz::sim::systems::DiffDrive']"))
-                self.assertEqual(model.findtext("plugin[@name='gz::sim::systems::DiffDrive']/wheel_radius"),str(data['drive']['wheel_radius_m']))
-            elif 'legs' in data:
-                self.assertIsNotNone(model.find("plugin[@name='garden::QuadrupedTrot']"))
-                actuated=[j for j in model.findall("joint[@type='revolute']") if j.get('name','').endswith(('_hip_joint','_knee_joint'))]
-                self.assertEqual(len(actuated),8)
-                self.assertEqual(len(model.findall("link")),13)
-            else:
-                self.fail(f"unknown dynamic variant schema for {name}")
+            self.assertIsNotNone(model.find("plugin[@name='gz::sim::systems::DiffDrive']"))
+            self.assertEqual(model.findtext("plugin[@name='gz::sim::systems::DiffDrive']/wheel_radius"),str(data['drive']['wheel_radius_m']))
     def test_structural_part_ids_are_unique_and_referenced(self):
         spec=load_spec();ids=[p['part_id'] for p in spec['structural_parts']]
         self.assertEqual(len(ids),len(set(ids)))
@@ -92,7 +84,7 @@ class ChassisBenchmarkArtifactTests(unittest.TestCase):
 
 class WeightClassBenchmarkArtifactTests(unittest.TestCase):
     def test_weight_class_results_capture_current_limit(self):
-        rows=json.loads((ROOT/'docs/validation/weight-class-chassis-summary.json').read_text())
+        rows=json.loads((ROOT/'docs/validation/tracked-weight-class-summary.json').read_text())
         cfg=json.loads((ROOT/'config/chassis-benchmark.json').read_text())
         by={(r['variant'],r['mass_class'],r['case']):r for r in rows}
         for variant in ('tracked_bogie','tracked_guided'):
@@ -103,25 +95,7 @@ class WeightClassBenchmarkArtifactTests(unittest.TestCase):
             self.assertTrue(by[('tracked_guided',mass_class,'step_100')]['succeeded'])
             self.assertFalse(by[('tracked_bogie',mass_class,'step_100')]['succeeded'])
             self.assertIsNotNone(by[('tracked_guided',mass_class,'ramp_30')]['mechanical_drive_energy_per_m_Wh_m'])
-            for case in cfg['cases']:
-                self.assertIn(('quadruped_trot',mass_class,case),by)
-                self.assertFalse(by[('quadruped_trot',mass_class,case)]['succeeded'])
-            smoke=by[('quadruped_trot',mass_class,'step_30')]
-            self.assertGreater(smoke['body_contact_samples'],0)
-            self.assertGreater(smoke['max_tilt_deg'],30)
-            self.assertGreater(smoke['mechanical_drive_energy_Wh'],0)
-
-    def test_mechanical_comparison_distinguishes_tested_and_static_legged_models(self):
-        report=json.loads((ROOT/'docs/validation/mechanical-comparison-summary.json').read_text())
-        rollup={(r['variant'],r['mass_class']):r for r in report['gazebo_rollup']}
-        static=report['static_tool_pull_limits']
-        for mass_class in ('light45','medium65','heavy85'):
-            self.assertIsNone(rollup[('quadruped_trot',mass_class)]['max_passed_step_mm'])
-            self.assertEqual(rollup[('quadruped_trot',mass_class)]['runs'],14)
-        for platform,ready in (('quadruped_trot',True),('quadruped',False),('humanoid',False)):
-            rows=[r for r in static if r['platform']==platform]
-            self.assertEqual(len(rows),3)
-            self.assertEqual({r['locomotion_ready_in_gazebo'] for r in rows},{ready})
+        self.assertTrue(all(name.startswith('tracked') for name in cfg['variants']))
 
 class VisualAssetPipelineTests(unittest.TestCase):
     def test_potato_ridge_uses_generated_mesh_visuals_and_keeps_collision_primitives(self):
@@ -129,7 +103,7 @@ class VisualAssetPipelineTests(unittest.TestCase):
         sys.path.insert(0,str(ROOT/'scripts'))
         from browser_server import build_world
         world=ROOT/'build/test-potato-ridge-visual.sdf'
-        objects=build_world('tracked_overrow_high_clearance',world,'potato_ridge')
+        objects=build_world(ACTIVE_CONCEPT,world,'potato_ridge')
         mesh_visuals=[v for o in objects for l in o['links'] for v in l['visuals'] if v['shape']=='mesh']
         self.assertGreaterEqual(len(mesh_visuals),55)
         self.assertTrue(any('potato_ridge_340cm.glb' in v['uri'] for v in mesh_visuals))
@@ -142,6 +116,19 @@ class VisualAssetPipelineTests(unittest.TestCase):
         text=world.read_text()
         self.assertIn('<collision name="collision">',text)
         self.assertIn('<mesh>',text)
+
+    def test_field_driving_has_no_rigid_stems_or_small_stones(self):
+        from browser_server import build_world
+        world=ROOT/'build/test-potato-ridge-contact.sdf'
+        build_world(ACTIVE_CONCEPT,world,'potato_ridge')
+        models=E.parse(world).getroot().find('world').findall('model')
+        for model in models:
+            name=model.get('name','')
+            if name.startswith('weed_between_ridges_') or name.startswith('soil_clod_') or ('_plant_' in name and name.startswith('potato_')):
+                self.assertFalse(model.findall('.//collision'),name)
+        ridges=[model for model in models if model.get('name','').endswith('_ridge')]
+        self.assertEqual(len(ridges),5)
+        self.assertTrue(all(model.findall('.//collision') for model in ridges))
 
     def test_generated_assets_exist(self):
         for rel in (

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local Gazebo/ROS browser viewer with swappable coarse robot concepts."""
+"""Local Gazebo/ROS browser viewer for one tracked garden robot."""
 import argparse
 import copy
 import json
@@ -20,18 +20,18 @@ from plant_model import add_plant
 from terrain_model import terrain, PROFILES
 from arm_model import add_arm, JOINTS, LIMITS, PRESETS, fixture_waypoints
 from motion_core import Motion, COMMANDS, heading_from_sample, readiness_issues
-from robot_spec import load_spec
+from robot_spec import ACTIVE_CONCEPT
 
 ROOT=Path(__file__).resolve().parents[1]
 WEB=ROOT/'web'
 CATALOG=json.loads((ROOT/'config/preview-concepts.json').read_text())
-ROBOT_SPEC=load_spec()
 
 def pose(element):
     text=element.findtext('pose','0 0 0 0 0 0')
     return list(map(float,text.split()))
 
 def build_world(concept, path, profile="garden"):
+    if concept!=ACTIVE_CONCEPT:raise ValueError('Nur die aktuelle Raupe ist in der Browseransicht verfügbar.')
     tree=ET.parse(ROOT/'worlds/browser-preview.sdf')
     world=tree.getroot().find('world')
     for model in list(world.findall('model')):
@@ -58,25 +58,17 @@ def build_world(concept, path, profile="garden"):
     ET.SubElement(world,'plugin',filename='gz-sim-imu-system',name='gz::sim::systems::Imu')
     robot=copy.deepcopy(ET.parse(ROOT/'models'/concept/'model.sdf').getroot().find('model'))
     ET.SubElement(robot,'plugin',filename=str(ROOT/'build/simulation/libgarden-ros-adapter.so'),name='garden::RosAdapter')
-    if profile in ('manipulation','plant') and concept=='tracked':add_arm(robot)
-    if profile=='potato_ridge' and concept.startswith('tracked'):
+    if profile in ('manipulation','plant'):add_arm(robot)
+    if profile=='potato_ridge':
         base=robot.find("link[@name='base_link']")
         if base is not None:
             visual=ET.SubElement(base,'visual',name='visual_robot_shell')
             ET.SubElement(visual,'pose').text='0 0 0 0 0 0'
             mesh=ET.SubElement(ET.SubElement(visual,'geometry'),'mesh')
             ET.SubElement(mesh,'uri').text='file://'+str((ROOT/'assets/visual/tracked_robot_shell.glb').resolve())
-            scale='1 1 1'
-            if concept=='tracked_inrow_narrow':scale='.82 .55 .75'
-            elif concept=='tracked_overrow_belt06':scale='1 .68 1.20'
-            elif concept=='tracked_overrow_belt08':scale='1 .78 1.23'
-            elif concept=='tracked_overrow_high_clearance':scale='1 .88 1.25'
-            ET.SubElement(mesh,'scale').text=scale
+            ET.SubElement(mesh,'scale').text='1 .78 1.23'
     start_y=-0.8
-    if profile=='potato_ridge':
-        if concept in ('tracked_overrow_high_clearance','tracked_overrow_belt08','tracked_overrow_belt06'):start_y=-0.62
-        elif concept=='tracked_inrow_narrow':start_y=-0.31
-        elif concept.startswith('tracked'):start_y=-0.31
+    if profile=='potato_ridge':start_y=-0.62
     ET.SubElement(robot,'pose').text=f'0 {start_y} 0.005 0 0 0'
     world.append(robot)
     ET.indent(tree);tree.write(path,encoding='utf-8',xml_declaration=True)
@@ -102,7 +94,7 @@ def build_world(concept, path, profile="garden"):
     return objects
 
 class Application:
-    def __init__(self, profile="garden", seed=0, log_dir=None):
+    def __init__(self, profile="potato_ridge", seed=0, log_dir=None):
         self.profile=profile;self.seed=seed;self.run_seed=seed
         self.log_dir=Path(log_dir) if log_dir else Path("/tmp")
         self.log_dir.mkdir(parents=True,exist_ok=True)
@@ -120,7 +112,7 @@ class Application:
         self.temp=tempfile.TemporaryDirectory(prefix='garden-robot-viewer-')
         self.path=Path(self.temp.name)/'world.sdf'
         self.processes={};self.logs={};self.quit=threading.Event()
-        self.concept='tracked';self.revision=0;self.switching=True
+        self.concept=ACTIVE_CONCEPT;self.revision=0;self.switching=True
         self.poses={};self.last_pose=0.;self.last_clock=0.;self.sim_time=0.;self.paused=False
         self.objects=[];self.output=(0.,0.)
         self.joints={};self.joint_peak=0.;self.rejected_imu=0;self.last_joints=None;self.joint_positions={};self.arm_target=None;self.tool_task=None;self.tool_result=None;self.applied_force=[0.,0.,0.];self.body_tilt=0.;self.plant_state={};self.weed_cycle=None
@@ -151,8 +143,7 @@ class Application:
                 except subprocess.TimeoutExpired:os.killpg(process.pid,signal.SIGKILL);process.wait()
             self.logs.pop(name).close()
     def launch(self):
-        initial='tracked_overrow_belt08' if self.profile=='potato_ridge' else 'tracked'
-        self.replace_world(initial)
+        self.replace_world(ACTIVE_CONCEPT)
         self.spin_thread=threading.Thread(target=self.spin,daemon=True);self.spin_thread.start()
     def spin(self):
         while not self.quit.is_set() and self.rclpy.ok():
@@ -245,7 +236,7 @@ class Application:
             heading_age=now-self.motion.heading_at if self.motion.heading_at is not None else None
             joint_age=now-self.last_joints if self.last_joints is not None else None
             issues=readiness_issues(CATALOG[self.concept]['drive_ready'],self.switching,self.paused,alive,clock_age,heading_age,joint_age)
-            return dict(weed_cycle=None if not self.weed_cycle else dict(phase=self.weed_cycle.phase,result=self.weed_cycle.result),plant_state=self.plant_state,tool_task=self.tool_task,tool_result=self.tool_result,applied_force_N=self.applied_force,body_tilt_deg=math.degrees(self.body_tilt),arm_available=self.profile in ('manipulation','plant') and self.concept=='tracked',joint_positions=dict(self.joint_positions),arm_target=self.arm_target,control_ready=not issues,readiness_issues=issues,clock_age_s=clock_age,imu_age_s=heading_age,joint_age_s=joint_age,process_exit_codes={k:p.poll() for k,p in self.processes.items()},gazebo_partition=os.environ['GZ_PARTITION'],world_profile=self.profile,seed=self.run_seed,joint_velocities=dict(self.joints),max_abs_joint_velocity=self.joint_peak,rejected_imu=self.rejected_imu,
+            return dict(weed_cycle=None if not self.weed_cycle else dict(phase=self.weed_cycle.phase,result=self.weed_cycle.result),plant_state=self.plant_state,tool_task=self.tool_task,tool_result=self.tool_result,applied_force_N=self.applied_force,body_tilt_deg=math.degrees(self.body_tilt),arm_available=self.profile in ('manipulation','plant'),joint_positions=dict(self.joint_positions),arm_target=self.arm_target,control_ready=not issues,readiness_issues=issues,clock_age_s=clock_age,imu_age_s=heading_age,joint_age_s=joint_age,process_exit_codes={k:p.poll() for k,p in self.processes.items()},gazebo_partition=os.environ['GZ_PARTITION'],world_profile=self.profile,seed=self.run_seed,joint_velocities=dict(self.joints),max_abs_joint_velocity=self.joint_peak,rejected_imu=self.rejected_imu,
                 concept=self.concept,revision=self.revision,poses=dict(self.poses),sim_time=self.sim_time,paused=self.paused,
                 connected=connected,switching=self.switching,pose_age_s=round(now-self.last_pose,3) if self.last_pose else None,
                 drive_ready=CATALOG[self.concept]['drive_ready'],motion=self.motion.command,motion_reason=self.motion.reason,
@@ -253,11 +244,7 @@ class Application:
                 turn_remaining_rad=self.motion.remaining)
     def scene(self):
         with self.lock:
-            catalog=copy.deepcopy(CATALOG)
-            if self.profile in ('manipulation','plant'):
-                catalog['tracked']['mode']='Manipulationsprüfstand'
-                catalog['tracked']['description']='Rad-/Stützmodell mit beweglichem 6-DOF-Arm und zwei Greiferbacken. Bekannter Zielprüfstand; keine autonome Erkennung.'
-            return dict(world_profile=self.profile,revision=self.revision,concept=self.concept,catalog=catalog,objects=self.objects,robot_spec=ROBOT_SPEC,benchmark=latest_benchmark())
+            return dict(world_profile=self.profile,revision=self.revision,concept=self.concept,catalog=CATALOG,objects=self.objects)
     def drive(self,payload,heartbeat=False):
         with self.lock:
             if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt. Bitte kurz warten.')
@@ -272,7 +259,7 @@ class Application:
             if command not in COMMANDS:raise ValueError('Unbekannter Fahrbefehl')
             if command!='stop':
                 if self.tool_task or (self.weed_cycle and not self.weed_cycle.result):raise ValueError('Während einer Werkzeugaufgabe ist die Fahrt gesperrt.')
-                if not CATALOG[self.concept]['drive_ready']:raise ValueError('Gang- und Balanceregler für dieses Konzept noch nicht implementiert.')
+                if not CATALOG[self.concept]['drive_ready']:raise ValueError('Raupe ist nicht fahrbereit.')
                 if self.paused:raise ValueError('Simulation ist pausiert.')
                 state=self.snapshot()
                 if not state['control_ready']:raise ValueError('Fahrbereitschaft fehlt: '+', '.join(state['readiness_issues']))
@@ -286,7 +273,7 @@ class Application:
             force=payload.get('force');direction=payload.get('direction')
             if type(force) not in (int,float) or force not in (100,250,500,1000):raise ValueError('Laststufe muss 100/250/500/1000 N sein.')
             if direction not in ('+x','-x','+y','-y','+z','-z'):raise ValueError('Ungültige Lastrichtung.')
-            if self.profile not in ('manipulation','plant') or self.concept!='tracked' or not self.snapshot()['control_ready'] or self.motion.command!='stop':raise ValueError('Lastversuch benötigt einen stehenden, fahrbereiten Manipulationsprüfstand.')
+            if self.profile not in ('manipulation','plant') or not self.snapshot()['control_ready'] or self.motion.command!='stop':raise ValueError('Lastversuch benötigt einen stehenden, fahrbereiten Manipulationsprüfstand.')
             if self.weed_cycle and not self.weed_cycle.result:raise ValueError('Automatikaufgabe läuft.')
             if not self.arm_target or self.tool_task:raise ValueError('Zuerst eine Armpose anfahren; nur ein Lastversuch gleichzeitig.')
             error=max(abs(self.joint_positions.get(n,99)-v) for n,v in zip(JOINTS,self.arm_target['positions']))
@@ -330,7 +317,7 @@ class Application:
     def arm_command(self,payload,internal=False):
         with self.lock:
             if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt.')
-            if self.profile not in ('manipulation','plant') or self.concept!='tracked':raise ValueError('Arm nur im Ketten-Manipulationsprüfstand verfügbar.')
+            if self.profile not in ('manipulation','plant'):raise ValueError('Arm nur im Ketten-Manipulationsprüfstand verfügbar.')
             if self.paused or self.switching or self.motion.command!='stop':raise ValueError('Arm benötigt eine stehende Basis und laufende Simulation.')
             state=self.snapshot()
             if not state['control_ready'] or not all(n in self.joint_positions for n in JOINTS):raise ValueError('Arm-Messdaten noch nicht bereit.')
@@ -372,14 +359,6 @@ class Application:
         if self.rclpy.ok():self.rclpy.shutdown()
         self.temp.cleanup()
 
-
-def latest_benchmark():
-    paths=[ROOT/'docs/validation/weight-class-chassis-summary.json', ROOT/'docs/validation/chassis-benchmark-summary.json', ROOT/'results/chassis-benchmark-main-20260912/summary.json']
-    for path in paths:
-        if path.exists():
-            try:return json.loads(path.read_text())
-            except (ValueError,OSError):return []
-    return []
 
 def handler_for(app):
     class Handler(BaseHTTPRequestHandler):
@@ -425,14 +404,10 @@ def handler_for(app):
                     app.tool_command(payload);return self.send(200,{'ok':True})
                 if self.path=='/api/arm':
                     app.arm_command(payload);return self.send(200,{'ok':True})
-                if self.path not in ('/api/select','/api/reset','/api/pause','/api/play','/api/profile'):return self.send(404,{})
+                if self.path not in ('/api/reset','/api/pause','/api/play','/api/profile'):return self.send(404,{})
                 if not app.operation_lock.acquire(blocking=False):return self.send(409,{'error':'Ein Wechsel läuft bereits.'})
                 try:
-                    if self.path=='/api/select':
-                        concept=payload.get('concept')
-                        if concept not in CATALOG:raise ValueError('Unbekannter Roboter')
-                        app.replace_world(concept)
-                    elif self.path=='/api/profile':
+                    if self.path=='/api/profile':
                         profile=payload.get('profile')
                         if profile not in PROFILES:raise ValueError('Unbekannte Testumgebung')
                         app.profile=profile;app.replace_world(app.concept)
@@ -447,7 +422,7 @@ def handler_for(app):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--host',default='127.0.0.1');parser.add_argument('--port',type=int,default=8088)
     parser.add_argument('--ros-domain-id',type=int,default=174)
-    parser.add_argument('--world-profile',choices=PROFILES,default='garden')
+    parser.add_argument('--world-profile',choices=PROFILES,default='potato_ridge')
     parser.add_argument('--seed',type=int,default=0)
     parser.add_argument('--log-dir')
     args=parser.parse_args()

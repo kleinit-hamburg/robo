@@ -32,12 +32,14 @@ def terrain(world,profile):
         geom(link,'collision','box',size)
     def potato_plant(name,x,y,yaw=0,scale=1):
         link=model_link(name,(x,y,0),(0,0,yaw))
-        geom(link,'collision','cylinder',(.035,.32),(0,0,.16,0,0,0),mu='0.2')
+        # A rigid static stem would act as a bollard. Crop contact needs a
+        # compliant force/damage model before it can be used as physics.
         variant='potato_haulm.glb' if int(abs(x*100)+abs(y*100))%3==0 else 'potato_haulm_b.glb' if int(abs(x*100)+abs(y*100))%3==1 else 'potato_haulm_c.glb'
         geom(link,'visual_haulm_mesh','mesh',('assets/visual/'+variant,(scale,scale,scale)),(0,0,0,0,0,0),'0.20 0.42 0.16 1')
     def weed(name,x,y,yaw=0,scale=1,root_peak='75'):
         link=model_link(name,(x,y,0),(0,0,yaw))
-        geom(link,'collision','cylinder',(.018,.18),(0,0,.09,0,0,0),mu='0.35')
+        # The drive fixture displays weeds; the separate plant fixture owns
+        # the force-bearing gripper/root model.
         geom(link,'visual_weed_mesh','mesh',('assets/visual/weed_broadleaf.glb',(scale,scale,scale)),(0,0,0,0,0,0),'0.25 0.55 0.18 1')
     if profile=='uneven':
         for n in range(24):
@@ -69,7 +71,7 @@ def terrain(world,profile):
             weed(f'weed_between_ridges_{i}',x,y,yaw=i*.83,scale=.68+.07*(i%4))
         for i,(x,y) in enumerate(((.55,-.31),(1.35,.31),(2.15,-.93),(2.85,.93),(3.25,.0))):
             link=model_link(f'soil_clod_{i}',(x,y,.025))
-            geom(link,'collision','sphere',(.035,),(0,0,0,0,0,0),mu='0.45')
+            # Small surface texture must not become an unplanned stone test.
             geom(link,'visual','sphere',(.045,),(0,0,0,0,0,0),'0.34 0.24 0.15 1')
     elif profile=='engineering':
         for x,h,name in ((.65,.03,'stone_30mm'),(1.05,.05,'stone_50mm'),(1.55,.08,'stone_80mm')):box(name,(x,-.8,h/2),(.16,.9,h))

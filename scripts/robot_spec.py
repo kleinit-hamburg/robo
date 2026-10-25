@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[1]
 SPEC_PATH=ROOT/'config/robot-spec.json'
+ACTIVE_CONCEPT='tracked_overrow_belt08'
 
 def load_spec():
     return json.loads(SPEC_PATH.read_text(encoding='utf-8'))

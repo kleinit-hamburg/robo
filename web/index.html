@@ -1,16 +1,77 @@
-<!doctype html><html lang="de"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gartenlabor · Fahrwerk Engineering</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/style.css">
-<script type="importmap">{"imports":{"three":"/vendor/three.module.js","three/addons/":"/addons/"}}</script></head>
-<body><header><div class="brand"><span class="brand-icon">↟</span><div>Gartenlabor<span class="eyebrow">VIRTUELLE ENTWICKLUNG</span></div></div><span class="badge">ROS 2 JAZZY <span> / </span> GAZEBO HARMONIC</span></header>
-<main><section class="intro"><div><p class="eyebrow">03 / FAHRWERK ENGINEERING</p><h1>Virtueller Fahrwerks-Prüfstand.</h1><p>Parameter, Gazebo-Tests und Telemetrie für mechanische Entscheidungen.</p></div><div class="status" id="status" role="status">Verbindung wird aufgebaut …</div></section>
-<div class="workspace"><section class="viewport" aria-label="Interaktive 3D-Simulation"><div id="canvas"></div><div class="scene-label"><span class="live-dot"></span><span id="scene-title">ROBOTER-TESTFELD · 6 × 4 M</span></div><div id="error" role="alert" hidden></div><div class="camera-help">Ziehen: drehen <span>·</span> Mausrad: zoomen <span>·</span> Rechts ziehen: verschieben</div></section>
-<aside><label class="section-label" for="profile">TESTUMGEBUNG</label><select id="profile"><option value="garden">Garten · Fahrvorschau</option><option value="flat">Ebene · Fahrprüfstand</option><option value="engineering">Fahrwerk · Testobjekte</option><option value="manipulation">Arm · Manipulationsprüfstand</option><option value="plant">Pflanze · Griffprüfstand</option><option value="potato_ridge">Kartoffeldamm · 62 cm Reihen</option><option value="uneven">Unebenheiten · ±10 mm</option><option value="slope">Steigung · 5°</option><option value="slippery">Geringe Reibung · μ 0,25</option><option value="obstacle">Schwelle · 20 mm</option></select><label class="section-label" for="concept">AKTIVER ROBOTER</label><select id="concept" disabled></select><span id="mode" class="mode">Wird geladen …</span>
-<p id="concept-note" class="note"></p><section class="engineering-panel"><p class="section-label">FAHRWERKSPARAMETER</p><div id="spec-grid" class="spec-grid"></div><p class="section-label">LETZTE GAZEBO-BENCHMARKS</p><div id="benchmark-list" class="benchmark-list"></div></section>
-<div class="drive-grid" aria-label="Fahrbefehle"><button data-motion="forward" class="forward" disabled>↑<span>Vorwärts</span></button><button data-motion="left" class="left" disabled>↶<span>Links drehen</span></button><button id="stop" class="stop" disabled>■<span>Anhalten</span></button><button data-motion="right" class="right" disabled>↷<span>Rechts drehen</span></button><button data-motion="backward" class="backward" disabled>↓<span>Rückwärts</span></button></div>
-<button id="turn" class="secondary full" disabled>Umdrehen · 180°</button><p class="drive-help">Richtung gedrückt halten · Pfeiltasten / WASD<br>Leertaste: anhalten · U: umdrehen</p>
-<div class="motion-status" id="motion-status" role="status">Angehalten</div>
-<div class="telemetry"><div><span id="sim-time">0,00</span><small>Simulationszeit · s</small></div><div><span id="robot-yaw">—</span><small>Ausrichtung</small></div></div>
-<div class="controls"><button id="pause" class="secondary" disabled>Simulation pausieren</button><button id="reset" class="secondary" disabled>Zur Startposition ↻</button></div>
-<section id="arm-panel" hidden><p class="section-label">ARM &amp; GREIFER · VERSUCHSMODELL</p><button id="workbench-stop" class="stop full">■ Arm / Aufgabe anhalten</button><div class="controls"><button class="secondary" data-arm="home">Ausgangspose</button><button class="secondary" data-arm="reach">Ausstrecken</button><button class="secondary" data-arm="work">Arbeitspose</button><button class="secondary" data-arm="extract">Anheben / Ausziehen</button><button class="secondary" data-arm="hold">Arm halten</button><button class="secondary" data-arm="open">Greifer öffnen</button><button class="secondary" data-arm="close">Greifer schließen</button></div><label for="tool-force">Werkzeuglast · N</label><select id="tool-force"><option>100</option><option>250</option><option>500</option><option>1000</option></select><label for="tool-direction">Kraftrichtung im Weltkoordinatensystem</label><select id="tool-direction"><option>+x</option><option>-x</option><option>+y</option><option>-y</option><option>+z</option><option selected>-z</option></select><button id="tool-start" class="secondary full">Lastversuch starten</button><p id="tool-status" class="note">Einzelversuch · keine bestätigte Tragfähigkeit</p><button id="weed-cycle" class="secondary full">Pflanzen-Prüfzyklus starten</button><p id="cycle-status" class="note">Bekanntes Ziel · keine autonome Erkennung</p><p id="plant-status" class="note"></p><p id="arm-status" class="note">Noch keine Pflanzen-Griffprüfung.</p></section><div class="camera-row"><label><input type="checkbox" id="follow" checked> Roboter folgen</label><button id="camera" class="secondary">Kamera ↺</button></div>
-</aside></div><footer><span><span class="live-dot"></span> Positionsdaten live aus Gazebo · orange Markierung zeigt vorne</span><span>Entwicklungsstand 0.2 · kein autonomer Betrieb</span></footer></main><script type="module" src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gartenlabor · Raupe</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <script type="importmap">{"imports":{"three":"/vendor/three.module.js","three/addons/":"/addons/"}}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand" aria-label="Gartenlabor">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Gartenlabor<small>Raupenprüfstand</small></span>
+    </div>
+    <div class="status" id="status" role="status">Verbindung wird aufgebaut …</div>
+  </header>
+  <main>
+    <div class="page-heading">
+      <div><h1>Raupe im Kartoffelfeld</h1><p>Fahren und beobachten. Die Bewegung berechnet Gazebo.</p></div>
+      <span class="stack-label">ROS 2 Jazzy <span aria-hidden="true">/</span> Gazebo Harmonic</span>
+    </div>
+    <div class="workspace">
+      <section class="viewport" aria-label="Liveansicht der Gazebo-Simulation">
+        <div id="canvas"></div>
+        <div class="scene-label"><span class="live-dot" aria-hidden="true"></span><span id="scene-title">Kartoffelreihe</span></div>
+        <div id="error" role="alert" hidden></div>
+        <div class="view-actions"><span>Ziehen: Ansicht drehen · Mausrad: zoomen</span><button id="camera" type="button">Ansicht zurücksetzen</button></div>
+      </section>
+      <aside class="control-panel" aria-label="Raupe bedienen">
+        <div class="panel-top"><span class="panel-kicker">Arbeitsansicht</span><h2>Eine Raupe. Ein Auftrag.</h2></div>
+        <div class="scene-switch" role="group" aria-label="Ansicht wählen">
+          <button type="button" data-profile="potato_ridge" class="selected">Feldfahrt</button>
+          <button type="button" data-profile="engineering">Hindernisse</button>
+          <button type="button" data-profile="plant">Werkzeug</button>
+        </div>
+        <p class="scene-explain" id="scene-explain">62 cm Reihenabstand. Pflanzen und Erdkrümel sind in dieser Fahrprüfung nur sichtbar.</p>
+        <section class="driving" aria-label="Fahrbefehle">
+          <div class="driving-heading"><h3>Fahren</h3><span>Taste gedrückt halten</span></div>
+          <div class="drive-grid">
+            <button data-motion="forward" class="forward" disabled aria-label="Vorwärts fahren"><b>↑</b><span>Vorwärts</span></button>
+            <button data-motion="left" class="left" disabled aria-label="Links drehen"><b>↶</b><span>Links</span></button>
+            <button id="stop" class="stop" disabled aria-label="Sofort anhalten"><b>■</b><span>Stopp</span></button>
+            <button data-motion="right" class="right" disabled aria-label="Rechts drehen"><b>↷</b><span>Rechts</span></button>
+            <button data-motion="backward" class="backward" disabled aria-label="Rückwärts fahren"><b>↓</b><span>Rückwärts</span></button>
+          </div>
+          <button id="turn" class="turn-button" disabled>Um 180° drehen</button>
+          <p class="keyboard-help">Auch mit Pfeiltasten oder WASD · Leertaste stoppt</p>
+          <div class="motion-status" id="motion-status" role="status">Angehalten</div>
+        </section>
+        <div class="telemetry" aria-label="Gazebo-Telemetrie">
+          <div><strong id="sim-time">0,00</strong><span>Simulationszeit · s</span></div>
+          <div><strong id="robot-yaw">—</strong><span>Richtung</span></div>
+          <div><strong id="body-tilt">—</strong><span>Neigung</span></div>
+        </div>
+        <div class="control-actions"><button id="pause" disabled>Pause</button><button id="reset" disabled>Zum Start zurück</button></div>
+        <label class="follow-control"><input type="checkbox" id="follow" checked> Kamera folgt der Raupe</label>
+        <section id="arm-panel" class="tool-panel" hidden>
+          <h3>Werkzeugprüfung</h3><p>Bekanntes Testziel. Die Raupe bleibt bei der Arbeit stehen.</p>
+          <div class="tool-actions">
+            <button data-arm="home">Arm zurück</button><button data-arm="work">Arm zur Pflanze</button>
+            <button data-arm="close">Greifer schließen</button><button data-arm="open">Greifer öffnen</button>
+            <button data-arm="extract">Arm anheben</button><button id="workbench-stop" class="stop">Aufgabe stoppen</button>
+          </div>
+          <button id="weed-cycle" class="tool-primary">Pflanzenzyklus starten</button>
+          <button id="tool-start" class="tool-secondary">100 N Lastprobe starten</button>
+          <p id="cycle-status" class="tool-feedback"></p><p id="tool-status" class="tool-feedback"></p>
+          <p id="plant-status" class="tool-feedback"></p><p id="arm-status" class="tool-feedback"></p>
+        </section>
+      </aside>
+    </div>
+    <footer>Liveposition aus Gazebo · Die 3D-Ansicht berechnet keine eigene Physik.</footer>
+  </main>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

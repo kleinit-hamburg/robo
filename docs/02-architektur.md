@@ -23,7 +23,7 @@ Sensorbrücke ros_gz_bridge → gemeinsame ROS-Sensortopics
 
 `garden_perception` erkennt Pflanze, Klasse (Unkraut/Nutzpflanze/unbekannt), Pose, Ausdehnung und Unsicherheit. Unbekannte Pflanzen werden nicht bearbeitet. `garden_task_manager` wählt Schneiden, Abstechen oder Ziehen anhand konfigurierter Regeln, beobachtbarer Pose und gemessener Kraft. Er erhält niemals die verdeckte Wurzelstärke aus dem Simulator. Nach einem begrenzten Zugversuch kann er lösen und die Methode wechseln; maximal zwei Werkzeugversuche pro Pflanze.
 
-`garden_state_estimation` fusioniert IMU, Gelenke und visuelle/Lidar-Odometrie; beinspezifische Kontaktinformationen über Adapter. `garden_navigation` gibt gemeinsame Zielposen vor. Kette verwendet eine mobile Basisregelung; Beine benötigen separate Fußschritt- und Ganzkörperregler. Nav2 kann Aufgaben und Anfahrt unterstützen, ersetzt aber keine Balance- oder Fußschrittplanung. MoveIt 2 ist eine Option für kollisionsfreie Armbewegungen, kein fertiger kraftgeregelter Unkrautlöser.
+`garden_state_estimation` fusioniert IMU, Gelenke und visuelle/Lidar-Odometrie; Kontaktinformationen des Kettenfahrwerks über einen Basisadapter. `garden_navigation` gibt gemeinsame Zielposen vor. Nav2 kann Aufgaben und Anfahrt unterstützen. MoveIt 2 ist eine Option für kollisionsfreie Armbewegungen, kein fertiger kraftgeregelter Unkrautlöser.
 
 `garden_manipulation` nutzt freie Positionierung bis kurz vor Kontakt, anschließend begrenzte kartesische Impedanz/Admittanz mit Kraftüberwachung. `garden_tool_controller` begrenzt Klemmkraft, Schnittkraft und Stechhub. `garden_stability_monitor` prüft Kontakt-, Reib- und Gelenkreserven. `garden_safety_supervisor` stoppt bei Überlast, Verlust der Schätzung oder Kommunikationsausfall. Hardwareunabhängige Nodes hängen ausschließlich an ROS-Verträgen.
 
@@ -42,7 +42,7 @@ Sensorbrücke ros_gz_bridge → gemeinsame ROS-Sensortopics
 | Werkzeugauftrag | eigene Action `TreatPlant` | UUID, Methode, Kraft-/Weglimits; Feedback Phase/Kraft; Ergebnis und Abbruchgrund |
 | Kontrollfreigabe | eigenes `OperationState` | bereit/anfahren/ausrichten/kontakt/arbeiten/pruefen/abbruch; monotone Zustandsfolge je Versuch |
 
-Eigene Nachrichtendefinitionen werden in `garden_interfaces` konkretisiert. Goals sind abbrechbar und zeitlich begrenzt. Keine rohen Gazebo-Entity-IDs in produktiven Interfaces. Gemeinsamer TF-Vertrag `map → odom → base_link → ... → tool_frame`, Sensoren mit eigenen Frames; Basis x vorwärts, y links, z oben. Beim Humanoiden `left_tool_frame` und `right_tool_frame` mit expliziter Werkzeugzuordnung. Pflanzenkarten liegen in `map`.
+Eigene Nachrichtendefinitionen werden in `garden_interfaces` konkretisiert. Goals sind abbrechbar und zeitlich begrenzt. Keine rohen Gazebo-Entity-IDs in produktiven Interfaces. Gemeinsamer TF-Vertrag `map → odom → base_link → ... → tool_frame`, Sensoren mit eigenen Frames; Basis x vorwärts, y links, z oben. Pflanzenkarten liegen in `map`.
 
 Simulationszeit über genau eine `/clock`-Quelle, `use_sim_time=true` auf allen Sim-Nodes; real false. Sensoren best effort mit kleinen Queues, Befehle/Aktionsstatus reliable. Sicherheitsstopps benötigen zusätzlich einen unabhängigen Hardware-Watchdog im späteren Prototyp; DDS allein ersetzt ihn nicht.
 

@@ -35,10 +35,13 @@ def add_arm(model):
     for v in list(base.findall('visual')):
         if v.get('name','').startswith(('arm_base','upper_arm','forearm','wrist','jaw')):base.remove(v)
     masses=[.6,2.,1.5,.3,.3,2.9,.2,.2]
-    # Preserve the 65 kg aggregate proxy mass while making arm inertia explicit.
-    mass=60.6-sum(masses);base.find('inertial/mass').text=str(mass)
+    # Move mass from the chassis proxy into explicit arm links; total stays fixed.
+    original_mass=float(base.find('inertial/mass').text)
+    mass=original_mass-sum(masses)
+    if mass<=0:raise ValueError('Arm mass exceeds chassis proxy mass')
+    base.find('inertial/mass').text=str(mass)
     for field in ('ixx','iyy','izz'):
-        n=base.find('inertial/inertia/'+field);n.text=str(float(n.text)*mass/60.6)
+        n=base.find('inertial/inertia/'+field);n.text=str(float(n.text)*mass/original_mass)
     origins=[(.38,0,.45),(.38,0,.48),(.38,0,.73),(.38,0,.98),(.38,0,1.04),(.38,0,1.10),(.38,.01,1.18),(.38,-.01,1.18)]
     sizes=[(.07,.07,.06),(.06,.06,.25),(.055,.055,.25),(.065,.065,.06),(.065,.065,.06),(.075,.075,.08),(.02,.012,.09),(.02,.012,.09)]
     axes=['0 0 1','0 1 0','0 1 0','0 0 1','0 1 0','0 0 1','0 1 0','0 -1 0']

@@ -29,3 +29,16 @@ Der Hersteller [KCM/Kymoon](https://www.kcm-hk.com/Rubber-Track-Chassis-with-All
 Ein größeres [RC MI-100](https://www.robotchassis.com/product/tracked-robot-tank-chassis/) kann laut Hersteller in 550–900 mm Außenbreite gefertigt werden, hat aber 100-mm-Ketten und wiegt schon ohne Batterie mindestens 97,5 kg. Es überschreitet damit das derzeitige Gesamtmassenziel.
 
 **Folgerung:** Ein fertiges Serien-Fahrgestell, um das wir lediglich Werkzeug und Sensorik bauen, ist bislang nicht passend nachgewiesen. Der naheliegende Integrationsweg sind zwei möglichst vollständige, getrennt montierbare Raupenmodule mit Rollen, Spannung, Antrieb und Band. Dazwischen käme unsere eigene hohe, auf 620–750 mm Spurweite rastbar verstellbare Brücke. Vor einem Kauf müssen Herstellerzeichnungen, Modulmasse, Aufstandsfläche, Befestigung, Bandspannung, Motor-/Controller-Schnittstelle und Lastfälle im Marschboden geprüft werden. Die genannten Produkte sind Recherchekandidaten, keine freigegebenen Bauteile und keine Bestellung.
+
+## Öffentlich sichtbare Preise (Abruf 25.10.2026)
+
+| Umfang | Veröffentlichter Preis | Einordnung |
+| --- | ---: | --- |
+| [Lynxmotion A4WD3: zwei 80-mm-Bänder plus Antriebsräder](https://eu.robotshop.com/fr/products/lynxmotion-kit-chenilles-pignons-en-caoutchouc-a4wd3) | 331,84 € inkl. Steuer; Versand separat | 1 m Bandumfang; nur für einen kleinen Prototyp, keine Motoren oder Rollen |
+| [Lynxmotion A4WD3: kleiner Raupen-Bausatz](https://eu.robotshop.com/products/lynxmotion-a4wd3-rugged-tracked-rover-kit) | 921,72 € inkl. Steuer; Versand separat | Motoren enthalten; 422 mm lang, 63 mm Bodenfreiheit, keine passende Feldraupe |
+| [KCM: allgemein gelistetes Raupen-Untergestell](https://www.alibaba.com/product-detail/Rubber-Tracked-Machine-Load-100kg-200kg_1600983278793.html) | 1.900 US-$ für ein Stück laut Marktplatzliste | Kein nachgewiesener Preis der konkreten KCM-70-Variante; Ausstattung und Lieferumfang bestätigen lassen |
+| [Foxtech TR500S: 50-kg-Nutzlast-Fahrgestell](https://store.foxtech.com/robot/robot-chassis/) | 2.950 US-$ | Vergleichspreis; Geometrie und Durchfahrtshöhe passen nicht nachgewiesen |
+| [Foxtech TR600: 120-kg-Nutzlast-Fahrgestell](https://store.foxtech.com/robot/robot-chassis/) | 5.350 US-$ | Vergleichspreis, deutlich schwerere Klasse |
+| [KCM-70 konkret](https://www.kcm-hk.com/Rubber-Track-Chassis-Undercarriage-Platform-pd540008278.html) und [FlySpark TK650](https://flyspark.in/netherlands/products/flyspark-tk650-lightweight-tracked-ugv-robot-chassis-30kg-payload) | Preis auf Anfrage | Kein seriöser Festpreis aus den öffentlichen Herstellerangaben |
+
+Für **zwei getrennte, motorisierte Raupenmodule mit 62–75 cm verstellbarer Spur** liegt derzeit kein belastbares Angebot vor. Aus den Preisen kompletter Fahrgestelle lässt sich ihr Paarpreis nicht direkt ableiten. Eine Kostenschätzung für die spätere Feldraupe braucht einen definierten Lieferumfang (Band, Rollen, Spanner, Motor, Getriebe, Regler, Akku, Zeichnungen) und ein Angebot. Marktplatzpreise in US-Dollar sind keine Endpreise in Deutschland; Transport und Einfuhr kommen gegebenenfalls hinzu.

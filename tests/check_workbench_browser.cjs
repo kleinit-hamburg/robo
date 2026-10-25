@@ -7,6 +7,7 @@ const base=process.env.VIEWER_URL||'http://127.0.0.1:8094';
   await page.goto(base);await page.waitForFunction(()=>document.querySelector('[data-motion="forward"]').disabled===false,null,{timeout:25000});
   await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/profile')&&r.status()===200),page.locator('[data-profile="plant"]').click()]);
   await page.waitForFunction(()=>!document.getElementById('arm-panel').hidden&&!document.getElementById('weed-cycle').disabled,null,{timeout:25000});
+  if(!await page.locator('[data-speed-mode="transport"]').isDisabled())throw Error('Transport mode enabled at plant fixture');
   await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/weed_cycle')&&r.status()===200),page.locator('#weed-cycle').click()]);await page.waitForFunction(()=>document.getElementById('cycle-status').textContent.includes('Arbeitspose anfahren'));
   if(!await page.locator('[data-arm="work"]').isDisabled())throw Error('Manual arm command enabled during task');
   await page.waitForFunction(()=>document.getElementById('cycle-status').textContent.includes('Prüfzyklus abgeschlossen'),null,{timeout:100000});

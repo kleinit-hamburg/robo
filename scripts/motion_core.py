@@ -1,7 +1,8 @@
 """Hardware-independent bounded teleoperation logic. Inputs are heading and commands."""
 import math
 
-COMMANDS = {'forward':(.28,0.), 'backward':(-.22,0.), 'left':(0.,.8), 'right':(0.,-.8), 'stop':(0.,0.), 'turn_around':(0.,0.)}
+SPEED_MODES = {'work': {'forward': .28, 'backward': -.22}, 'transport': {'forward': 1.0, 'backward': -.6}}
+COMMANDS = {'forward':(SPEED_MODES['work']['forward'],0.), 'backward':(SPEED_MODES['work']['backward'],0.), 'left':(0.,.8), 'right':(0.,-.8), 'stop':(0.,0.), 'turn_around':(0.,0.)}
 def wrapped(angle):
     return math.atan2(math.sin(angle),math.cos(angle))
 
@@ -21,6 +22,11 @@ class Motion:
     def __init__(self):
         self.command='stop'; self.reason='ready'; self.expiry=0.; self.heading_at=None
         self.yaw=None; self.remaining=0.; self.turn_deadline=0.
+        self.speed_mode='work'
+    def set_speed_mode(self,mode):
+        if mode not in SPEED_MODES:raise ValueError('Unbekannter Fahrmodus')
+        if self.command!='stop':raise ValueError('Fahrmodus nur bei gestopptem Fahrbefehl wechseln')
+        self.speed_mode=mode
     def stop(self,reason='stopped'):
         self.command='stop';self.reason=reason;self.remaining=0.
     def heading(self,yaw,now):
@@ -45,6 +51,8 @@ class Motion:
             if self.remaining<.025:self.stop('turn_complete');return 0.,0.
             if now>self.turn_deadline:self.stop('turn_timeout');return 0.,0.
             return 0.,min(.8,max(.10,self.remaining*1.8))
+        if self.command in ('forward','backward'):
+            return float(SPEED_MODES[self.speed_mode][self.command]),0.
         return COMMANDS[self.command]
 
 

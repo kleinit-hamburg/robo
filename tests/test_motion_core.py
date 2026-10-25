@@ -11,6 +11,12 @@ class MotionTests(unittest.TestCase):
         self.assertEqual(m.output(.1),(.28,0.0))
         m.heading(0,.7)
         self.assertEqual(m.output(.7),(0.,0.));self.assertEqual(m.reason,'command_timeout')
+    def test_transport_speed_requires_standstill(self):
+        m=Motion();m.set_speed_mode('transport');m.heading(0,0);m.request('forward',0)
+        self.assertEqual(m.output(.1),(1.0,0.))
+        with self.assertRaises(ValueError):m.set_speed_mode('work')
+        m.stop();m.set_speed_mode('work');m.request('forward',.2)
+        self.assertEqual(m.output(.3),(.28,0.))
     def test_heartbeat_does_not_hide_missing_heading(self):
         m=Motion();m.heading(0,0);m.request('left',0);m.heartbeat(.6)
         self.assertEqual(m.output(.6),(0.,0.));self.assertEqual(m.reason,'heading_timeout')

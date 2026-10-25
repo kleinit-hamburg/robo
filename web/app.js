@@ -15,7 +15,7 @@ resetCamera();$('camera').onclick=resetCamera;
 scene.add(new THREE.HemisphereLight(0xe4eae0,0x624b34,1.25));scene.add(new THREE.AmbientLight(0xffffff,.55));const sun=new THREE.DirectionalLight(0xffefd2,2.8);sun.position.set(-3.5,-4.8,7.5);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-5,right:5,top:5,bottom:-5});sun.shadow.normalBias=.02;scene.add(sun);
 const grid=new THREE.GridHelper(6,24,0x86977f,0xa2b09a);grid.rotation.x=Math.PI/2;grid.position.z=.003;grid.material.transparent=true;grid.material.opacity=.3;scene.add(grid);
 let sceneGroup=new THREE.Group();scene.add(sceneGroup);const frames=new Map();
-let revision=-1,connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop',taskBusy=false,currentProfile='potato_ridge';
+let revision=-1,connected=false,paused=false,driveReady=false,controlReady=false,busy=false,loading=false,currentMotion='stop',taskBusy=false,currentProfile='potato_ridge',speedMode='work';
 let sequence=0,active=null,heartbeatBusy=false;
 const clientId=globalThis.crypto?.randomUUID?.() ?? 'browser-'+Math.random().toString(36).slice(2)+Date.now();
 const gltfLoader=new GLTFLoader();const meshCache=new Map();
@@ -46,7 +46,6 @@ async function loadScene(){
   revision=data.revision;const profile=data.world_profile||'potato_ridge';showProfile(profile);grid.visible=profile!=='potato_ridge';driveReady=data.catalog?.[data.concept]?.drive_ready===true;
   for(const model of data.objects){
    const group=new THREE.Group();setPose(group,model.pose);sceneGroup.add(group);frames.set(model.name,group);
-   if(profile==='potato_ridge'&&model.name==='ground')continue;
    for(const link of model.links){
     const linkGroup=new THREE.Group();setPose(linkGroup,link.pose);group.add(linkGroup);frames.set(link.frame,linkGroup);
     for(const visual of link.visuals){
@@ -78,6 +77,11 @@ function buttons(){
  $('weed-cycle').disabled=!canDrive||currentProfile!=='plant'||currentMotion!=='stop';
  $('turn').disabled=!canDrive;$('stop').disabled=busy||loading;$('pause').disabled=!connected||busy;$('reset').disabled=busy||loading;
  for(const button of document.querySelectorAll('[data-profile]'))button.disabled=busy||loading;
+ for(const button of document.querySelectorAll('[data-speed-mode]')){
+  const selected=button.dataset.speedMode===speedMode;
+  button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));
+  button.disabled=!connected||!controlReady||paused||busy||loading||taskBusy||currentMotion!=='stop'||(button.dataset.speedMode==='transport'&&currentProfile==='plant');
+ }
  $('pause').textContent=paused?'Fortsetzen':'Pause';
 }
 async function post(path,payload={}){
@@ -131,6 +135,11 @@ async function worldCommand(path,payload={}){
 $('weed-cycle').onclick=async()=>{try{await post('weed_cycle',{revision});$('error').hidden=true;}catch(error){report(error);}};
 $('tool-start').onclick=async()=>{try{await post('tool_load',{force:100,direction:'-z',revision});$('error').hidden=true;}catch(error){report(error);}};
 for(const button of document.querySelectorAll('[data-profile]'))button.onclick=()=>{if(button.dataset.profile!==currentProfile)worldCommand('profile',{profile:button.dataset.profile});};
+for(const button of document.querySelectorAll('[data-speed-mode]'))button.onclick=async()=>{
+ if(button.dataset.speedMode===speedMode)return;
+ try{await post('speed_mode',{mode:button.dataset.speedMode,revision});speedMode=button.dataset.speedMode;$('error').hidden=true;buttons();}
+ catch(error){report(error);}
+};
 for(const button of document.querySelectorAll('[data-arm]'))button.onclick=async()=>{try{await post('arm',{command:button.dataset.arm,revision});$('error').hidden=true;}catch(error){report(error);}};
 $('reset').onclick=()=>worldCommand('reset');$('pause').onclick=()=>worldCommand(paused?'play':'pause');
 const reasons={ready:'Angehalten',stopped:'Angehalten',not_driving:'Angehalten',command_timeout:'Angehalten · kein aktiver Bedienbefehl',heading_timeout:'Angehalten · Orientierungsmessung fehlt',turn_complete:'Umdrehen abgeschlossen',turn_timeout:'Umdrehen abgebrochen · Zeitlimit',world_change:'Roboterwechsel',simulation_paused:'Simulation pausiert'};
@@ -142,7 +151,7 @@ async function poll(){
   const response=await fetch('/api/state',{signal:AbortSignal.timeout(2000)});if(!response.ok)throw Error('Keine Verbindung');const data=await response.json();
   if(data.revision!==revision){await loadScene();setTimeout(poll,100);return;}
   paused=data.paused;controlReady=data.control_ready===undefined?data.drive_ready:data.control_ready===true;driveReady=data.drive_ready;connected=data.connected&&(!driveReady||(data.pose_age_s!==null&&(paused||data.pose_age_s<3)));
-  currentMotion=data.motion;taskBusy=Boolean(data.tool_task)||Boolean(data.weed_cycle&&!data.weed_cycle.result);
+  currentMotion=data.motion;speedMode=data.speed_mode||'work';taskBusy=Boolean(data.tool_task)||Boolean(data.weed_cycle&&!data.weed_cycle.result);
   if(active?.command==='turn_around'&&data.motion==='stop'&&data.motion_reason==='turn_complete')active=null;
   $('status').textContent=data.switching?'Gazebo startet …':connected?(paused?'Gazebo pausiert':'Gazebo verbunden'):'Verbindung wird aufgebaut …';$('status').className='status '+(connected?'connected':'disconnected');
   if(driveReady&&!paused&&!data.switching&&!controlReady){

@@ -425,8 +425,9 @@
         "wheel_mu": 0.9,
         "effort_limit_Nm": 48.0,
         "velocity_limit_radps": 9.0,
-        "max_linear_velocity_mps": 0.35,
-        "max_angular_velocity_radps": 0.9
+        "max_linear_velocity_mps": 1.0,
+        "max_angular_velocity_radps": 0.9,
+        "min_linear_acceleration_mps2": -1.2
       },
       "supports": {
         "type": "spring_bogie_rollers",

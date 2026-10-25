@@ -7,6 +7,7 @@ Dieses Repository entwickelt **eine** Raupe für die spätere Unkrautpflege in K
 - Aktive Browserkonfiguration: `tracked_overrow_belt08`, 62 cm Spurweite zwischen den Kettenmitten, 8 cm Kettenbreite und 48 cm nominelle Unterbodenfreiheit. Das Fahrwerk ist ein gefedertes Mehrrollen-Ersatzmodell; die sichtbare Kettenhülle hat noch keine eigenen physikalischen Kontakte.
 - Die Kartoffelwelt zeigt fünf Reihen mit 62 cm Abstand und etwa 15 cm hohen Dämmen. Pflanzen und kleine Erdkrümel sind dort **nur Visuals**, bis ein nachgiebiges Kraft-/Schadensmodell existiert. Die Dämme behalten Kollisionsgeometrie. Feste Stufen und Rampen liegen ausschließlich in der separaten Hindernisprüfung.
 - Die Bedienseite bietet Feldfahrt, Hindernisprüfung und Werkzeugprüfung. Arm und Greifer stehen im getrennten Werkzeugprofil zur Verfügung. Der Nutzer kann weder Roboter noch mechanische Parameter in der Browserseite wechseln.
+- Zwei Bedienmodi: Arbeit mit 0,28 m/s und Fahrt mit 1,0 m/s vorwärts. Der schnelle Modus ist im Werkzeugprüfstand gesperrt. Der Bremsweg aus 1,0 m/s beträgt im aktuellen Feldtest etwa 0,43 m. Die kollidierende Feldfläche wurde dafür auf 20 × 6 m erweitert.
 - Die Modelle und Berechnungen bleiben vorläufig. Die realen Kennwerte des schweren Marschbodens in Kirchwerder sind nicht kalibriert. Historische Raupenversuche sind keine Freigabe der aktuellen Feldraupe.
 
 ## Starten

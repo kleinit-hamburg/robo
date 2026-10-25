@@ -20,7 +20,7 @@ from plant_model import add_plant
 from terrain_model import terrain, PROFILES
 from arm_model import add_arm, JOINTS, LIMITS, PRESETS, fixture_waypoints
 from motion_core import Motion, COMMANDS, heading_from_sample, readiness_issues
-from robot_spec import ACTIVE_CONCEPT
+from robot_spec import ACTIVE_CONCEPT, variant
 
 ROOT=Path(__file__).resolve().parents[1]
 WEB=ROOT/'web'
@@ -40,7 +40,7 @@ def build_world(concept, path, profile="garden"):
     ground_collision=ground.find('collision')
     if profile=='potato_ridge':
         for size_node in ground.findall('.//box/size'):
-            size_node.text='7.0 4.6 0.1'
+            size_node.text='20.0 6.0 0.1'
         for ground_visual in ground.findall('visual'):
             material=ground_visual.find('material')
             if material is None:material=ET.SubElement(ground_visual,'material')
@@ -96,6 +96,7 @@ def build_world(concept, path, profile="garden"):
 class Application:
     def __init__(self, profile="potato_ridge", seed=0, log_dir=None):
         self.profile=profile;self.seed=seed;self.run_seed=seed
+        self.speed_limit_mps=variant(ACTIVE_CONCEPT)['drive']['max_linear_velocity_mps']
         self.log_dir=Path(log_dir) if log_dir else Path("/tmp")
         self.log_dir.mkdir(parents=True,exist_ok=True)
         import rclpy
@@ -241,7 +242,17 @@ class Application:
                 connected=connected,switching=self.switching,pose_age_s=round(now-self.last_pose,3) if self.last_pose else None,
                 drive_ready=CATALOG[self.concept]['drive_ready'],motion=self.motion.command,motion_reason=self.motion.reason,
                 linear_velocity=self.output[0],angular_velocity=self.output[1],yaw=self.motion.yaw,
+                speed_mode=self.motion.speed_mode,speed_limit_mps=self.speed_limit_mps,
                 turn_remaining_rad=self.motion.remaining)
+    def set_speed_mode(self,payload):
+        with self.lock:
+            if payload.get('revision')!=self.revision:raise ValueError('Ansicht wurde gewechselt. Bitte kurz warten.')
+            mode=payload.get('mode')
+            if mode=='transport' and self.profile in ('plant','manipulation'):
+                raise ValueError('Transportfahrt ist im Werkzeugprüfstand gesperrt.')
+            if self.tool_task or (self.weed_cycle and not self.weed_cycle.result):
+                raise ValueError('Während einer Werkzeugaufgabe kann der Fahrmodus nicht wechseln.')
+            self.motion.set_speed_mode(mode)
     def scene(self):
         with self.lock:
             return dict(world_profile=self.profile,revision=self.revision,concept=self.concept,catalog=CATALOG,objects=self.objects)
@@ -398,6 +409,8 @@ def handler_for(app):
                 if not isinstance(payload,dict):raise ValueError('Ungültiger Auftrag')
                 if self.path in ('/api/motion','/api/heartbeat'):
                     app.drive(payload,heartbeat=self.path=='/api/heartbeat');return self.send(200,{'ok':True})
+                if self.path=='/api/speed_mode':
+                    app.set_speed_mode(payload);return self.send(200,{'ok':True})
                 if self.path=='/api/weed_cycle':
                     app.cycle_start(payload);return self.send(200,{'ok':True})
                 if self.path=='/api/tool_load':

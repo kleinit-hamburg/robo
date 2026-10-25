@@ -55,7 +55,7 @@ def add_diffdrive(m,data,left_joints=None,right_joints=None):
     p=add(m,'plugin',filename='gz-sim-diff-drive-system',name='gz::sim::systems::DiffDrive')
     for name in left_joints:add(p,'left_joint',name)
     for name in right_joints:add(p,'right_joint',name)
-    fields={'wheel_separation':track['gauge_m'],'wheel_radius':drive['wheel_radius_m'],'topic':'/garden/cmd_vel','odom_topic':'/garden/odom','frame_id':'odom','child_frame_id':'base_link','odom_publish_frequency':30,'min_linear_velocity':-drive['max_linear_velocity_mps'],'max_linear_velocity':drive['max_linear_velocity_mps'],'min_angular_velocity':-drive['max_angular_velocity_radps'],'max_angular_velocity':drive['max_angular_velocity_radps'],'min_linear_acceleration':-.6,'max_linear_acceleration':.6,'min_angular_acceleration':-1.5,'max_angular_acceleration':1.5}
+    fields={'wheel_separation':track['gauge_m'],'wheel_radius':drive['wheel_radius_m'],'topic':'/garden/cmd_vel','odom_topic':'/garden/odom','frame_id':'odom','child_frame_id':'base_link','odom_publish_frequency':30,'min_linear_velocity':-drive['max_linear_velocity_mps'],'max_linear_velocity':drive['max_linear_velocity_mps'],'min_angular_velocity':-drive['max_angular_velocity_radps'],'max_angular_velocity':drive['max_angular_velocity_radps'],'min_linear_acceleration':drive.get('min_linear_acceleration_mps2',-.6),'max_linear_acceleration':.6,'min_angular_acceleration':-1.5,'max_angular_acceleration':1.5}
     for k,v in fields.items():add(p,k,v)
 
 def make_tracked_variant(kind,data):

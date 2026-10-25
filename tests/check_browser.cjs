@@ -23,6 +23,8 @@ const base=process.env.VIEWER_URL || 'http://127.0.0.1:8088';
   if(scene.objects.filter(o=>o.name==='robot').length!==1)throw Error('More than one robot');
   await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/profile')&&r.status()===200),page.locator('[data-profile="potato_ridge"]').click()]);
   await page.waitForFunction(()=>document.querySelector('[data-motion="forward"]').disabled===false,null,{timeout:20000});
+  await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/speed_mode')&&r.status()===200),page.locator('[data-speed-mode="transport"]').click()]);
+  if((await read()).speed_mode!=='transport')throw Error('Transport mode did not reach Gazebo controller');
   await page.locator('#canvas').click({position:{x:40,y:80}});await page.keyboard.down('ArrowUp');await page.waitForTimeout(500);await page.evaluate(()=>window.dispatchEvent(new Event('blur')));await page.waitForTimeout(800);
   if((await read()).motion!=='stop')throw Error('Blur did not stop');await page.keyboard.up('ArrowUp');
   await page.locator('#pause').click();await page.waitForFunction(()=>document.getElementById('pause').textContent==='Fortsetzen');
@@ -31,6 +33,6 @@ const base=process.env.VIEWER_URL || 'http://127.0.0.1:8088';
   await page.setViewportSize({width:390,height:844});await page.screenshot({path:'/tmp/garden-browser-test/robot-mobile.png'});
   if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Mobile overflow');
   if(errors.length)throw Error(errors.join('\n'));
-  console.log('PASS: one rover, pointer/keyboard motion + release, field/test switching, blur stop, pause gating, mobile layout, no JS exceptions');
+  console.log('PASS: one rover, pointer/keyboard motion + release, transport selection, field/test switching, blur stop, pause gating, mobile layout, no JS exceptions');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1)});

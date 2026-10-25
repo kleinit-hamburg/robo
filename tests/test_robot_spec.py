@@ -3,8 +3,14 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from robot_spec import ACTIVE_CONCEPT,load_spec
+from motion_core import SPEED_MODES
 
 class RobotSpecTests(unittest.TestCase):
+    def test_active_drive_limit_covers_transport_command_and_wheel_rate(self):
+        drive=load_spec()['variants'][ACTIVE_CONCEPT]['drive']
+        self.assertGreaterEqual(drive['max_linear_velocity_mps'],SPEED_MODES['transport']['forward'])
+        self.assertLessEqual(SPEED_MODES['transport']['forward']/drive['wheel_radius_m'],drive['velocity_limit_radps'])
+        self.assertLess(drive['min_linear_acceleration_mps2'],0)
     def test_dynamic_variants_have_generated_sdf_xacro_and_catalog_entry(self):
         spec=load_spec();catalog=json.loads((ROOT/'config/preview-concepts.json').read_text())
         self.assertEqual(set(catalog),{ACTIVE_CONCEPT})
@@ -122,6 +128,8 @@ class VisualAssetPipelineTests(unittest.TestCase):
         world=ROOT/'build/test-potato-ridge-contact.sdf'
         build_world(ACTIVE_CONCEPT,world,'potato_ridge')
         models=E.parse(world).getroot().find('world').findall('model')
+        ground=next(model for model in models if model.get('name')=='ground')
+        self.assertEqual(ground.findtext('link/collision/geometry/box/size'),'20.0 6.0 0.1')
         for model in models:
             name=model.get('name','')
             if name.startswith('weed_between_ridges_') or name.startswith('soil_clod_') or ('_plant_' in name and name.startswith('potato_')):

@@ -19,3 +19,13 @@ Die angegebenen vorderen und hinteren Visual-Mittelpunkte liegen 1,02 m auseinan
 - Messung von Einsinken, Schlupf und Zugkraft an Bodenproben, bevor die endgültige Breite festgelegt wird.
 
 **Entscheidung:** Für die virtuelle Weiterentwicklung eine 75–80-mm-Kaufraupe als Beschaffungskandidat führen, das Fahrwerk aber noch nicht auf ein konkretes Fabrikat festlegen. Es wird nichts bestellt. Erst nach einer maßlich konsistenten Raupenschleife und Boden-/Lastprüfung kann ein Band ausgewählt werden.
+
+## Kaufbare Fahrgestelle als möglicher Ausgangspunkt
+
+Der Hersteller [KCM/Kymoon](https://www.kcm-hk.com/Rubber-Track-Chassis-with-All-terrain-Track-Drive-System-pd594652048.html) listet komplette KCM-70-Raupenfahrgestelle: 590 × 530 × 250 mm, 70-mm-Ketten, 17,85 kg Eigenmasse und 100 kg angegebene Nutzlast; eine längere Version misst 800 × 570 × 300 mm, wiegt 44 kg und hat 150 kg angegebene Nutzlast. Die genannten Außenbreiten ergeben bei symmetrischer Anordnung ungefähr 460 bzw. 500 mm Kettenmittenabstand. Beide liegen unter unseren 620 mm, und eine freie Durchfahrtshöhe zwischen den Ketten von 480 mm ist nicht angegeben. Die kurze Variante wäre nur ein verkleinerter Fahrwerksversuch, die längere könnte als Komponentenreferenz dienen. Nutzlast ist keine Aussage über die Tragfähigkeit bei seitlichem Werkzeugzug.
+
+[FlySpark TK650](https://flyspark.in/japan/products/flyspark-tk650-lightweight-tracked-ugv-robot-chassis-30kg-payload) ist ein weiteres integriertes Beispiel: 650 × 480 × 200 mm, etwa 25 kg Eigenmasse, 30 kg Nutzlast, 80-mm-Gummiraupen, gefederte Rollen und 2 × 300 W Antrieb. Bei unserem 64-kg-Gesamtziel blieben nach 25 kg Chassis rund 39 kg Aufbauten; das überschreitet bereits die angegebene Nutzlast. Außerdem ist die Spurweite zu klein und die Überreihen-Freiheit nicht belegt.
+
+Ein größeres [RC MI-100](https://www.robotchassis.com/product/tracked-robot-tank-chassis/) kann laut Hersteller in 550–900 mm Außenbreite gefertigt werden, hat aber 100-mm-Ketten und wiegt schon ohne Batterie mindestens 97,5 kg. Es überschreitet damit das derzeitige Gesamtmassenziel.
+
+**Folgerung:** Ein fertiges Serien-Fahrgestell, um das wir lediglich Werkzeug und Sensorik bauen, ist bislang nicht passend nachgewiesen. Der naheliegende Integrationsweg sind zwei möglichst vollständige, getrennt montierbare Raupenmodule mit Rollen, Spannung, Antrieb und Band. Dazwischen käme unsere eigene hohe, auf 620–750 mm Spurweite rastbar verstellbare Brücke. Vor einem Kauf müssen Herstellerzeichnungen, Modulmasse, Aufstandsfläche, Befestigung, Bandspannung, Motor-/Controller-Schnittstelle und Lastfälle im Marschboden geprüft werden. Die genannten Produkte sind Recherchekandidaten, keine freigegebenen Bauteile und keine Bestellung.

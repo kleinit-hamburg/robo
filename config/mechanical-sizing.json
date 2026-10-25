@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "status": "illustrative_design_assumptions_not_measured",
+  "variants": [
+    "tracked_overrow_high_clearance",
+    "tracked_overrow_belt08",
+    "tracked_overrow_belt06"
+  ],
+  "gravity_mps2": 9.81,
+  "drive": {
+    "grade_deg": [0, 5, 10],
+    "rolling_resistance_coefficient": 0.10,
+    "traction_mu": [0.25, 0.60],
+    "acceleration_mps2": 0.0,
+    "design_speed_mps": 0.35
+  },
+  "stability": {
+    "side_force_N": [150, 300, 500],
+    "tool_height_m": 0.55,
+    "lateral_com_offset_m": [0.0, 0.10]
+  },
+  "tool": {
+    "linear_force_N": [100, 250, 500, 1000],
+    "linear_speed_mps": 0.02,
+    "hydraulic_example_pressure_bar": 50,
+    "hydraulic_example_bore_mm": 16,
+    "hydraulic_example_cylinder_efficiency": 0.75,
+    "hydraulic_example_pump_motor_efficiency": 0.60,
+    "electric_example_total_efficiency": 0.60
+  },
+  "energy": {
+    "battery_voltage_V": 48,
+    "battery_capacity_Ah": 20,
+    "usable_fraction": 0.80,
+    "illustrative_mean_battery_power_W": [200, 350, 500],
+    "mission_target_hours": 2.0
+  }
+}

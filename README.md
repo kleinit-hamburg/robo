@@ -2,7 +2,7 @@
 
 Drei alternative Plattformen für autonome Unkrautbekämpfung: Kettenfahrzeug mit Arm, Quadruped mit Arm und humanoider Zweibeiner mit zwei Greifhänden. Zielplattform ist **Ubuntu 24.04, ROS 2 Jazzy und Gazebo Harmonic**. Andere Gartenarbeiten werden über wechselbare Werkzeuge und zusätzliche Aufgabenprogramme vorbereitet.
 
-**Status: virtueller Fahr- und Manipulationsprüfstand.** Am Ketten-Ersatzmodell sind Fahrbefehle, ein beweglicher 6-DOF-Arm, Greifer, Werkzeuglastversuche und ein automatischer Prüfzyklus an einer bekannten virtuellen Pflanze implementiert. Die ebene M1-Fahrserie bestand 10/10 Durchläufe. Geländeprüfung und M3–M6 sind noch nicht vollständig abgenommen; Quadruped und Humanoid bleiben Geometrievorschauen. Keine autonome Pflanzenerkennung, detaillierte CAD-Ausarbeitung oder Hardwarebeschaffung. Zahlen sind prüfbare Entwurfsannahmen, keine bestätigten Pflanzenkennwerte oder Leistungsversprechen. [Aktueller Funktions- und Prüfstand](docs/13-grundfunktionen.md).
+**Status: virtueller Fahr- und Manipulationsprüfstand.** Am Ketten-Ersatzmodell sind Fahrbefehle, ein beweglicher 6-DOF-Arm, Greifer, Werkzeuglastversuche und ein automatischer Prüfzyklus an einer bekannten virtuellen Pflanze implementiert. Die ebene M1-Fahrserie bestand 10/10 Durchläufe. Gefederte und geführte Raupenvarianten wurden in Gazebo auf Hindernissen geprüft; der dynamische Quadruped hat einen ersten, noch instabilen Gangregler. Der Humanoid bleibt eine Geometrievorschau. M3–M6 sind noch nicht vollständig abgenommen. Keine autonome Pflanzenerkennung, detaillierte CAD-Ausarbeitung oder Hardwarebeschaffung. Zahlen sind prüfbare Entwurfsannahmen, keine bestätigten Pflanzenkennwerte oder Leistungsversprechen. [Aktueller Funktions- und Prüfstand](docs/13-grundfunktionen.md).
 
 ## Lesen
 
@@ -18,6 +18,7 @@ Drei alternative Plattformen für autonome Unkrautbekämpfung: Kettenfahrzeug mi
 10. [Fahrwerks-Testsystem](docs/15-fahrwerk-testsystem.md): zentrale Spezifikation, Varianten und Gazebo-Hindernismatrix.
 10. [Roboterauswahl und Fahrbefehle](docs/09-roboterbedienung.md).
 11. [M1-Prüfung: Ergebnisse und offene Neustartfehler](docs/10-m1-abnahme.md).
+12. [Vorbemessung Raupe, Werkzeug und Energie](docs/20-raupe-antrieb-werkzeug-energie.md): Schwerpunkt, Antrieb, Hydraulikvergleich, Sensorik und offene Messungen.
 
 Die maschinenlesbaren [Konzeptparameter](config/concepts.json) und [Versuchsparameter](config/benchmark.json) sind Eingaben für die spätere Implementierung, noch keine direkt von Gazebo ladbaren Dateien. Alle numerischen Größen verwenden SI-Einheiten; Gradwerte sind ausdrücklich mit `_deg` benannt.
 
